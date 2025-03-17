@@ -21,6 +21,7 @@
     "#actions/*": "./actions/*",
     "#keyboards/*": "./keyboards/*",
     "#messages/*": "./messages/*",
+    "#models/*": "./models/*",
     "#services/*": "./services/*",
     "#utils/*": "./utils/*"
   }
