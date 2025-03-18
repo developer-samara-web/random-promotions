@@ -2,20 +2,13 @@
 import "dotenv/config";
 import Auth from "#controllers/authController.js"
 import Actions from "#actions/_init.js";
-import telegram from "#services/telegram.js";
-import { startMessage } from "#messages/mainMessages.js";
-import { startKeyboard } from "#keyboards/mainKeyboards.js"
+import Telegram from "#services/telegram.js";
 
 // Инициализация экшенов
-Actions(telegram);
+Actions(Telegram);
 
 // Авторизация
-telegram.use(Auth)
-
-// Отправляем стартовое сообщение
-telegram.start(async (ctx) => {
-	await ctx.replyWithHTML(startMessage(ctx), startKeyboard());
-});
+Telegram.use(Auth)
 
 // Запуск бота
-telegram.launch();
+Telegram.launch();
