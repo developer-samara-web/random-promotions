@@ -2,6 +2,9 @@
 import connectToDatabase from "#services/mongodb.js";
 import User from "#models/User.js";
 
+// Логирование
+import logger from "#utils/logs.js";
+
 // Получение пользователя
 export async function getUser(id) {
 	try {

@@ -34,10 +34,10 @@ export async function setPromotion(body) {
 		// Проверка данных
 		if (!promotion) { return null };
 		// Отправляем данные
-		logger.info(`Новая акция: ${promotion._id}`);
+		logger.info(`Новая акция: ${promotion._id}.`);
 		return promotion;
 	} catch (e) {
-		logger.error('Ошибка создания акции:', e)
+		logger.error('Ошибка создания акции:', e);
 	}
 };
 
@@ -57,9 +57,9 @@ export async function updatePromotion(id, body) {
 		// Проверка данных
 		if (!promotion) { return null };
 		// Отправляем данные
-		logger.info(`Пользователь обновлён: ${promotion._id}`);
+		logger.info(`Пользователь обновлён: ${promotion._id}.`);
 		return promotion;
 	} catch (e) {
-		logger.error('Ошибка обновления акции:', e)
+		logger.error('Ошибка обновления акции:', e);
 	}
 };
