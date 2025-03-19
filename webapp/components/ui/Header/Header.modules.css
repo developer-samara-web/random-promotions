@@ -1,0 +1,13 @@
+@reference "tailwindcss";
+
+.header{
+    @apply flex flex-col items-center gap-1 w-full
+}
+
+.header-title{
+    @apply text-2xl uppercase font-bold
+}
+
+.header-description{
+    @apply text-xs uppercase text-blue-200
+}

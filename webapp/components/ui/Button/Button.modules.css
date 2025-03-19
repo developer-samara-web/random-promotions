@@ -1,0 +1,5 @@
+@reference "tailwindcss";
+
+.button{
+    @apply bg-blue-500 py-5 w-full rounded-xl uppercase font-medium cursor-pointer text-xs
+}

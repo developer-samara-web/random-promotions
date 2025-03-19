@@ -1,0 +1,9 @@
+@reference "tailwindcss";
+
+.form{
+    @apply flex flex-col gap-5 w-full border-y border-slate-800 py-5
+}
+
+.form-input{
+    @apply border-[1px] border-[#3b82f64f] bg-[#3b82f630] rounded-xl py-3 text-center
+}

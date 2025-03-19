@@ -1,0 +1,21 @@
+@reference "tailwindcss";
+
+.promotion{
+    @apply flex flex-row gap-3 text-white border-[1px] border-[#3b82f64f] bg-[#3b82f630] rounded-xl p-5 w-full
+}
+
+.promotion-image{
+    @apply rounded-xl
+}
+
+.promotion-content{
+    @apply flex flex-col
+}
+
+.promotion-title{
+    @apply text-base uppercase font-medium
+}
+
+.promotion-description{
+    @apply text-xs text-slate-300
+}

@@ -1,0 +1,58 @@
+[
+    {
+        "id": 1,
+        "name": "name",
+        "placeholder": "Название акции",
+        "type": "text",
+        "visible": true,
+        "required": true
+    },
+    {
+        "id": 2,
+        "name": "description",
+        "placeholder": "Подробное описание акции",
+        "type": "text",
+        "visible": true,
+        "required": true
+    },
+    {
+        "id": 3,
+        "name": "winners_count",
+        "placeholder": "Кол-во победителей",
+        "type": "number",
+        "visible": true,
+        "required": true
+    },
+    {
+        "id": 4,
+        "name": "image",
+        "placeholder": "Фото поста акции",
+        "type": "image",
+        "visible": true,
+        "required": true
+    },
+    {
+        "id": 5,
+        "name": "subscribe",
+        "placeholder": "Для премиум пользователей",
+        "type": "boolean",
+        "visible": true,
+        "required": true
+    },
+    {
+        "id": 6,
+        "name": "start_time",
+        "placeholder": "Дата начала акции",
+        "type": "date",
+        "visible": true,
+        "required": true
+    },
+    {
+        "id": 7,
+        "name": "end_time",
+        "placeholder": "Дата конца акции",
+        "type": "date",
+        "visible": true,
+        "required": true
+    }
+]
