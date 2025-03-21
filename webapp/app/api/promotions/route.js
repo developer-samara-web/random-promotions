@@ -9,13 +9,17 @@ export async function POST(request) {
         await connectToDatabase();
         // Получение данных
         const query = await request.json();
-        console.log('test')
+        const lastPromotion = await Promotion.findOne().sort({ _id: -1 });
+        const newId = lastPromotion ? lastPromotion._id + 1 : 1;
         // Получаем список
-        const promotion = new Promotion(query);
+        const promotion = new Promotion({
+            _id: newId,
+            ...query
+        });
         // Если приглашений нет
         if (!promotion) { return NextResponse.json({ status: 404, error: 'Не удалось создать акцию.' }) }
         // Сохраняем
-        await Promotion.save()
+        await promotion.save();
         // Отправляем данные
         return NextResponse.json({ status: 200, response: promotion }, { status: 200 });
     } catch (error) {
@@ -28,14 +32,14 @@ export async function POST(request) {
 }
 
 // Настройка методов и заголовков
-// export async function OPTIONS() {
-//     return NextResponse.json(null, {
-//         status: 204,
-//         headers: {
-//             'Access-Control-Allow-Origin': process.env.NEXT_PUBLIC_URL || '*',
-//             'Access-Control-Allow-Methods': 'POST',
-//             'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-//             'Access-Control-Max-Age': '3600',
-//         },
-//     })
-// }
+export async function OPTIONS() {
+    return NextResponse.json(null, {
+        status: 204,
+        headers: {
+            'Access-Control-Allow-Origin': process.env.NEXT_PUBLIC_URL || '*',
+            'Access-Control-Allow-Methods': 'POST',
+            'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+            'Access-Control-Max-Age': '3600',
+        },
+    })
+}

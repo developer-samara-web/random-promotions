@@ -1,0 +1,24 @@
+@reference "tailwindcss";
+
+.preloader {
+    @apply flex justify-center items-center border-[1px] border-[#3b82f64f] bg-[#172a51] rounded-2xl h-20 gap-4 w-full
+}
+
+.preloader_content {
+    @apply text-white uppercase font-medium text-xs
+}
+
+.preloader_spinner {
+    @apply w-[25px] h-[25px] border-4 border-[#3b82f64f] border-t-[#3b82f6] rounded-full;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}

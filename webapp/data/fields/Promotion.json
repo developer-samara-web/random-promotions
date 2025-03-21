@@ -17,6 +17,14 @@
     },
     {
         "id": 3,
+        "name": "conditions",
+        "placeholder": "Условия",
+        "type": "number",
+        "visible": true,
+        "required": true
+    },
+    {
+        "id": 4,
         "name": "winners_count",
         "placeholder": "Кол-во победителей",
         "type": "number",
@@ -24,18 +32,10 @@
         "required": true
     },
     {
-        "id": 4,
+        "id": 5,
         "name": "image",
         "placeholder": "Фото поста акции",
-        "type": "image",
-        "visible": true,
-        "required": true
-    },
-    {
-        "id": 5,
-        "name": "subscribe",
-        "placeholder": "Для премиум пользователей",
-        "type": "boolean",
+        "type": "text",
         "visible": true,
         "required": true
     },
@@ -54,5 +54,21 @@
         "type": "date",
         "visible": true,
         "required": true
+    },
+    {
+        "id": 8,
+        "name": "subscribe",
+        "placeholder": "Для премиум пользователей",
+        "type": "toogle",
+        "visible": true,
+        "required": true
+    },
+    {
+        "id": 9,
+        "name": "_id",
+        "placeholder": "id",
+        "type": "text",
+        "visible": false,
+        "required": false
     }
 ]

@@ -1,0 +1,17 @@
+@reference "tailwindcss";
+
+.toggle-switch {
+    @apply w-12 h-6 bg-gray-300 rounded-full relative cursor-pointer transition-colors duration-300;
+}
+
+.toggle-switch--active {
+    @apply bg-green-500;
+}
+
+.toggle-switch__thumb {
+    @apply w-5 h-5 bg-white rounded-full absolute top-0.5 left-0.5 transition-transform duration-300;
+}
+
+.toggle-switch--active .toggle-switch__thumb {
+    @apply translate-x-6;
+}

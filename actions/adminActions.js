@@ -9,7 +9,7 @@ import logger from "#utils/logs.js";
 export async function adminAction(telegram) {
 	try {
 		telegram.action("admin_menu", async (ctx) => {
-			return await ctx.editMessageText(adminMessage(ctx), {
+			return await ctx.editMessageText(adminMessage(), {
 				reply_markup: adminKeyboard().reply_markup,
 				parse_mode: "HTML",
 			});

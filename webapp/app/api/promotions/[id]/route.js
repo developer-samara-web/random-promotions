@@ -3,12 +3,14 @@ import connectToDatabase from '@/services/mongodb'
 import Promotion from '@/models/Promotion'
 
 // Получаем список администраторов
-export async function GET(request, { params: { id }}) {
+export async function GET(request, ctx) {
     try {
+        // Получаем id акции
+        const { id } = await ctx?.params;
         // Подключаемся к базе данных
         await connectToDatabase();
         // Получаем акцию
-        const promotion = await Promotion.find(id);
+        const promotion = await Promotion.findById(id);
         // Если акции не существует
         if (!promotion) { return NextResponse.json({ status: 404, error: 'Акция не найдена.' }) }
         // Отправляем данные
@@ -20,18 +22,18 @@ export async function GET(request, { params: { id }}) {
 }
 
 // Редактирование акции
-export async function PUT(request) {
+export async function PUT(request, ctx) {
     try {
+        // Получаем id акции
+        const { id } = await ctx?.params;
         // Подключаемся к базе данных
         await connectToDatabase();
-        // Получение данных
+        // Получение данные формы
         const query = await request.json();
-        // Получаем список
-        const promotion = new Promotion(query);
-        // Если приглашений нет
+        // Получаем акцию и обновляем
+        const promotion = await Promotion.findByIdAndUpdate(id, query, { new: true })
+        // Если ошибка
         if (!promotion) { return NextResponse.json({ status: 404, error: 'Не удалось отредактировать акцию.' }) }
-        // Сохраняем
-        await Promotion.save()
         // Отправляем данные
         return NextResponse.json({ status: 200, response: promotion })
     } catch (error) {

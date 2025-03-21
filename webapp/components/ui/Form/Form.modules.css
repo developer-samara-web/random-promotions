@@ -5,5 +5,13 @@
 }
 
 .form-input{
-    @apply border-[1px] border-[#3b82f64f] bg-[#3b82f630] rounded-xl py-3 text-center
+    @apply border-[1px] border-[#3b82f64f] bg-[#3b82f630] rounded-xl py-3 text-left px-5 w-full
+}
+
+.form-switch{
+    @apply flex justify-between items-center px-2
+}
+
+.form-label{
+    @apply flex items-center gap-2 text-sm mb-0 uppercase font-medium
 }

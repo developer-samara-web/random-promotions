@@ -1,1 +1,5 @@
 @import "tailwindcss";
+
+.root{
+    @apply flex justify-center bg-slate-900
+}

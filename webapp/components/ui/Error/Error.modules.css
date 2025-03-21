@@ -1,0 +1,16 @@
+@reference "tailwindcss";
+
+.error{
+    @apply flex flex-row gap-3 text-white border-[1px] border-[#ff587252] bg-[#ff000017] rounded-xl p-5 w-full
+}
+.error-inner{
+    @apply flex flex-col justify-center
+}
+
+.error-title{
+    @apply flex items-center gap-2 text-sm mb-0 uppercase font-medium
+}
+
+.error-description{
+    @apply text-xs
+}

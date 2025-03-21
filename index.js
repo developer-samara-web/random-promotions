@@ -6,9 +6,7 @@ import Telegram from "#services/telegram.js";
 
 // Инициализация экшенов
 Actions(Telegram);
-
 // Авторизация
 Telegram.use(Auth)
-
 // Запуск бота
 Telegram.launch();

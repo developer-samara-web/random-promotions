@@ -7,7 +7,7 @@ export const metadata = {
   description: "https://t.me/mr_razdachkin",
 };
 
-// Component
-export default function HomePage() {
-  return <Home />;
+// Компонент
+export default async function HomePage({ searchParams }) {
+  return <Home searchParams={await searchParams} />;
 }
