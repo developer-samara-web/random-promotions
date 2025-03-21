@@ -1,8 +1,9 @@
 export default async function (data) {
     try{
-        const response =  await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/${data}`, {
+        const response =  await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth`, {
             headers: { 'Content-Type': 'application/json' },
-            method: 'GET'
+            method: 'POST',
+            body: JSON.stringify(data)
         });
 
         return response.json();
