@@ -21,6 +21,8 @@ export default function RootLayout({ children }) {
     // Ждём загрузки скрипта и initData
     if (!isScriptLoaded || initData === null) return
 
+    console.log(initData)
+
     const fetchAuth = async () => {
       try {
         // Проверка данных
