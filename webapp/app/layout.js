@@ -21,8 +21,6 @@ export default function RootLayout({ children }) {
     // Ждём загрузки скрипта и initData
     if (!isScriptLoaded || initData === null) return
 
-    console.log(initData)
-
     const fetchAuth = async () => {
       try {
         // Проверка данных
@@ -48,6 +46,9 @@ export default function RootLayout({ children }) {
   if (check === null) {
     return (
       <html lang="ru">
+        <head>
+          <Script src="https://telegram.org/js/telegram-web-app.js" onLoad={() => setIsScriptLoaded(true)} />
+        </head>
         <body className="root">
           <Page>
             <Preloader />
@@ -61,6 +62,9 @@ export default function RootLayout({ children }) {
   if (check === false) {
     return (
       <html lang="ru">
+        <head>
+          <Script src="https://telegram.org/js/telegram-web-app.js" onLoad={() => setIsScriptLoaded(true)} />
+        </head>
         <body className="root">
           <Page>
             <Error />
