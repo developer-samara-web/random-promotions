@@ -1,7 +1,7 @@
 // Импорт компонентов
 import { NextResponse } from "next/server";
 import connectToDatabase from '@/services/mongodb';
-import User from "@/_models/User";
+import User from "@/models/User";
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
 
