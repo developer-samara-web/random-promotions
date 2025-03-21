@@ -6,6 +6,7 @@ import "./globals.css";
 // Импорт компонентов
 import { useEffect, useState } from 'react';
 import { useTelegramData } from "@/hooks/useTelegramData";
+import getAuth from "@/controllers/Auth";
 import Page from "@/components/ui/Page/Page";
 import Preloader from "@/components/ui/Preloader/Preloader";
 import Error from "@/components/ui/Error/Error";
