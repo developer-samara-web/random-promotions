@@ -29,5 +29,5 @@ export function useTelegramData() {
         return () => clearTimeout(timeout)
     }, [data])
 
-    return data1;
+    return data;
 }
