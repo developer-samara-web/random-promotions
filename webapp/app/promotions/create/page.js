@@ -1,5 +1,5 @@
 // Импорт компонентов
-import Create from "@/components/pages/promotions/Create";
+import Create from "@/components/pages/promotions/PromotionsCreate";
 
 //SEO
 export const metadata = {

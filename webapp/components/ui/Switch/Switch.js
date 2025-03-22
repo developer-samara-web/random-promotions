@@ -9,7 +9,7 @@ export default function Switch({ value, placeholder, onChange }) {
 
     return (
         <div className="form-switch">
-            <label className="form-label">{placeholder}:</label>
+            <label className="form-switch-label">{placeholder}:</label>
             <div onClick={handleToggle} className={`toggle-switch ${value ? 'toggle-switch--active' : ''}`} >
                 <div className="toggle-switch__thumb"></div>
             </div>

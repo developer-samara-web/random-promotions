@@ -1,6 +1,6 @@
 // Импорт компонентов
 import * as React from 'react'
-import Edit from "@/components/pages/promotions/Edit";
+import Edit from "@/components/pages/promotions/PromotionsEdit";
 
 // SEO
 export const metadata = {

@@ -8,11 +8,14 @@ import Icon from "@/components/ui/Icon/Icon";
 export default function Error({ title, description }) {
     return (
         <div className="error">
-            <Icon name="ExclamationCircleIcon" className="size-12" />
-            <div className="error-inner">
+            <div className="error-content">
                 <div className="error-title">{title}</div>
-                <div className="error-description">{description}</div>
+                <div className="error-badge">
+                    <Icon name="ExclamationCircleIcon" className="size-4" />
+                    <span>ERROR</span>
+                </div>
             </div>
+            <div className="error-description">{description}</div>
         </div>
     );
 }

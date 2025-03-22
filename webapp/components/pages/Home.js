@@ -30,7 +30,7 @@ export default function Home({ searchParams }) {
         fetchPromotion()
     }, [])
 
-    if (!promotion._id) {
+    if (!promotion_id) {
         return (
             <Page>
                 <Error title="Произошла ошибка" description="Не удалось найти акцию или её не существует." />

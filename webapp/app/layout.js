@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 // Импорт стилей
 import "./globals.css";
@@ -12,25 +12,22 @@ import Preloader from "@/components/ui/Preloader/Preloader";
 import Error from "@/components/ui/Error/Error";
 import Script from 'next/script';
 
-// Компонент
 export default function RootLayout({ children }) {
-  const [check, setCheck] = useState(null)
-  const [isScriptLoaded, setIsScriptLoaded] = useState(false)
-  const initData = useTelegramData()
+  const [check, setCheck] = useState(null);
+  const [error, setError] = useState(null);
+  const [isScriptLoaded, setIsScriptLoaded] = useState(false);
+  const initData = useTelegramData();
 
   useEffect(() => {
-    // Ждём загрузки скрипта и initData
-    if (!isScriptLoaded || initData === null) return
+    if (!isScriptLoaded || initData === null) return;
 
     const fetchAuth = async () => {
       try {
-        // Проверка данных
         if (initData === false) {
           setCheck(false);
           return;
         }
 
-        // Проверяем авторизацию
         const { error } = await getAuth(initData);
         if (error) setError(error);
         setCheck(!error);
@@ -38,12 +35,12 @@ export default function RootLayout({ children }) {
         console.error('Ошибка доступа:', error);
         setCheck(false);
       }
-    }
+    };
 
-    fetchAuth()
-  }, [initData, isScriptLoaded])
+    fetchAuth();
+  }, [initData, isScriptLoaded]);
 
-  // Если загрузка данных
+  // Если проверка еще не завершена
   if (check === null) {
     return (
       <html lang="ru">
@@ -56,10 +53,10 @@ export default function RootLayout({ children }) {
           </Page>
         </body>
       </html>
-    )
+    );
   }
 
-  // Если не прошёл проверку
+  // Если авторизация не пройдена
   if (check === false) {
     return (
       <html lang="ru">
@@ -68,21 +65,23 @@ export default function RootLayout({ children }) {
         </head>
         <body className="root">
           <Page>
-            <Error />
+            <Error title="Произошла ошибка" description={error} />
           </Page>
         </body>
       </html>
-    )
+    );
   }
 
+  // Успешная авторизация
   return (
     <html lang="ru">
       <head>
-        <Script src="https://telegram.org/js/telegram-web-app.js" onLoad={() => setIsScriptLoaded(true)} />
+        <Script
+          src="https://telegram.org/js/telegram-web-app.js"
+          onLoad={() => setIsScriptLoaded(true)}
+        />
       </head>
-      <body className="root">
-        {children}
-      </body>
+      <body className="root">{children}</body>
     </html>
   );
 }

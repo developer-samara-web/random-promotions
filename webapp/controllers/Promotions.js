@@ -12,6 +12,20 @@ export async function getPromotion(id) {
     }
 }
 
+// Получение акций
+export async function getPromotions() {
+    try{
+        const response =  await fetch(`${process.env.NEXT_PUBLIC_API_URL}/promotions`, {
+            headers: { 'Content-Type': 'application/json' },
+            method: 'GET'
+        });
+
+        return response.json();
+    } catch (e){
+        console.error('Ошибка получения данных акции:', e);
+    }
+}
+
 // Создание акции
 export async function setPromotion(data) {
     try{
@@ -27,7 +41,6 @@ export async function setPromotion(data) {
 
 // Обновление акции
 export async function updatePromotion(data) {
-    console.log(data)
     try{
         return await fetch(`${process.env.NEXT_PUBLIC_API_URL}/promotions/${data._id}`, {
             method: 'PUT',

@@ -1,0 +1,20 @@
+@reference "tailwindcss";
+
+.success{
+    @apply flex flex-col items-start gap-3 text-white border-[1px] border-[#58ff5852] bg-[#00ff8317] rounded-xl p-5 w-full
+}
+.success-content{
+    @apply flex flex-row justify-between items-center w-full
+}
+
+.success-badge{
+    @apply flex flex-row items-center justify-center gap-1 text-[10px] font-medium bg-[#58ff5852] rounded-xl px-3 pb-[4px] py-1
+}
+
+.success-title{
+    @apply flex items-center gap-2 text-sm mb-0 uppercase font-medium
+}
+
+.success-description{
+    @apply text-sm text-red-100
+}

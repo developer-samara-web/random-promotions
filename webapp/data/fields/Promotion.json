@@ -35,7 +35,7 @@
         "id": 5,
         "name": "image",
         "placeholder": "Фото поста акции",
-        "type": "text",
+        "type": "image",
         "visible": true,
         "required": true
     },

@@ -30,7 +30,7 @@ export async function POST(request) {
         if (!seller.length) { return NextResponse.json({ status: 400, error: "Вы не прошли авторизацию. Ваши данные отличаются от данных в нашей системе. Если проблема повторяется, пожалуйста, свяжитесь с нашей технической поддержкой для уточнения причин @lavka_dobbi_support." }) }
         // Создаем секретный ключ
         const secretKey = crypto.createHmac('sha256', 'WebAppData')
-            .update(process.env.BOT_SELLER_TOKEN)
+            .update(process.env.TELEGRAM_TOKEN)
             .digest()
         // Вычисляем подпись на основе строки проверки
         const signature = crypto.createHmac('sha256', secretKey)
@@ -43,7 +43,7 @@ export async function POST(request) {
         // Проверяем данные пользователя
         if (!user?.id || !user?.username) { return NextResponse.json({ status: 400, error: "Некорректные данные продавца. Если проблема повторяется, пожалуйста, свяжитесь с нашей технической поддержкой для уточнения причин @lavka_dobbi_support." }) }
         // Генерируем JWT токен
-        const token = jwt.sign({ id: user.id, username: user.username, }, process.env.JWT_SECRET, { expiresIn: "60m" })
+        const token = jwt.sign({ id: user.id, username: user.username }, process.env.TELEGRAM_JWT_TOKEN, { expiresIn: "60m" })
         // Устанавливаем токен в куки
         const response = NextResponse.json({ message: "Успешная авторизация." });
         // Устанавливаем куки с токеном

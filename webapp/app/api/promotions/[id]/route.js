@@ -12,7 +12,7 @@ export async function GET(request, ctx) {
         // Получаем акцию
         const promotion = await Promotion.findById(id);
         // Если акции не существует
-        if (!promotion) { return NextResponse.json({ status: 404, error: 'Акция не найдена.' }) }
+        if (!promotion) { return NextResponse.json({ status: 404, error: 'Акция не найдена. Попробуйте повторить попытку позже или обратитесь в службу поддержки.' }) }
         // Отправляем данные
         return NextResponse.json({ status: 200, response: promotion })
     } catch (error) {

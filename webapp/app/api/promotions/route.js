@@ -2,6 +2,23 @@ import { NextResponse } from 'next/server';
 import connectToDatabase from '@/services/mongodb';
 import Promotion from '@/models/Promotion';
 
+// Получаем всех акций
+export async function GET(request) {
+    try {
+        // Подключаемся к базе данных
+        await connectToDatabase();
+        // Получаем акцию
+        const promotions = await Promotion.find();
+        // Если акции не существует
+        if (!promotions) { return NextResponse.json({ status: 404, error: 'Акции не найдены.' }) }
+        // Отправляем данные
+        return NextResponse.json({ status: 200, response: promotions })
+    } catch (error) {
+        console.error('Ошибка при получении акций:', error);
+        return NextResponse.json({ status: 500, error: 'Что-то пошло не так. Попробуйте повторить попытку позже или обратитесь в поддержку.' })
+    }
+}
+
 // Создание акции
 export async function POST(request) {
     try {
@@ -37,7 +54,7 @@ export async function OPTIONS() {
         status: 204,
         headers: {
             'Access-Control-Allow-Origin': process.env.NEXT_PUBLIC_URL || '*',
-            'Access-Control-Allow-Methods': 'POST',
+            'Access-Control-Allow-Methods': 'GET, POST',
             'Access-Control-Allow-Headers': 'Content-Type, Authorization',
             'Access-Control-Max-Age': '3600',
         },

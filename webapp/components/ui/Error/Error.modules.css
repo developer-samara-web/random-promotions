@@ -1,10 +1,14 @@
 @reference "tailwindcss";
 
 .error{
-    @apply flex flex-row gap-3 text-white border-[1px] border-[#ff587252] bg-[#ff000017] rounded-xl p-5 w-full
+    @apply flex flex-col items-start gap-3 text-white border-[1px] border-[#ff587252] bg-[#ff000017] rounded-xl p-5 w-full
 }
-.error-inner{
-    @apply flex flex-col justify-center
+.error-content{
+    @apply flex flex-row justify-between items-center w-full
+}
+
+.error-badge{
+    @apply flex flex-row items-center justify-center gap-1 text-[10px] font-medium bg-red-500 rounded-xl px-3 pb-[4px] py-1
 }
 
 .error-title{
@@ -12,5 +16,5 @@
 }
 
 .error-description{
-    @apply text-xs
+    @apply text-sm text-red-100
 }
