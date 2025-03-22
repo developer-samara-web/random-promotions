@@ -3,28 +3,25 @@ import { NextResponse } from 'next/server';
 import { jwtVerify } from 'jose';
 
 export async function middleware(request) {
+    // Получаем токен из cookies
     const authToken = request.cookies.get("authToken");
-
-    if (!authToken) {
-        // Перенаправляем на главную, если токена нет
-        // return NextResponse.redirect(new URL('/', request.url));
-        if (!authToken) { return NextResponse.json({ status: 401, error: "У вас не достаточно прав для работы с этой страницей. Попробуйте повторить попытку позже или обратитесь в службу поддержки." }) }
-    }
+    // Если токен отсутствует, возвращаем ошибку авторизации
+    if (!authToken) { return NextResponse.json({ status: 401, error: "У вас не достаточно прав для работы с этой страницей. Попробуйте повторить попытку позже или обратитесь в службу поддержки." }) }
 
     try {
-        const { payload } = await jwtVerify(authToken.value, new TextEncoder().encode(process.env.TELEGRAM_JWT_TOKEN));
-        request.headers.set("user", JSON.stringify(payload)); // Передаем данные пользователя
-        return NextResponse.next();
+        // Проверяем токен
+        const user = await jwtVerify(authToken.value, new TextEncoder().encode(process.env.TELEGRAM_JWT_TOKEN));
+        // Если токен валидный
+        request.headers.set("user", JSON.stringify(user));
     } catch (error) {
-        console.error("Ошибка в middleware:", error);
-        // return NextResponse.redirect(new URL('/', request.url));
-        return NextResponse.json({ status: 401, message: 'У вас не достаточно прав для работы с этой страницей.' })
+        // Если токен не валидный
+        console.log(error)
+        return NextResponse.json({ status: 401, message: 'У вас не достаточно прав для работы с этой страницей. Попробуйте повторить попытку позже или обратитесь в службу поддержки.' });
     }
 }
 
-// export const config = {
-//     matcher: [
-//         '/',                  // Главная страница
-//         '/promotions/:path*', // Все маршруты под /promotions
-//     ],
-// };
+export const config = {
+    matcher: [
+        '/api/promotions/:path*', // Все маршруты под /promotions
+    ],
+};

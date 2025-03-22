@@ -33,7 +33,7 @@ export default function Home({ searchParams }) {
     if (!promotion_id) {
         return (
             <Page>
-                <Error title="Произошла ошибка" description="Не удалось найти акцию или её не существует." />
+                <Error title="Произошла ошибка" description="Не удалось найти акцию или её не существует. Попробуйте повторить попытку позже или обратитесь в службу поддержки." />
             </Page>
         );
     }
@@ -41,7 +41,7 @@ export default function Home({ searchParams }) {
     if (!promotion.is_published) {
         return (
             <Page>
-                <Error title="Произошла ошибка" description="В данный момент акция недоступна." />
+                <Error title="Произошла ошибка" description="Акция не опубликована в данный момент. Попробуйте повторить попытку позже или обратитесь в службу поддержки." />
             </Page>
         );
     }
