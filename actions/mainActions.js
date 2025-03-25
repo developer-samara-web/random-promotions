@@ -1,5 +1,5 @@
 // Импорты
-import { setUser } from "#controllers/userController.js";
+import { setUser, checkUser } from "#controllers/userController.js";
 import { startMessage, rulesAcceptMessage, errorMessage } from "#messages/mainMessages.js";
 import { startKeyboard, rulesAcceptKeyboard, errorKeyboard } from "#keyboards/mainKeyboards.js";
 
@@ -27,8 +27,10 @@ export async function rulesAction(telegram) {
 		telegram.action("rules_accept", async (ctx) => {
 			// Получаем данные пользователя
 			const { id, username = null, first_name = null } = ctx.from;
+			// Проверка подписки на канал
+			const subscribe_channel = await checkUser(ctx);
 			// Создаём нового юзера
-			const user = await setUser({ telegram_id: id, username, first_name });
+			const user = await setUser({ telegram_id: id, username, first_name, subscribe_channel });
 			// Если пользователь не создался
 			if (!user) {
 				await ctx.editMessageText(errorMessage(), {

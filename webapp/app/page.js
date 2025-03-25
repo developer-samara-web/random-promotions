@@ -1,5 +1,5 @@
 // Импорт компонентов
-import Home from "@/components/pages/Home";
+import Home from "@/components/pages/home/Home";
 
 // SEO
 export const metadata = {

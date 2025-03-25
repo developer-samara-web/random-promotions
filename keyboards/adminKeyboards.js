@@ -5,6 +5,6 @@ import { Markup } from "telegraf";
 export function adminKeyboard() {
     return Markup.inlineKeyboard([
         [Markup.button.webApp("🛠️ Создать акцию", `${process.env.TELEGRAM_WEBAPP}/promotions/create`)],
-        [Markup.button.webApp("📝 Редактировать акцию", `${process.env.TELEGRAM_WEBAPP}/promotions/edit`)]
+        [Markup.button.webApp("📝 Редактировать акции", `${process.env.TELEGRAM_WEBAPP}/promotions`)]
     ]);
 }

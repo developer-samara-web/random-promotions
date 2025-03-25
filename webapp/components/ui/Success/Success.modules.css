@@ -12,7 +12,7 @@
 }
 
 .success-title{
-    @apply flex items-center gap-2 text-sm mb-0 uppercase font-medium
+    @apply flex items-center gap-2 text-base mb-0 font-medium
 }
 
 .success-description{

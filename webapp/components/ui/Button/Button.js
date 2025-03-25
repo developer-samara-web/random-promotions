@@ -17,7 +17,7 @@ export default function Button({ name, type, icon, event, link }) {
                     {name}
                 </Link>
             ) : (
-                <button className="button" type={type} onClick={() => event}>
+                <button className="button" type={type} onClick={event}>
                     {icon && <Icon name={icon} className="size-5" />}
                     {name}
                 </button>

@@ -1,0 +1,8 @@
+@reference "tailwindcss";
+
+.block{
+    @apply flex flex-row gap-3 text-white border-[1px] border-[#3b82f64f] bg-[#3b82f630] rounded-xl p-5 w-full
+}
+.block-inner{
+    @apply flex flex-col justify-center
+}

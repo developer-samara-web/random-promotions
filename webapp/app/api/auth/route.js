@@ -27,7 +27,7 @@ export async function POST(request) {
         const telegram_id = JSON.parse(data.user).id;
         const seller = await User.find({telegram_id: telegram_id});
         // Проверка на существование администратора
-        if (!seller.length) { return NextResponse.json({ status: 400, error: "Вы не прошли авторизацию. Ваши данные отличаются от данных в нашей системе. Если проблема повторяется, пожалуйста, свяжитесь с нашей технической поддержкой для уточнения причин @lavka_dobbi_support." }) }
+        if (!seller.length) { return NextResponse.json({ status: 400, error: "Вы не прошли авторизацию. Пройдите регистрацию в боте и если проблема повторяется, пожалуйста, свяжитесь с нашей технической поддержкой для уточнения причин." }) }
         // Создаем секретный ключ
         const secretKey = crypto.createHmac('sha256', 'WebAppData')
             .update(process.env.TELEGRAM_TOKEN)
@@ -37,11 +37,11 @@ export async function POST(request) {
             .update(checkString)
             .digest('hex')
         // Сравниваем хэши
-        if (data.hash !== signature) { return NextResponse.json({ status: 403, error: "Неверные данные продавца. Если проблема повторяется, пожалуйста, свяжитесь с нашей технической поддержкой для уточнения причин @lavka_dobbi_support." }) }
+        if (data.hash !== signature) { return NextResponse.json({ status: 403, error: "Неверные данные продавца. Если проблема повторяется, пожалуйста, свяжитесь с нашей технической поддержкой для уточнения причин." }) }
         // Получаем пользователя
         const user = JSON.parse(decodeURIComponent(data.user));
         // Проверяем данные пользователя
-        if (!user?.id || !user?.username) { return NextResponse.json({ status: 400, error: "Некорректные данные продавца. Если проблема повторяется, пожалуйста, свяжитесь с нашей технической поддержкой для уточнения причин @lavka_dobbi_support." }) }
+        if (!user?.id || !user?.username) { return NextResponse.json({ status: 400, error: "Некорректные данные продавца. Если проблема повторяется, пожалуйста, свяжитесь с нашей технической поддержкой для уточнения причин." }) }
         // Генерируем JWT токен
         const token = jwt.sign({ id: user.id, username: user.username }, process.env.TELEGRAM_JWT_TOKEN, { expiresIn: "60m" })
         // Устанавливаем токен в куки

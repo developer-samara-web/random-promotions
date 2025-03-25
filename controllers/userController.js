@@ -53,16 +53,34 @@ export async function updateUser(id, body) {
 		await connectToDatabase();
 		// Обновляем данные
 		const user = await User.findOneAndUpdate(
-            { telegram_id: id },
-            { $set: body },
-            { new: true }
-        );
+			{ telegram_id: id },
+			{ $set: body },
+			{ new: true }
+		);
 		// Проверка данных
-        if (!user) { return null };
-        // Отправляем данные
+		if (!user) { return null };
+		// Отправляем данные
 		logger.info(`Пользователь обновлён: ${user._id}`);
-        return user;
+		return user;
 	} catch (e) {
 		logger.error('Ошибка обновления пользователя:', e);
 	}
 };
+
+// Проверка подписки на канал
+export async function checkUser(ctx) {
+	try {
+		// Проверка входных данных
+		if (!ctx) { throw new Error('Ошибка данных, контекст не заполнен.') };
+		// Получаем статус подписки пользователя
+		const subscribe = await ctx.telegram.getChatMember(process.env.TELEGRAM_GROUP_ID, ctx.from.id);
+		// Проверяем статус
+		const isSubscribed = ['member', 'administrator', 'creator'].includes(subscribe.status);
+		// Если не подписан
+		if (!isSubscribed) { return false }
+		// Отправляем данные
+		return true;
+	} catch (e) {
+		logger.error('Ошибка проверки подписки на канал:', e);
+	}
+}

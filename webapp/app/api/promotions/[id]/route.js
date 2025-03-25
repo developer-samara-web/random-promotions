@@ -7,6 +7,8 @@ export async function GET(request, ctx) {
     try {
         // Получаем id акции
         const { id } = await ctx?.params;
+        // Проверяем id акции
+        if (id === 'undefined') { return NextResponse.json({ status: 404, error: 'Ошибка при загрузке акции. Если проблема повторяется, пожалуйста, свяжитесь с нашей технической поддержкой для уточнения причин.' }) }
         // Подключаемся к базе данных
         await connectToDatabase();
         // Получаем акцию

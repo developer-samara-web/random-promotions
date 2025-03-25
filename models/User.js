@@ -13,7 +13,8 @@ const UserSchema = new mongoose.Schema({
     is_auto_subscription: { type: Boolean, default: false }, // Статус проделния подписки
     subscription_end_date: { type: Date,  default: null }, // Дата окончания подписки
     rebill_count: { type: Number, default: 0 }, // Кол-во продлений подписки
-    free_limit: { type: Number, default: 2 } // Бесплатный лимит
+    free_limit: { type: Number, default: 2 }, // Бесплатный лимит
+    subscribe_channel: { type: Boolean, default: false } // Подписка на канал
 });
 
 export default mongoose.models.User || mongoose.model('User', UserSchema);

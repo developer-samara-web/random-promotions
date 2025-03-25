@@ -2,16 +2,29 @@
 import "@/components/ui/Promotion/Promotion.modules.css";
 
 // Импорт компонентов
-import Image from "next/image";
+import Badge from "@/components/ui/Badge/Badge";
+import Image from "@/components/ui/Image/Image";
 
 // Компонент
-export default function Promotion({ name, description, image }) {
+export default function Promotion({ name, description, image, status, subscribe }) {
     return (
-        <section className="promotion items-start">
-            <Image className="promotion-image" src={image} width={50} height={50} alt={name}/>
-            <div className="promotion-content gap-1">
+        <section className="promotion">
+            <div className="promotion-content">
+                <div className="promotion-image">
+                    <Image url={image} alt={name} />
+                </div>
                 <div className="promotion-title">{name}</div>
                 <div className="promotion-description">{description}</div>
+                <div className="promotion-list">
+                    <li className="promotion-line">
+                        <span className="promotion-name">Вид раздачи:</span>
+                        <Badge status={subscribe} content={subscribe ? 'Премиум' : 'Обычная'} className={subscribe ? '!bg-yellow-300 text-black' : '!bg-slate-300 text-black'} />
+                    </li>
+                    <li className="promotion-line">
+                        <span className="promotion-name">Статус раздачи:</span>
+                        <Badge status={status} content={status ? 'Активна' : 'Не активна'} />
+                    </li>
+                </div>
             </div>
         </section>
     );
