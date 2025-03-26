@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { getPromotion } from "@/controllers/Promotions";
 import { getUser } from "@/controllers/Users";
 import { setUserToPromotion } from "@/controllers/Users";
-import checkLimit  from "@/utils/checkLimit";
+import checkLimit from "@/utils/checkLimit";
 import Page from "@/components/ui/Page/Page";
 import Header from "@/components/ui/Header/Header";
 import Promotion from "@/components/ui/Promotion/Promotion";
@@ -24,59 +24,64 @@ export default function Home({ searchParams }) {
     const [error, setError] = useState(null);
 
     // Получаем id акции и пользователя
-    const { promotion_id, telegram_id } = searchParams;
+    const { tgWebAppStartParam: promotion_id } = searchParams;
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                // Проверка полученных данных
-                if (!promotion_id || !telegram_id) {
-                    throw { message: 'Ошибка получения данных. Если проблема повторяется, пожалуйста, свяжитесь с нашей технической поддержкой для уточнения причин.' };
+                if (window.Telegram && Telegram.WebApp) {
+                    const telegram_id = Telegram.WebApp.initDataUnsafe.user?.id;
+
+                    // Проверка полученных данных
+                    if (!promotion_id || !telegram_id) {
+                        throw { message: 'Ошибка получения данных. Если проблема повторяется, пожалуйста, свяжитесь с нашей технической поддержкой для уточнения причин.' };
+                    }
+
+                    // Получаем данные пользователя
+                    const fetchedUser = await getUser(telegram_id);
+                    if (fetchedUser.error) {
+                        throw new Error(fetchedUser.error);
+                    }
+
+                    // Получаем данные акции
+                    const fetchedPromotion = await getPromotion(tgWebAppStartParam);
+                    if (fetchedPromotion.error) {
+                        throw { message: 'Ошибка получения данных акции. Если проблема повторяется, пожалуйста, свяжитесь с нашей технической поддержкой для уточнения причин.' };
+                    }
+                    setPromotion(fetchedPromotion.response);
+
+                    // Проверка активности акции
+                    if (!fetchedPromotion.response.is_published) {
+                        throw { message: 'Акция в данный момент не активна. Если проблема повторяется, пожалуйста, свяжитесь с нашей технической поддержкой для уточнения причин.' };
+                    }
+
+                    // Проверка условий
+                    if (fetchedPromotion.response.subscribe && !fetchedUser.response.is_subscription) {
+                        throw {
+                            message: 'Упс! Кажется у вас не активирована ⭐️ Премиум подписка! \nДанная Раздача доступна только для ⭐️ премиум подписчиков нашего канала. 🤩Прямо сейчас вы можете оформить подписку всего за 1 рубль!',
+                            buttons: { name: 'Оформить подписку', url: process.env.NEXT_PUBLIC_TELEGRAM_BOT_URL, icon: 'ArrowRightCircleIcon' }
+                        };
+                    }
+
+                    if (!fetchedUser.response.subscribe_channel) {
+                        throw {
+                            message: '🚀 Хотите выиграть приз? Сначала подпишитесь на канал! Только подписчики получают уведомления о розыгрышах — не пропустите свой шанс!',
+                            buttons: { name: 'Подписаться', url: process.env.NEXT_PUBLIC_TELEGRAM_CHANEL_URL, icon: 'ArrowRightCircleIcon' }
+                        };
+                    }
+
+                    if (checkLimit(fetchedUser.response) >= fetchedUser.response.free_limit && !fetchedUser.response.is_subscription) {
+                        throw {
+                            message: 'Упс! Пользователям с обычным статусом доступно всего 2 участия в Раздачах в месяц. Чтобы увеличить лимит и получить доступ ко всему функционалу канала - вам нужно быть ⭐️ Премиум подписком! 🤩Прямо сейчас вы можете оформить подписку всего за 1 рубль!',
+                            buttons: { name: 'Оформить подписку', url: process.env.NEXT_PUBLIC_TELEGRAM_BOT_URL, icon: 'ArrowRightCircleIcon' }
+                        };
+                    }
+
+                    if (fetchedPromotion.response.participants.find(item => item.user === fetchedUser.response._id)) {
+                        setSuccess(`Регистрация в Раздаче прошла успешно. Результаты будут ${fetchedPromotion.response.end_time} Теперь только ждать...`);
+                    }
                 }
 
-                // Получаем данные пользователя
-                const fetchedUser = await getUser(telegram_id);
-                if (fetchedUser.error) {
-                    throw new Error(fetchedUser.error);
-                }
-
-                // Получаем данные акции
-                const fetchedPromotion = await getPromotion(promotion_id);
-                if (fetchedPromotion.error) {
-                    throw { message: 'Ошибка получения данных акции. Если проблема повторяется, пожалуйста, свяжитесь с нашей технической поддержкой для уточнения причин.' };
-                }
-                setPromotion(fetchedPromotion.response);
-
-                // Проверка активности акции
-                if (!fetchedPromotion.response.is_published) {
-                    throw { message: 'Акция в данный момент не активна. Если проблема повторяется, пожалуйста, свяжитесь с нашей технической поддержкой для уточнения причин.' };
-                }
-
-                // Проверка условий
-                if (fetchedPromotion.response.subscribe && !fetchedUser.response.is_subscription) {
-                    throw {
-                        message: 'Упс! Кажется у вас не активирована ⭐️ Премиум подписка! \nДанная Раздача доступна только для ⭐️ премиум подписчиков нашего канала. 🤩Прямо сейчас вы можете оформить подписку всего за 1 рубль!',
-                        buttons: { name: 'Оформить подписку', url: process.env.NEXT_PUBLIC_TELEGRAM_BOT_URL, icon: 'ArrowRightCircleIcon' }
-                    };
-                }
-
-                if (!fetchedUser.response.subscribe_channel) {
-                    throw {
-                        message: '🚀 Хотите выиграть приз? Сначала подпишитесь на канал! Только подписчики получают уведомления о розыгрышах — не пропустите свой шанс!',
-                        buttons: { name: 'Подписаться', url: process.env.NEXT_PUBLIC_TELEGRAM_CHANEL_URL, icon: 'ArrowRightCircleIcon' }
-                    };
-                }
-
-                if (checkLimit(fetchedUser.response) >= fetchedUser.response.free_limit && !fetchedUser.response.is_subscription) {
-                    throw {
-                        message: 'Упс! Пользователям с обычным статусом доступно всего 2 участия в Раздачах в месяц. Чтобы увеличить лимит и получить доступ ко всему функционалу канала - вам нужно быть ⭐️ Премиум подписком! 🤩Прямо сейчас вы можете оформить подписку всего за 1 рубль!',
-                        buttons: { name: 'Оформить подписку', url: process.env.NEXT_PUBLIC_TELEGRAM_BOT_URL, icon: 'ArrowRightCircleIcon' }
-                    };
-                }
-
-                if (fetchedPromotion.response.participants.find(item => item.user === fetchedUser.response._id)) {
-                    setSuccess(`Регистрация в Раздаче прошла успешно. Результаты будут ${fetchedPromotion.response.end_time} Теперь только ждать...`);
-                }
             } catch (err) {
                 setError(err);
             } finally {

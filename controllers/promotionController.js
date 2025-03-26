@@ -1,6 +1,7 @@
 // Импорты
 import connectToDatabase from "#services/mongodb.js";
 import Promotion from "#models/Promotion.js";
+import logger from "#utils/logs.js";
 
 // Получение акции
 export async function getPromotion(id) {
@@ -10,7 +11,7 @@ export async function getPromotion(id) {
 		// Подключаемся к базе
 		await connectToDatabase();
 		// Получаем акцию
-		const promotion = await Promotion.findOne(id);
+		const promotion = await Promotion.findById(id);
 		// Проверяем данные
 		if (!promotion) { return null };
 		// Отправляем данные
@@ -61,5 +62,19 @@ export async function updatePromotion(id, body) {
 		return promotion;
 	} catch (e) {
 		logger.error('Ошибка обновления акции:', e);
+	}
+};
+
+// Отправка публикации
+export async function publishPromotion(id, promotion, telegram) {
+	try {
+		const message = `🎉 Новая акция!\n\n${promotion.name}\n\n${promotion.description}`;
+
+		await telegram.sendPhoto(id, promotion.image, {
+			caption: message,
+			parse_mode: 'HTML'
+		});
+	} catch (e) {
+		logger.error('Ошибка получения акции:', e);
 	}
 };
