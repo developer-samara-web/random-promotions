@@ -41,7 +41,7 @@ export default function Home() {
                     }
 
                     // Получаем данные акции
-                    const fetchedPromotion = await getPromotion(tgWebAppStartParam);
+                    const fetchedPromotion = await getPromotion(promotion_id);
                     if (fetchedPromotion.error) {
                         throw { message: 'Ошибка получения данных акции. Если проблема повторяется, пожалуйста, свяжитесь с нашей технической поддержкой для уточнения причин.' };
                     }
