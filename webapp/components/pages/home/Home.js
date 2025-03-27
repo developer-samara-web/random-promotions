@@ -90,7 +90,7 @@ export default function Home({ searchParams }) {
         };
 
         fetchData();
-    }, [telegram_id, promotion_id]);
+    }, [promotion_id]);
 
     // Если загрузка данных
     if (isLoading) {
