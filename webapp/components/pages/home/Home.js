@@ -87,7 +87,7 @@ export default function Home() {
         };
 
         fetchData();
-    }, [promotion_id]);
+    }, []);
 
     // Если загрузка данных
     if (isLoading) {
