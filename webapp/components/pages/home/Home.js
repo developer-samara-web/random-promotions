@@ -17,21 +17,18 @@ import Button from "@/components/ui/Button/Button";
 import Image from "next/image"
 
 // Компонент
-export default function Home({ searchParams }) {
+export default function Home() {
     const [isLoading, setIsLoading] = useState(true);
     const [promotion, setPromotion] = useState(null);
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(null);
-
-    // Получаем id акции и пользователя
-    const { tgWebAppStartParam: promotion_id } = searchParams;
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 if (window.Telegram && Telegram.WebApp) {
                     const telegram_id = Telegram.WebApp.initDataUnsafe.user?.id;
-
+                    const promotion_id = Telegram.WebApp.initDataUnsafe?.start_param;
                     // Проверка полученных данных
                     if (!promotion_id || !telegram_id) {
                         throw { message: 'Ошибка получения данных. Если проблема повторяется, пожалуйста, свяжитесь с нашей технической поддержкой для уточнения причин.' };
