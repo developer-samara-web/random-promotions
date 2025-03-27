@@ -3,7 +3,6 @@ import mongoose from 'mongoose';
 
 // Акции
 const PromotionSchema = new mongoose.Schema({
-	_id: { type: Number, required: true },
 	name: { type: String, required: true },
 	description: { type: String, required: true },
 	winners_count: { type: Number, required: true },
