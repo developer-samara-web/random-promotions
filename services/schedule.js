@@ -45,7 +45,7 @@ export function addSchedule(schedule, telegram) {
                 // Обновляем статус задачи
                 await updateSchedule(_id, { status: 'active' });
                 // Обновляем статус акции
-                await updatePromotion(promotion_id, { is_published: 'active' });
+                await updatePromotion(promotion_id, { is_published: true });
                 logger.info(`Акция ${promotion_id} опубликована`);
             } catch (error) {
                 logger.error(`Ошибка публикации акции ${promotion_id}:`, error);
