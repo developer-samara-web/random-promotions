@@ -51,14 +51,14 @@ export async function updatePromotion(id, body) {
 		await connectToDatabase();
 		// Обновляем данные
 		const promotion = await Promotion.findOneAndUpdate(
-			{ telegram_id: id },
+			{ _id: id },
 			{ $set: body },
 			{ new: true }
 		);
 		// Проверка данных
 		if (!promotion) { return null };
 		// Отправляем данные
-		logger.info(`Пользователь обновлён: ${promotion._id}.`);
+		logger.info(`Акция обновлена: ${promotion._id}`);
 		return promotion;
 	} catch (e) {
 		logger.error('Ошибка обновления акции:', e);

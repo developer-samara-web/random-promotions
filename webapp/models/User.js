@@ -3,38 +3,24 @@ import mongoose from 'mongoose';
 
 // Пользователи
 const UserSchema = new mongoose.Schema({
-    is_admin: { type: Boolean, default: false }, // Роль в системе
-    telegram_id: { type: Number, required: true, unique: true }, // id телеграмма
+    role: { type: String, enum: ['user', 'admin'], default: 'user' }, // Ротль пользователя
+    telegram_id: { type: Number, required: true, unique: true }, // ID пользователя телеграма
     username: { type: String, required: true }, // Ник пользователя
     first_name: { type: String, required: true }, // Имя пользователя
-    win_date: { type: Date, default: null }, // Дата последнего выигрыша
-    first_subscription_date: { type: Date, default: null }, // Дата первой подписки
-    is_subscription: { type: Boolean, default: false }, // Статус подписки
-    is_auto_subscription: { type: Boolean, default: false }, // Статус проделния подписки
-    subscription_end_date: { type: Date,  default: null }, // Дата окончания подписки
-    rebill_count: { type: Number, default: 0 }, // Кол-во продлений подписки
-    free_limit: { type: Number, default: 2 }, // Бесплатный лимит
-    subscribe_channel: { type: Boolean, default: false }, // Подписка на канал
-    participation: [ // Участие в акциях
-		{
-			promotion: {
-				type: Number,
-				ref: 'Promotion',
-				required: true,
-			},
-			status: {
-				type: String,
-				enum: ['winner', 'looser', 'pending'],
-				default: 'pending',
-				required: true,
-			},
-			date: {
-				type: Date,
-				default: Date.now,
-				required: true,
-			}
-		}
-	]
+    subscription: { // Подписка "Премиум"
+        is_active: { type: Boolean, default: false }, // Активность подписки
+        is_auto_renewal: { type: Boolean, default: false }, // Автопродление
+        start_date: { type: Date, default: null }, // Дата начала подписки
+        end_date: { type: Date, default: null }, // Дата окончания подписки
+        renewal_count: { type: Number, default: 0 } // Кол-во обновлений подписки
+    },
+    stats: { // Статистика
+        last_win_date: { type: Date, default: null }, // Последняя дата победы
+        free_participations: { type: Number, default: 2 } // Бесплатный лимит участий
+    },
+    channel_subscription: { type: Boolean,  default: false }, // Подписка на канал
+    created_at: { type: Date, default: Date.now }, // Дата создания акканта
+    updated_at: { type: Date, default: Date.now } // Дата обновления аккаунта
 });
 
 export default mongoose.models.User || mongoose.model('User', UserSchema);

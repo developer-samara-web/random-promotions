@@ -1,34 +1,34 @@
 // Получение акции
 export async function getPromotion(id) {
-    try{
-        const response =  await fetch(`${process.env.NEXT_PUBLIC_API_URL}/promotions/${id}`, {
+    try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/promotions/${id}`, {
             headers: { 'Content-Type': 'application/json' },
             method: 'GET'
         });
 
         return response.json();
-    } catch (e){
+    } catch (e) {
         console.error('Ошибка получения данных акции:', e);
     }
 }
 
 // Получение акций
 export async function getPromotions() {
-    try{
-        const response =  await fetch(`${process.env.NEXT_PUBLIC_API_URL}/promotions`, {
+    try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/promotions`, {
             headers: { 'Content-Type': 'application/json' },
             method: 'GET'
         });
 
         return response.json();
-    } catch (e){
+    } catch (e) {
         console.error('Ошибка получения данных акции:', e);
     }
 }
 
 // Создание акции
 export async function setPromotion(data) {
-    try{
+    try {
         return await fetch(`${process.env.NEXT_PUBLIC_API_URL}/promotions`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -41,7 +41,7 @@ export async function setPromotion(data) {
 
 // Обновление акции
 export async function updatePromotion(data) {
-    try{
+    try {
         return await fetch(`${process.env.NEXT_PUBLIC_API_URL}/promotions/${data._id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },

@@ -15,7 +15,6 @@ export async function middleware(request) {
         request.headers.set("user", JSON.stringify(user));
     } catch (error) {
         // Если токен не валидный
-        console.log(error)
         return NextResponse.json({ status: 401, message: 'У вас не достаточно прав для работы с этой страницей. Попробуйте повторить попытку позже или обратитесь в службу поддержки.' });
     }
 }

@@ -11,6 +11,8 @@ import Form from "@/components/ui/Form/Form";
 import Error from "@/components/ui/Error/Error";
 import fields from "@/data/fields/Promotion.json";
 
+import Button from '@/components/ui/Button/Button';
+
 // Компонент
 export default function Create() {
     const [formData, setFormData] = useState({ subscribe: false });
@@ -55,7 +57,7 @@ export default function Create() {
     return (
         <Page>
             <Header title="Создание акции" />
-            <Form onSubmit={setPromotion} fields={fields} formData={formData} setFormData={setFormData} buttonName="Создать акцию" buttonIcon="CheckCircleIcon" />
+            <Form onSubmit={setPromotion} fields={fields} formData={formData} setFormData={setFormData} Telegram={window.Telegram} buttonName="Создать акцию" buttonIcon="CheckCircleIcon" />
         </Page>
     );
 }

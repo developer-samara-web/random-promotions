@@ -27,16 +27,19 @@ export async function POST(request) {
         // Получение данных
         const query = await request.json();
         const lastPromotion = await Promotion.findOne().sort({ _id: -1 });
-        const newId = lastPromotion ? lastPromotion._id + 1 : 1;
+        const title_id = lastPromotion ? lastPromotion.title_id + 1 : 1;
         // Получаем список
-        const promotion = new Promotion({
-            _id: newId,
-            ...query
-        });
+        const promotion = new Promotion({ title_id, ...query });
         // Если приглашений нет
         if (!promotion) { return NextResponse.json({ status: 404, error: 'Не удалось создать акцию.' }) }
         // Сохраняем
         await promotion.save();
+        // Создаём задачу в боте
+        await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/schedule/create`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ promotion_id: promotion._id }),
+        });
         // Отправляем данные
         return NextResponse.json({ status: 200, response: promotion }, { status: 200 });
     } catch (error) {

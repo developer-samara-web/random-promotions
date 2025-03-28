@@ -3,7 +3,6 @@ import { setUser, checkUser } from "#controllers/userController.js";
 import { startMessage, rulesAcceptMessage, errorMessage } from "#messages/mainMessages.js";
 import { startKeyboard, rulesAcceptKeyboard, errorKeyboard } from "#keyboards/mainKeyboards.js";
 
-
 // Логирование
 import logger from "#utils/logs.js";
 
@@ -28,9 +27,9 @@ export async function rulesAction(telegram) {
 			// Получаем данные пользователя
 			const { id, username = null, first_name = null } = ctx.from;
 			// Проверка подписки на канал
-			const subscribe_channel = await checkUser(ctx);
+			const channel_subscription = await checkUser(ctx);
 			// Создаём нового юзера
-			const user = await setUser({ telegram_id: id, username, first_name, subscribe_channel });
+			const user = await setUser({ telegram_id: id, username, first_name, channel_subscription });
 			// Если пользователь не создался
 			if (!user) {
 				await ctx.editMessageText(errorMessage(), {

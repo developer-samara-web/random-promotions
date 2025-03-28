@@ -64,9 +64,8 @@ export default function Edit({ id }) {
 
     return (
         <Page>
-            <Header title="Редактирование акции" description={`ID: ${id}`} />
+            <Header title="Редактирование" description={`ID: ${formData.title_id}`} />
             <Form onSubmit={updatePromotion} fields={fields} formData={formData} setFormData={setFormData} buttonName="Редактировать" buttonIcon="PencilSquareIcon" />
-            <Button name="Назад" link="/promotions" icon="ArrowLeftCircleIcon" />
         </Page>
     );
 }

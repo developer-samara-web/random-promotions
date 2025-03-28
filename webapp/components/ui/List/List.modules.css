@@ -5,19 +5,23 @@
 }
 
 .list-item{
-    @apply flex flex-col text-white border-[1px] border-[#3b82f64f] bg-[#3b82f630] rounded-xl p-5 w-full items-start cursor-pointer
+    @apply flex flex-col text-white border-[1px] border-[#3b82f64f] bg-[#3b82f630] rounded-xl w-full items-start cursor-pointer
 }
 
 .list-header{
-    @apply flex flex-row justify-between items-center w-full
+    @apply flex flex-row justify-between items-center w-full p-3 border-b border-[#3b82f64f]
 }
 
 .list-content{
-    @apply flex flex-col gap-1 py-5 border-y border-[#3b82f64f] w-full my-5
+    @apply flex flex-col gap-1 p-3 w-full
 }
 
-.list-name{
-    @apply font-medium text-base uppercase truncate pr-5
+.list-id{
+    @apply font-medium text-base uppercase truncate pr-5 
+}
+
+.list-title{
+    @apply text-lg font-medium truncate
 }
 
 .list-description{
@@ -25,7 +29,7 @@
 }
 
 .list-status{
-    @apply rounded-md px-3 py-1 text-white text-xs font-medium
+    @apply rounded-md px-3 py-1 text-white text-[10px] font-medium uppercase
 }
 
 .list-active{
@@ -37,9 +41,13 @@
 }
 
 .list-input{
-    @apply bg-[#3b82f630]  py-3 text-center w-full px-5  w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500
+    @apply bg-[#3b82f630]  py-3 text-center w-full px-5 p-2 border border-[#3b82f64f] rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500
 }
 
 .list-image{
     @apply w-full rounded-xl mb-5
+}
+
+.list-buttons{
+    @apply flex flex-row gap-3 w-full justify-end p-3 border-t border-[#3b82f64f]
 }

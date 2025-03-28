@@ -6,14 +6,14 @@ import Badge from "@/components/ui/Badge/Badge";
 import Image from "@/components/ui/Image/Image";
 
 // Компонент
-export default function Promotion({ name, description, image, status, subscribe }) {
+export default function Promotion({ title, description, image, status, subscribe }) {
     return (
         <section className="promotion">
             <div className="promotion-content">
                 <div className="promotion-image">
-                    <Image url={image} alt={name} />
+                    <Image url={image} alt={title} />
                 </div>
-                <div className="promotion-title">{name}</div>
+                <div className="promotion-title">{title}</div>
                 <div className="promotion-description">{description}</div>
                 <div className="promotion-list">
                     <li className="promotion-line">

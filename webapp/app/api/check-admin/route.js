@@ -17,7 +17,7 @@ export async function GET(request) {
         await connectToDatabase();
         const user = await User.findOne({ telegram_id: id });
 
-        if (!user || !user.is_admin) {
+        if (!user || user.role !== "admin") {
             return NextResponse.json({ isAdmin: false }, { status: 403 });
         }
 

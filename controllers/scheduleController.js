@@ -1,4 +1,4 @@
-// Импорт компонентов
+// Импорты
 import connectToDatabase from "#services/mongodb.js";
 import Schedule from "#models/Schedule.js";
 
@@ -13,8 +13,8 @@ export async function getSchedules() {
         // Получаем пользователя
         const schedule = await Schedule.find({
             $or: [
-                { status: 'pending' },
-                { status: 'active' }
+                { status: 'scheduled' },
+                { status: 'in_progress' }
             ]
         });
         // Проверяем данные

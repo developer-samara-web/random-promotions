@@ -10,7 +10,8 @@ import Button from "@/components/ui/Button/Button";
 import Switch from "@/components/ui/Switch/Switch";
 import Success from "@/components/ui/Success/Success"
 
-export default function Form({ onSubmit, fields, buttonName, buttonIcon, formData, setFormData }) {
+// Компонент
+export default function Form({ onSubmit, fields, buttonName, buttonIcon, formData, setFormData, Telegram }) {
     const [files, setFiles] = useState({});
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState([]);
@@ -71,19 +72,19 @@ export default function Form({ onSubmit, fields, buttonName, buttonIcon, formDat
         e.preventDefault();
 
         if (error.length > 0) {
-            console.log("Форма не отправлена из-за ошибок:", error);
             return;
         }
 
         try {
-            await onSubmit(formData); // Предполагаем, что onSubmit возвращает промис
-            setFormData({}); // Очистка всех полей формы
-            setFiles({}); // Очистка файлов
-            setError([]); // Очистка ошибок
-            setSuccess(true); // Показ уведомления об успехе
+            await onSubmit(formData);
 
-            // Скрываем уведомление через 3 секунды (опционально)
-            setTimeout(() => setSuccess(false), 3000);
+            setFormData({});
+            setFiles({});
+            setError([]);
+            setSuccess(true);
+
+            // Скрываем уведомление через 5 секунды (опционально)
+            setTimeout(() => setSuccess(false), 5000);
         } catch (submitError) {
             console.error("Ошибка при отправке формы:", submitError);
             setError((prevData) => [
@@ -96,7 +97,9 @@ export default function Form({ onSubmit, fields, buttonName, buttonIcon, formDat
     return (
         <form className="form" onSubmit={handleSubmit}>
             {success && (
-                <Success title="Акция создалась" description="Акция отправлена в очередь и будет опубликована согласно расписанию." />
+                <div className="sticky top-5 left-0">
+                    <Success title="Акция создалась" description="Акция отправлена в очередь и будет опубликована согласно расписанию." />
+                </div>
             )}
             {error.length > 0 && (
                 <div className="form-error text-red-500 mb-4">
@@ -117,7 +120,7 @@ export default function Form({ onSubmit, fields, buttonName, buttonIcon, formDat
                         ) : name === 'description' ? (
                             <div>
                                 <label className="form-label" htmlFor={name}>
-                                    {placeholder}
+                                    {placeholder}: {required && <span className="text-red-600 text-lg">*</span>}
                                 </label>
                                 <textarea
                                     className="form-input"
@@ -131,7 +134,7 @@ export default function Form({ onSubmit, fields, buttonName, buttonIcon, formDat
                             </div>
                         ) : type === 'image' ? (
                             <>
-                                <label className="form__label">{placeholder}: {required && <span className="text-red-600 text-lg">*</span>}</label>
+                                <label className="form-label">{placeholder}: {required && <span className="text-red-600 text-lg">*</span>}</label>
                                 <MuiFileInput
                                     value={files[name] || null}
                                     onChange={(newFile) => handleFileChange(newFile, name)}
@@ -142,12 +145,12 @@ export default function Form({ onSubmit, fields, buttonName, buttonIcon, formDat
                         ) : (
                             <div>
                                 <label className="form-label" htmlFor={name}>
-                                    {placeholder}
+                                    {placeholder}: {required && <span className="text-red-600 text-lg">*</span>}
                                 </label>
                                 <input
                                     className="form-input"
                                     type={
-                                        name === 'start_time' || name === 'end_time'
+                                        name === 'start_date' || name === 'end_date'
                                             ? 'datetime-local'
                                             : type
                                     }

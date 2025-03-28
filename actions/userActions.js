@@ -46,7 +46,9 @@ export async function subscribeToggleAction(telegram) {
 			const user = await getUser(ctx.from.id)
             // Обновляем данные пользователя
 			const update = await updateUser(ctx.from.id, {
-				is_auto_subscription: !user.is_auto_subscription
+				subscription: {
+					is_auto_renewal: !user.subscription.is_auto_renewal
+				}
 			})
             logger.info(`Пользователь (${update._id}) ${update.is_auto_subscription ? "включил" : "отключил"} автоподписку.`);
 			return await ctx.editMessageText(await subscribeUserMessage(update), {

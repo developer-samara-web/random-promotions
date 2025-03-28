@@ -51,7 +51,7 @@ export default function Promotions() {
 
     return (
         <Page>
-            <Header title="Список всех акций" />
+            <Header title="Список акций" />
             <List/>
         </Page>
     );

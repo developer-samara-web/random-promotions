@@ -1,4 +1,5 @@
 // Импорты
+import { getUser } from "#controllers/userController.js";
 import { subscribeMessage, subscribeShowMessage, subscribePaymentMessage } from "#messages/subscribeMessages.js";
 import { subscribeKeyboard, subscribeShowKeyboard, subscribePaymentKeyboard } from "#keyboards/subscribeKeyboards.js";
 
@@ -39,7 +40,9 @@ export async function subscribeShowAction(telegram) {
 export async function subscribePaymentAction(telegram) {
 	try {
 		telegram.action(/^user_premium_payment_(\d+)$/, async (ctx) => {
-			return await ctx.editMessageText(subscribePaymentMessage(ctx), {
+			const user = await getUser(ctx.from.id)
+			// TODO Функция проведения оплаты подписки
+			return await ctx.editMessageText(subscribePaymentMessage(user), {
 				reply_markup: subscribePaymentKeyboard().reply_markup,
 				parse_mode: "HTML",
 			});

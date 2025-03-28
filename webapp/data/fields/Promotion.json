@@ -1,7 +1,7 @@
 [
     {
         "id": 1,
-        "name": "name",
+        "name": "title",
         "placeholder": "Название акции",
         "type": "text",
         "visible": true,
@@ -25,7 +25,7 @@
     },
     {
         "id": 4,
-        "name": "image",
+        "name": "banner_image",
         "placeholder": "Фото поста акции",
         "type": "image",
         "visible": true,
@@ -33,7 +33,7 @@
     },
     {
         "id": 5,
-        "name": "start_time",
+        "name": "start_date",
         "placeholder": "Дата начала акции",
         "type": "date",
         "visible": true,
@@ -41,7 +41,7 @@
     },
     {
         "id": 6,
-        "name": "end_time",
+        "name": "end_date",
         "placeholder": "Дата конца акции",
         "type": "date",
         "visible": true,
@@ -49,18 +49,10 @@
     },
     {
         "id": 7,
-        "name": "subscribe",
+        "name": "requires_subscription",
         "placeholder": "Для премиум пользователей",
         "type": "toogle",
         "visible": true,
         "required": true
-    },
-    {
-        "id": 8,
-        "name": "_id",
-        "placeholder": "id",
-        "type": "text",
-        "visible": false,
-        "required": false
     }
 ]

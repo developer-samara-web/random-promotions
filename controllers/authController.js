@@ -24,7 +24,7 @@ export default async (ctx) => {
       await ctx.replyWithHTML(rulesMessage(), { disable_web_page_preview: true, ...rulesKeyboard() });
     } else {
       // Если администратор
-      if (user.is_admin) { return await ctx.replyWithHTML(adminMessage(ctx), adminKeyboard()) }
+      if (user.role === "admin") { return await ctx.replyWithHTML(adminMessage(ctx), adminKeyboard()) }
       // Если пользователь
       return await ctx.replyWithHTML(startMessage(ctx), startKeyboard());
     }

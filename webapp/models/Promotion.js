@@ -3,35 +3,19 @@ import mongoose from 'mongoose';
 
 // Акции
 const PromotionSchema = new mongoose.Schema({
-	name: { type: String, required: true },
-	description: { type: String, required: true },
-	winners_count: { type: Number, required: true },
-	image: { type: String, required: false },
-	subscribe: { type: Boolean, required: false },
-	start_time: { type: Date, required: true },
-	end_time: { type: Date, required: true },
-	author: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: false, default: null },
-	is_published: { type: Boolean, required: false, default: false },
-	participants: [
-		{
-			user: {
-				type: mongoose.Schema.Types.ObjectId,
-				ref: 'User',
-				required: true,
-			},
-			status: {
-				type: String,
-				enum: ['winner', 'looser', 'pending'],
-				default: 'pending',
-				required: true,
-			},
-			date: {
-				type: Date,
-				default: Date.now,
-				required: true,
-			}
-		}
-	],
+	title: { type: String, required: true }, // Имя акции
+	title_id: { type: Number, required: true }, // Порядковы йномер акции
+	message_id: { type: Number }, // ID Сообщения в телеграм
+	description: { type: String, required: true }, // Текст акции
+	winners_count: { type: Number, required: true }, // Число победителей
+	banner_image: { type: String }, // Фото акции
+	requires_subscription: { type: Boolean, default: false }, // Вид акции (true - только для премиум подписчиков)
+	start_date: { type: Date, required: true }, // Дата начала акции
+	end_date: { type: Date, required: true }, // Дата окончания акции
+	creator_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // Автор акции
+	status: { type: String, enum: ['draft', 'active', 'completed', 'archived'], default: 'draft' }, // Статус акции
+	created_at: { type: Date, default: Date.now }, // Дата создания акции
+	updated_at: { type: Date, default: Date.now } // Дата обновления акции
 });
 
-export default mongoose.models.Promotion || mongoose.model('Promotion', PromotionSchema);
+export default mongoose.models.Promotion || mongoose.model('Promotion', PromotionSchema);	

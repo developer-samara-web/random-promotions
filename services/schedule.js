@@ -2,7 +2,7 @@
 import nodeSchedule from 'node-schedule';
 import { getSchedules, updateSchedule, delSchedule } from "#controllers/scheduleController.js";
 import { getPromotion, updatePromotion } from "#controllers/promotionController.js";
-import { addPost } from "#controllers/telegramController.js";
+import { sendPromotionPost, sendResultPost, updatePost } from "#controllers/telegramController.js";
 
 // Логирование
 import logger from "#utils/logs.js";
@@ -17,10 +17,9 @@ export async function initScheduler(telegram) {
         const schedules = await getSchedules();
         // Проверяем данные
         if (schedules) { schedules.forEach(schedule => addSchedule(schedule, telegram)) };
-        logger.info(`Получаю задачи: ${schedules.length} шт`);
-    } catch (error) {
-        logger.error('Ошибка инициализации задачи:', error);
-        throw error;
+        logger.info(`Получено задач: ${schedules.length} шт.`);
+    } catch (e) {
+        logger.error('Ошибка инициализации задачи:', e);
     }
 }
 
@@ -41,14 +40,14 @@ export function addSchedule(schedule, telegram) {
                 // Получаем данные акции
                 const promotion = await getPromotion(promotion_id);
                 // Создаём пост
-                await addPost(telegram, promotion);
+                const { message_id } = await sendPromotionPost(telegram, promotion);
                 // Обновляем статус задачи
-                await updateSchedule(_id, { status: 'active' });
+                await updateSchedule(_id, { status: 'in_progress' });
                 // Обновляем статус акции
-                await updatePromotion(promotion_id, { is_published: true });
-                logger.info(`Акция ${promotion_id} опубликована`);
-            } catch (error) {
-                logger.error(`Ошибка публикации акции ${promotion_id}:`, error);
+                await updatePromotion(promotion_id, { status: 'active', message_id });
+                logger.info(`Публикуем: ${promotion_id}`);
+            } catch (e) {
+                logger.error(`Ошибка публикации (${promotion_id}):`, e);
             }
         }
     );
@@ -60,12 +59,16 @@ export function addSchedule(schedule, telegram) {
         async () => {
             try {
                 // Обновляем статусы акции
-                await updatePromotion(promotion_id, { status: 'completed' });
+                const promotion = await updatePromotion(promotion_id, { status: 'completed' });
+                // Обновляем пост розыгрыша
+                await updatePost(telegram, promotion);
+                // Отправляет сообщение с результатами
+                await sendResultPost(telegram, promotion);
                 // Удаляем задачу из базы
                 await delSchedule(_id);
-                logger.info(`Promotion ${promotion_id} completed and removed`);
-            } catch (error) {
-                logger.error(`Failed to complete promotion ${promotion_id}:`, error);
+                logger.info(`Акция завершена: ${promotion_id}`);
+            } catch (e) {
+                logger.error(`Ошибка завершения акции ${promotion_id}:`, e);
             } finally {
                 // Позавершению удаляем задачу из расписания
                 cancelSchedule(jobName);

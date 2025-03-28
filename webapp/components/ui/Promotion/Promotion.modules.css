@@ -13,7 +13,7 @@
 }
 
 .promotion-title{
-    @apply text-base uppercase font-medium px-5 pt-5 pb-2
+    @apply text-base uppercase font-medium px-5 pt-5 pb-2 truncate
 }
 
 .promotion-description{
