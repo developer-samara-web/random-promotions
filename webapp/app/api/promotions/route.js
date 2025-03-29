@@ -35,7 +35,7 @@ export async function POST(request) {
         // Сохраняем
         await promotion.save();
         // Создаём задачу в боте
-        await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}:${process.env.EXPRESS_PORT}/schedule/create`, {
+        await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/schedule/create`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ promotion_id: promotion._id }),
