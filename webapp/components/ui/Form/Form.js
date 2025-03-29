@@ -64,7 +64,22 @@ export default function Form({ onSubmit, fields, buttonName, buttonIcon, formDat
     // Обработка ввода данных
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData((prevData) => ({ ...prevData, [name]: value }));
+
+        // Если это поле даты и времени, преобразуем в UTC
+        if (name === 'start_date' || name === 'end_date') {
+            // Создаем объект Date из локального значения
+            const localDate = new Date(value);
+            // Преобразуем в ISO строку с UTC
+            const utcValue = localDate.toISOString();
+            // Сохраняем в formData
+            setFormData((prevData) => ({
+                ...prevData,
+                [name]: utcValue,
+            }));
+        } else {
+            // Для других полей сохраняем как есть
+            setFormData((prevData) => ({ ...prevData, [name]: value }));
+        }
     };
 
     // Обработка отправки формы
