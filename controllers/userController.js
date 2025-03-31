@@ -1,6 +1,7 @@
 // Импорты
 import connectToDatabase from "#services/mongodb.js";
 import User from "#models/User.js";
+import Participant from "#models/Participant.js";
 
 // Логирование
 import logger from "#utils/logs.js";
@@ -22,6 +23,24 @@ export async function getUser(id) {
 		logger.error('Ошибка получения пользователя:', e);
 	}
 };
+
+// Получаем пользователей
+export async function getUsers(body) {
+	try {
+		// Проверка входных данных
+		if (!body) { throw new Error('Ошибка данных, body не заполнен.') };
+		// Подключаемся к базе
+		await connectToDatabase();
+		// Получаем пользователя
+		const users = await User.find(body);
+		// Проверяем данные
+		if (!users) { return null };
+		// Отправляем данные
+		return users;
+	} catch (e) {
+		logger.error('Ошибка получения пользователей:', e);
+	}
+}
 
 // Регистрация пользователя
 export async function setUser(body) {
@@ -57,6 +76,8 @@ export async function updateUser(id, body) {
 			{ $set: body },
 			{ new: true }
 		);
+
+		User.find
 		// Проверка данных
 		if (!user) { return null };
 		// Отправляем данные
@@ -82,5 +103,55 @@ export async function checkUser(ctx) {
 		return true;
 	} catch (e) {
 		logger.error('Ошибка проверки подписки на канал:', e);
+	}
+}
+
+export async function updateWinners(participants, winners) {
+	try {
+		// Получаем текущую дату
+		const currentDate = new Date();
+		// Извлекаем ID участников
+		const participantIds = participants.map(p => p._id);
+		// Извлекаем ID победителей
+		const winnerUserIds = winners.map(winner => winner._id);
+		// Находим ID участников, являющихся победителями
+		const winnerParticipantIds = participants
+			.filter(p => winnerUserIds.includes(p.user_id._id))
+			.map(p => p._id);
+		// Обновляем победителей в Participant
+		if (winnerParticipantIds.length > 0) {
+			await Participant.updateMany(
+				{ _id: { $in: winnerParticipantIds } },
+				{ $set: { status: 'winner' } }
+			);
+			logger.info(`Обновили статусы победителей: ${winnerParticipantIds.length} шт`);
+		}
+
+		// Обновляем проигравших в Participant
+		const loserParticipantIds = participantIds.filter(id => !winnerParticipantIds.includes(id));
+		if (loserParticipantIds.length > 0) {
+			await Participant.updateMany(
+				{ _id: { $in: loserParticipantIds } },
+				{ $set: { status: 'loser' } }
+			);
+			logger.info(`Обновили статусы проигравших: ${loserParticipantIds.length} шт`);
+		}
+
+		// Обновляем дату победы у победителей
+		if (winnerUserIds.length > 0) {
+			await User.updateMany(
+				{ _id: { $in: winnerUserIds } },
+				{ $set: { 'stats.last_win_date': currentDate } }
+			);
+			logger.info(`Обновили дату победы: ${winnerUserIds.length} шт`);
+		}
+		// Возвращаем список логинов победителей
+		if (winners.length) {
+			return winners.map(user => `@${user.username}`)
+		} else {
+			return ['Никто не участвовал в розыгрыше']
+		}
+	} catch (e) {
+		logger.error('Ошибка обновления победителей:', e);
 	}
 }

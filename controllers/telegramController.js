@@ -24,12 +24,12 @@ export async function sendPromotionPost(telegram, promotion) {
 };
 
 // Отправка поста результатов
-export async function sendResultPost(telegram, promotion) {
+export async function sendResultPost(telegram, promotion, winners) {
     try {
         // Отправляем сообщение в телеграм
         return await telegram.telegram.sendMessage(
             process.env.TELEGRAM_GROUP_ID,
-            resultMessage(promotion),
+            resultMessage(promotion, winners),
             {
                 reply_to_message_id: promotion.message_id,
                 parse_mode: 'HTML'
@@ -41,7 +41,7 @@ export async function sendResultPost(telegram, promotion) {
 };
 
 // Обновляем сообщение
-export async function updatePost(telegram, promotion) {
+export async function updatePost(telegram, promotion, counter = null) {
     try {
         return await telegram.telegram.editMessageCaption(
             process.env.TELEGRAM_GROUP_ID,
@@ -49,7 +49,8 @@ export async function updatePost(telegram, promotion) {
             null,
             `${promotion.title}\n\n${promotion.description}`,
             {
-                parse_mode: 'HTML'
+                parse_mode: 'HTML',
+                reply_markup: counter ? chanelKeyboard(promotion._id, counter).reply_markup : null,
             }
         );
     } catch (e) {

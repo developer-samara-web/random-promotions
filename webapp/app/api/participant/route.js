@@ -15,6 +15,12 @@ export async function POST(request) {
         if (!participant) { return NextResponse.json({ status: 404, error: 'Не удалось создать участие.' }) }
         // Сохраняем
         await participant.save();
+        // Обновляем счётчик участий
+        await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/participants/update`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ promotion_id: participant.promotion_id }),
+        });
         // Отправляем данные
         return NextResponse.json({ response: participant }, { status: 200 });
     } catch (error) {

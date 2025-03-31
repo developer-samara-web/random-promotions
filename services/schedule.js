@@ -3,6 +3,10 @@ import nodeSchedule from 'node-schedule';
 import { getSchedules, updateSchedule, delSchedule } from "#controllers/scheduleController.js";
 import { getPromotion, updatePromotion } from "#controllers/promotionController.js";
 import { sendPromotionPost, sendResultPost, updatePost } from "#controllers/telegramController.js";
+import { getParticipantsWinners } from "#controllers/participantsController.js";
+import { updateWinners } from "#controllers/userController.js";
+import randomUsers from "#utils/randomUser.js";
+import checkWinners from "#utils/checkWinners.js";
 
 // Логирование
 import logger from "#utils/logs.js";
@@ -62,8 +66,46 @@ export function addSchedule(schedule, telegram) {
                 const promotion = await updatePromotion(promotion_id, { status: 'completed' });
                 // Обновляем пост розыгрыша
                 await updatePost(telegram, promotion);
+                // Получаем все участия в акциях
+                const participants = await getParticipantsWinners({ promotion_id });
+                // Создаем переменную с победителями
+                let winners;
+                // Проверяем данные
+                if (participants) {
+                    // Получаем обычных пользователей
+                    const premiumUsers = participants
+                        .filter(participant => participant.user_id?.subscription?.is_active === true)
+                        .map(participant => participant.user_id);
+                    // Получаем премиум пользователей
+                    const freeUsers = participants
+                        .filter(participant => participant.user_id?.subscription?.is_active === false)
+                        .map(participant => participant.user_id);
+                    // Если нет премиум пользователей
+                    if (!premiumUsers.length) {
+                        // Проверяем победы обычных пользователей
+                        const freeWinnersLastMonth = checkWinners(freeUsers);
+                        // Если все обычные пользователи побеждали в это месяце то просто рандом
+                        if (!freeWinnersLastMonth) {
+                            winners = randomUsers(freeUsers, promotion.winners_count);
+                            console.log('Если нет участников с победами', winners);
+                        } else {
+                            winners = randomUsers(freeWinnersLastMonth, promotion.winners_count);
+                        }
+                    } else {
+                        // Проверяем победы премиум пользователей
+                        const premiumWinnersLastMonth = checkWinners(premiumUsers);
+                        // Если все премиум пользователи побеждали в этом месяце то просто рандом
+                        if (!premiumWinnersLastMonth) {
+                            winners = randomUsers(premiumUsers, promotion.winners_count);
+                        } else {
+                            winners = randomUsers(premiumWinnersLastMonth, promotion.winners_count);
+                        }
+                    }
+                }
+                // Обновляем статус и даты победителей и проигравших
+                const update = await updateWinners(participants, winners);
                 // Отправляет сообщение с результатами
-                await sendResultPost(telegram, promotion);
+                await sendResultPost(telegram, promotion, update);
                 // Удаляем задачу из базы
                 await delSchedule(_id);
                 logger.info(`Акция завершена: ${promotion_id}`);

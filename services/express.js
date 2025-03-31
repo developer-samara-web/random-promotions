@@ -3,6 +3,8 @@ import express from "express";
 import { addSchedule } from "#services/schedule.js";
 import { setSchedule } from "#controllers/scheduleController.js";
 import { getPromotion } from "#controllers/promotionController.js";
+import { updatePost } from "#controllers/telegramController.js";
+import { getParticipants } from "#controllers/participantsController.js";
 
 // Логирование
 import logger from "#utils/logs.js";
@@ -24,7 +26,7 @@ export async function initServerApi(telegram) {
             logger.info(`Сервер запущен: PORT:${process.env.EXPRESS_PORT}`)
         });
 
-        // Подключаем маршруты
+        // Создание расписания
         app.post('/schedule/create', async (req, res) => {
             try {
                 // Получаем id акции
@@ -38,6 +40,20 @@ export async function initServerApi(telegram) {
                 // Логирование
                 logger.info(`Задача создана: ${newJob}`)
                 res.status(200).send(`Задача создана.`);
+            } catch (e) {
+                res.status(403).send(`Ошибка дотупа.`);
+            }
+        });
+
+        // Обновление счётчика участия
+        app.post('/participants/update', async (req, res) => {
+            try {
+                // Получаем id акции
+                const { promotion_id } = req.body;
+                // Получаем время акции
+                const promotion = await getPromotion(promotion_id);
+                const participants = await getParticipants(promotion_id);
+                await updatePost(telegram, promotion, participants);
             } catch (e) {
                 res.status(403).send(`Ошибка дотупа.`);
             }

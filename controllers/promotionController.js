@@ -1,6 +1,8 @@
 // Импорты
 import connectToDatabase from "#services/mongodb.js";
 import Promotion from "#models/Promotion.js";
+
+// Логирование
 import logger from "#utils/logs.js";
 
 // Получение акции
