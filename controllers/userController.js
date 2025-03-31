@@ -147,9 +147,9 @@ export async function updateWinners(participants, winners) {
 		}
 		// Возвращаем список логинов победителей
 		if (winners.length) {
-			return winners.map(user => `@${user.username}`)
+			return winners.map(user => `@${user.username}\n`)
 		} else {
-			return ['Никто не участвовал в розыгрыше']
+			return ['Никто не участвовал в розыгрыше\n']
 		}
 	} catch (e) {
 		logger.error('Ошибка обновления победителей:', e);
