@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    allowedDevOrigins: ['8add-94-103-82-29.ngrok-free.app'],
+    allowedDevOrigins: [process.env.NEXT_PUBLIC_URL_NAME],
     images: {
         remotePatterns: [
             {
