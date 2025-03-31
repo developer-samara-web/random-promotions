@@ -54,6 +54,7 @@ export async function initServerApi(telegram) {
                 const promotion = await getPromotion(promotion_id);
                 const participants = await getParticipants(promotion_id);
                 await updatePost(telegram, promotion, participants);
+                return res.status(200).json({ status: 'success' });
             } catch (e) {
                 res.status(403).send(`Ошибка дотупа.`);
             }
