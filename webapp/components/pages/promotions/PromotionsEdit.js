@@ -42,7 +42,7 @@ export default function Edit({ id }) {
         }
         // Запуск функции
         isAdmin();
-    }, []);
+    }, [id]);
 
     // Загрузка данных
     if (!isLoading) {

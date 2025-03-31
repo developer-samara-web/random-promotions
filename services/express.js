@@ -39,7 +39,7 @@ export async function initServerApi(telegram) {
                 const newJob = addSchedule(schedule, telegram);
                 // Логирование
                 logger.info(`Задача создана: ${newJob}`)
-                res.status(200).send(`Задача создана.`);
+                return res.status(200).json({ status: 'success' });
             } catch (e) {
                 res.status(403).send(`Ошибка дотупа.`);
             }
