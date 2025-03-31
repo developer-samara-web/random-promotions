@@ -75,7 +75,7 @@ export default function Home() {
         return (
             <Page>
                 <Header title={`Раздача #${promotion.title_id}`} />
-                <Success title="✅ Вы участвуете в раздаче!" />
+                <Success title="✅ Вы в игре!" />
                 <Image src="/pending.png" width={200} height={200} alt={promotion._id} />
                 <Block className="flex flex-col gap-2">
                     <b>📅 Итоги будут подведены:<br></br>
