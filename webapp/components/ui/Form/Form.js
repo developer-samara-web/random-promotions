@@ -64,7 +64,6 @@ export default function Form({ onSubmit, fields, buttonName, buttonIcon, formDat
     // Обработка ввода данных
     const handleChange = (e) => {
         const { name, value } = e.target;
-        console.log(name, value);
         setFormData((prevData) => ({ ...prevData, [name]: value }));
     };
 
@@ -77,7 +76,12 @@ export default function Form({ onSubmit, fields, buttonName, buttonIcon, formDat
         }
 
         try {
-            await onSubmit(formData);
+            const data = {
+                ...formData,
+                start_date: new Date(formData.start_date).toISOString(),
+                end_date: new Date(formData.end_date).toISOString()
+            }
+            await onSubmit(data);
 
             setFormData({});
             setFiles({});
