@@ -84,10 +84,9 @@ export function addSchedule(schedule, telegram) {
                     if (!premiumUsers.length) {
                         // Проверяем победы обычных пользователей
                         const freeWinnersLastMonth = checkWinners(freeUsers);
-                        // Если все обычные пользователи побеждали в это месяце то просто рандом
-                        if (!freeWinnersLastMonth) {
+                        // Если все обычные пользователи побеждали в этом месяце то просто рандом
+                        if (!freeWinnersLastMonth.length) {
                             winners = randomUsers(freeUsers, promotion.winners_count);
-                            console.log('Если нет участников с победами', winners);
                         } else {
                             winners = randomUsers(freeWinnersLastMonth, promotion.winners_count);
                         }
@@ -95,7 +94,7 @@ export function addSchedule(schedule, telegram) {
                         // Проверяем победы премиум пользователей
                         const premiumWinnersLastMonth = checkWinners(premiumUsers);
                         // Если все премиум пользователи побеждали в этом месяце то просто рандом
-                        if (!premiumWinnersLastMonth) {
+                        if (!premiumWinnersLastMonth.length) {
                             winners = randomUsers(premiumUsers, promotion.winners_count);
                         } else {
                             winners = randomUsers(premiumWinnersLastMonth, promotion.winners_count);
