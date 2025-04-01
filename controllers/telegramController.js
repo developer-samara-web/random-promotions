@@ -15,7 +15,7 @@ export async function sendPromotionPost(telegram, promotion) {
             {
                 caption: `${promotion.title}\n\n${promotion.description}`,
                 parse_mode: 'HTML',
-                reply_markup: chanelKeyboard(promotion._id).reply_markup,
+                reply_markup: chanelKeyboard(promotion).reply_markup,
             }
         )
     } catch (e) {
@@ -50,7 +50,7 @@ export async function updatePost(telegram, promotion, counter = null) {
             `${promotion.title}\n\n${promotion.description}`,
             {
                 parse_mode: 'HTML',
-                reply_markup: counter ? chanelKeyboard(promotion._id, counter).reply_markup : null,
+                reply_markup: counter ? chanelKeyboard(promotion, counter).reply_markup : null,
             }
         );
     } catch (e) {
