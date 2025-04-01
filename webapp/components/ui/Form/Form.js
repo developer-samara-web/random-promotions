@@ -15,11 +15,12 @@ export default function Form({ onSubmit, fields, buttonName, buttonIcon, formDat
     const [files, setFiles] = useState({});
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState([]);
+
     // Обработка переключателя
     const handleSwitchChange = (newValue) => {
-        setFormData((prev) => ({
+        setFormData(prev => ({
             ...prev,
-            subscribe: newValue,
+            requires_subscription: newValue,
         }));
     };
 
@@ -118,8 +119,8 @@ export default function Form({ onSubmit, fields, buttonName, buttonIcon, formDat
                     <div key={id}>
                         {type === 'toogle' ? (
                             <Switch
-                                value={formData[name] || false}
-                                placeholder={placeholder}
+                                value={formData.requires_subscription || false}
+                                placeholder="Только для подписчиков"
                                 onChange={handleSwitchChange}
                             />
                         ) : name === 'description' ? (

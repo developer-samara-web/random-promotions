@@ -4,7 +4,8 @@ import "@/components/ui/Switch/Switch.modules.css";
 // Компонент
 export default function Switch({ value, placeholder, onChange }) {
     const handleToggle = () => {
-        onChange(!value); // Передаем новое значение в родительский компонент
+        const newValue = !value;
+        onChange(newValue);
     };
 
     return (
