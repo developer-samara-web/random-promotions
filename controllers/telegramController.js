@@ -43,6 +43,9 @@ export async function sendResultPost(telegram, promotion, winners) {
 // Обновляем сообщение
 export async function updatePost(telegram, promotion, counter = null) {
     try {
+        // Проверяем данные
+        if (!promotion.message_id) { throw new Error('Не указан message_id') }
+
         return await telegram.telegram.editMessageCaption(
             process.env.TELEGRAM_GROUP_ID,
             promotion.message_id,
