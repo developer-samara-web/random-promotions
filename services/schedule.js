@@ -2,7 +2,7 @@
 import nodeSchedule from 'node-schedule';
 import { getSchedules, updateSchedule, delSchedule } from "#controllers/scheduleController.js";
 import { getPromotion, updatePromotion } from "#controllers/promotionController.js";
-import { sendPromotionPost, sendResultPost, updatePost } from "#controllers/telegramController.js";
+import { sendPromotionPost, sendResultPost, updatePost, sendWinnerPost } from "#controllers/telegramController.js";
 import { getParticipantsWinners } from "#controllers/participantsController.js";
 import { updateWinners } from "#controllers/userController.js";
 import randomUsers from "#utils/randomUser.js";
@@ -125,6 +125,14 @@ export function addSchedule(schedule, telegram) {
                 const update = await updateWinners(participants, winners);
                 // Отправляет сообщение с результатами
                 await sendResultPost(telegram, promotion, update);
+                // Отправляем сообщения победителям
+                winners.forEach(async winner => {
+                    try {
+                        await sendWinnerPost(telegram, promotion, winner)
+                    } catch (e) {
+                        logger.error(`Ошибка отправки сообщения победителю ${winner.telegram_id}:`, e);
+                    }
+                });
                 // Удаляем задачу из базы
                 await delSchedule(_id);
                 logger.info(`Акция завершена: ${promotion_id}`);

@@ -1,6 +1,6 @@
 // Импорты
 import { chanelKeyboard } from "#keyboards/chanelKeyboard.js";
-import { resultMessage } from "#messages/postMessages.js";
+import { resultMessage, winnerMessage } from "#messages/postMessages.js";
 
 // Логирование
 import logger from "#utils/logs.js";
@@ -54,6 +54,24 @@ export async function updatePost(telegram, promotion, counter = null) {
             {
                 parse_mode: 'HTML',
                 reply_markup: counter ? chanelKeyboard(promotion, counter).reply_markup : null,
+            }
+        );
+    } catch (e) {
+        logger.error('Ошибка обновления поста в телеграм:', e);
+    }
+};
+
+// Уведомление о победителе
+export async function sendWinnerPost(telegram, promotion, user) {
+    try {
+        const post = `https://t.me/etetettetetetettet/${promotion.message_id}`;
+
+        return await telegram.telegram.sendMessage(
+            user.telegram_id,
+            winnerMessage(promotion, post),
+            {
+                parse_mode: 'HTML',
+                disable_web_page_preview: false
             }
         );
     } catch (e) {
