@@ -5,9 +5,11 @@ import { setSchedule } from "#controllers/scheduleController.js";
 import { getPromotion } from "#controllers/promotionController.js";
 import { updatePost } from "#controllers/telegramController.js";
 import { getParticipants } from "#controllers/participantsController.js";
+import { getUser } from "#controllers/userController.js";
 
 // Логирование
 import logger from "#utils/logs.js";
+import { updateUser } from "#controllers/userController.js";
 
 // Инициализируем api сервер
 export async function initServerApi(telegram) {
@@ -41,7 +43,7 @@ export async function initServerApi(telegram) {
                 logger.info(`Задача создана: ${newJob}`)
                 return res.status(200).json({ status: 'success' });
             } catch (e) {
-                res.status(403).send(`Ошибка дотупа.`);
+                return res.status(403).send(`Ошибка дотупа.`);
             }
         });
 
@@ -56,7 +58,25 @@ export async function initServerApi(telegram) {
                 await updatePost(telegram, promotion, participants);
                 return res.status(200).json({ status: 'success' });
             } catch (e) {
-                res.status(403).send(`Ошибка дотупа.`);
+                return res.status(403).send(`Ошибка дотупа.`);
+            }
+        });
+
+        // Проверка подписки на канал
+        app.post('/user/subscribe', async (req, res) => {
+            try {
+                // Получаем id акции
+                const { telegram_id } = req.body;
+                // Получаем подписку на канал
+                const subscribe = await telegram.telegram.getChatMember(process.env.TELEGRAM_GROUP_ID, telegram_id);
+                // Проверяем полученные данные
+                if (!subscribe) { return res.status(200).send({ access: false }); }
+                // Обновляем данные пользователя
+                await updateUser(telegram_id, { channel_subscription: true })
+                // Отправляем данные
+                return res.status(200).json({ access: true });
+            } catch (e) {
+                return res.status(403).send(`Ошибка дотупа.`);
             }
         });
 

@@ -75,6 +75,6 @@ export async function sendWinnerPost(telegram, promotion, user) {
             }
         );
     } catch (e) {
-        logger.error('Ошибка обновления поста в телеграм:', e);
+        logger.error('Ошибка отправки поста с победителями:', e);
     }
 };

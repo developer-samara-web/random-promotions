@@ -1,0 +1,25 @@
+@reference "tailwindcss";
+
+.profile{
+    @apply flex flex-col gap-5 w-full
+}
+
+.profile-welcome{
+    @apply text-center font-medium text-white text-3xl
+}
+
+.profile-content{
+    @apply flex flex-col gap-2
+}
+
+.profile-history{
+    @apply text-xs text-slate-400 uppercase font-medium text-center mb-2
+}
+
+.profile-items{
+    @apply flex flex-col gap-3
+}
+
+.profile-button{
+    @apply sticky bottom-0 left-0 w-full pb-5 bg-gradient-to-b from-transparent to-slate-900
+}

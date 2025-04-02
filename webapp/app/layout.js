@@ -5,7 +5,6 @@ import "./globals.css";
 
 // Импорт компонентов
 import { useEffect, useState } from 'react';
-import { useTelegramData } from "@/hooks/useTelegramData";
 import getAuth from "@/controllers/Auth";
 import Page from "@/components/ui/Page/Page";
 import Preloader from "@/components/ui/Preloader/Preloader";
@@ -13,32 +12,33 @@ import Error from "@/components/ui/Error/Error";
 import Script from 'next/script';
 
 export default function RootLayout({ children }) {
+  const [isScriptLoaded, setIsScriptLoaded] = useState(false);
   const [check, setCheck] = useState(null);
   const [error, setError] = useState(null);
-  const [isScriptLoaded, setIsScriptLoaded] = useState(false);
-  const initData = useTelegramData();
 
   useEffect(() => {
-    if (!isScriptLoaded || initData === null) return;
+    if (!isScriptLoaded) return;
 
     const fetchAuth = async () => {
       try {
-        if (initData === false) {
-          setCheck(false);
-          return;
-        }
+        if (window.Telegram && Telegram.WebApp) {
+          if (Telegram.WebApp.initData === '') {
+            setCheck(false);
+            return;
+          }
 
-        const { error } = await getAuth(initData);
-        if (error) setError(error);
-        setCheck(!error);
+          const { error } = await getAuth(Telegram.WebApp.initData);
+
+          if (error) setError(error);
+          setCheck(!error);
+        }
       } catch (error) {
-        console.error('Ошибка доступа:', error);
         setCheck(false);
       }
     };
 
     fetchAuth();
-  }, [initData, isScriptLoaded]);
+  }, [isScriptLoaded]);
 
   // Если проверка еще не завершена
   if (check === null) {
@@ -65,7 +65,7 @@ export default function RootLayout({ children }) {
         </head>
         <body className="root">
           <Page>
-            <Error title="Произошла ошибка" description={error} />
+            <Error title="Произошла ошибка" description="Произошла ошибка при авторизации. Если проблема повторяется, пожалуйста, свяжитесь с нашей технической поддержкой для уточнения причин." />
           </Page>
         </body>
       </html>

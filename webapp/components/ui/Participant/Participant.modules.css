@@ -1,0 +1,37 @@
+@reference "tailwindcss";
+
+.participant-item{
+    @apply flex flex-row justify-between items-center cursor-pointer border-[1px] rounded-xl w-full p-3
+}
+
+.participant-winner{
+    @apply bg-[#3bf6b114] border-[#307e62]
+}
+
+.participant-loser{
+    @apply bg-[#f63b3b14] border-[#4e1d1d]
+}
+
+.participant-other{
+    @apply border-[#3b82f64f] bg-[#3b82f630]
+}
+
+.participant-content{
+    @apply flex flex-row items-start gap-3 truncate
+}
+
+.participant-image{
+    @apply w-10 h-10 rounded-xl
+}
+
+.participant-text{
+    @apply flex flex-col gap-1
+}
+
+.participant-title{
+    @apply font-medium uppercase text-sm mb-0
+}
+
+.participant-description{
+    @apply flex flex-row text-xs text-slate-400
+}

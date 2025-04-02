@@ -9,5 +9,5 @@
 }
 
 .header-description{
-    @apply text-xs uppercase text-blue-200
+    @apply text-xs uppercase text-slate-400
 }

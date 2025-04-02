@@ -1,0 +1,25 @@
+@reference "tailwindcss";
+
+.join{
+    @apply flex flex-col justify-between h-[calc(100vh-50px)] w-full
+}
+
+.join-content{
+    @apply flex flex-col items-center
+}
+
+.join-icon{
+    @apply size-25 p-5 border-[1px] border-[#58ff5852] bg-[#0e2c33] rounded-4xl mb-5
+}
+
+.join-title{
+    @apply text-2xl uppercase font-bold text-center mb-2
+}
+
+.join-badge{
+    @apply text-xs text-center bg-[#2b7fff] uppercase font-medium py-1 px-3 rounded-lg mb-3 cursor-pointer
+}
+
+.join-description{
+    @apply text-sm text-center text-slate-300
+}

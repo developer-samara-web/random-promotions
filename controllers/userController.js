@@ -76,8 +76,6 @@ export async function updateUser(id, body) {
 			{ $set: body },
 			{ new: true }
 		);
-
-		User.find
 		// Проверка данных
 		if (!user) { return null };
 		// Отправляем данные
