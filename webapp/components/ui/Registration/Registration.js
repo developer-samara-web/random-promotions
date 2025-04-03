@@ -26,7 +26,7 @@ export default function Registration() {
             <Spoiler title="Публичная оферта" toggle={true}>
                 <Oferta />
             </Spoiler>
-            <div className="text-xs text-slate-400 text-center">Нажимая кнопку "Принять и зрегистрироваться", вы подтверждаете, что ознакомились с правилами и соглашаетесь с ними.</div>
+            <div className="text-xs text-slate-400 text-center">Нажимая кнопку “Принять и зрегистрироваться”, вы подтверждаете, что ознакомились с правилами и соглашаетесь с ними.</div>
             <Button name="Принять и зрегистрироваться" event={() => setUserHandler(Telegram.WebApp.initDataUnsafe.user)} />
         </Page>
     )
