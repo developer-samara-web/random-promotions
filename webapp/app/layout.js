@@ -5,6 +5,7 @@ import "./globals.css";
 
 // Импорт компонентов
 import { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import Registration from "@/components/ui/Registration/Registration";
 import getAuth from "@/controllers/Auth";
 import Page from "@/components/ui/Page/Page";
@@ -16,9 +17,19 @@ export default function RootLayout({ children }) {
   const [isScriptLoaded, setIsScriptLoaded] = useState(false);
   const [check, setCheck] = useState(null);
   const [error, setError] = useState(null);
+  const pathname = usePathname();
 
   useEffect(() => {
     if (!isScriptLoaded) return;
+
+    // Список исключенных маршрутов
+    const excludedRoutes = ['/policy', '/oferta'];
+
+    // Если путь не входит в список исключенных маршрутов
+    if (excludedRoutes.includes(pathname)) {
+      setCheck(true);
+      return;
+    }
 
     const fetchAuth = async () => {
       try {
@@ -85,20 +96,6 @@ export default function RootLayout({ children }) {
         </head>
         <body className="root">
           <Registration />
-        </body>
-      </html>
-    );
-  }
-
-  // Если авторизация не пройдена
-  if (check === 'policy') {
-    return (
-      <html lang="ru">
-        <head>
-          <Script src="https://telegram.org/js/telegram-web-app.js" onLoad={() => setIsScriptLoaded(true)} />
-        </head>
-        <body className="root">
-          test
         </body>
       </html>
     );
