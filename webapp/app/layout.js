@@ -53,7 +53,7 @@ export default function RootLayout({ children }) {
     };
 
     fetchAuth();
-  }, [isScriptLoaded]);
+  }, [isScriptLoaded, pathname]);
 
   // Если проверка еще не завершена
   if (check === null) {
