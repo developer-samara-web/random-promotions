@@ -5,6 +5,7 @@ import "./globals.css";
 
 // Импорт компонентов
 import { useEffect, useState } from 'react';
+import Registration from "@/components/ui/Registration/Registration";
 import getAuth from "@/controllers/Auth";
 import Page from "@/components/ui/Page/Page";
 import Preloader from "@/components/ui/Preloader/Preloader";
@@ -26,11 +27,14 @@ export default function RootLayout({ children }) {
             setCheck(false);
             return;
           }
-
-          const { error } = await getAuth(Telegram.WebApp.initData);
-
-          if (error) setError(error);
-          setCheck(!error);
+          // Проверяем авторизацию пользователя
+          const { access, error } = await getAuth(Telegram.WebApp.initData);
+          // Если нет ошибки
+          if (!error) { setCheck(true) };
+          // Если авторизация не пройдена
+          if (access === 'registration') { setCheck('registration') };
+          // Если произошла ошибка
+          if (error) { setError(error); setCheck(error) }
         }
       } catch (error) {
         setCheck(false);
@@ -56,7 +60,7 @@ export default function RootLayout({ children }) {
     );
   }
 
-  // Если авторизация не пройдена
+  // Если ошибка авторизации
   if (check === false) {
     return (
       <html lang="ru">
@@ -67,6 +71,34 @@ export default function RootLayout({ children }) {
           <Page>
             <Error title="Произошла ошибка" description="Произошла ошибка при авторизации. Если проблема повторяется, пожалуйста, свяжитесь с нашей технической поддержкой для уточнения причин." />
           </Page>
+        </body>
+      </html>
+    );
+  }
+
+  // Если авторизация не пройдена
+  if (check === 'registration') {
+    return (
+      <html lang="ru">
+        <head>
+          <Script src="https://telegram.org/js/telegram-web-app.js" onLoad={() => setIsScriptLoaded(true)} />
+        </head>
+        <body className="root">
+          <Registration />
+        </body>
+      </html>
+    );
+  }
+
+  // Если авторизация не пройдена
+  if (check === 'policy') {
+    return (
+      <html lang="ru">
+        <head>
+          <Script src="https://telegram.org/js/telegram-web-app.js" onLoad={() => setIsScriptLoaded(true)} />
+        </head>
+        <body className="root">
+          test
         </body>
       </html>
     );

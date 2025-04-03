@@ -12,6 +12,21 @@ export async function getUser(id) {
     }
 }
 
+// Регистрация пользователя
+export async function setUser(data) {
+    try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user`, {
+            headers: { 'Content-Type': 'application/json' },
+            method: 'POST',
+            body: JSON.stringify({ data })
+        });
+
+        return response.json();
+    } catch (e) {
+        console.error('Ошибка при создании пользователя:', e);
+    }
+}
+
 // Получение пользователя
 export async function checkAdmin() {
     try {

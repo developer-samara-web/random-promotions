@@ -72,54 +72,123 @@ export function addSchedule(schedule, telegram) {
                 let winners;
                 // Проверяем данные
                 if (participants) {
-                    // Получаем обычных пользователей
-                    const premiumUsers = participants
-                        .filter(participant => participant.user_id?.subscription?.is_active === true)
-                        .map(participant => participant.user_id);
+                    console.log('Начальное количество участников:', participants.length);
+
                     // Получаем премиум пользователей
-                    const freeUsers = participants
-                        .filter(participant => participant.user_id?.subscription?.is_active === false)
+                    const premiumUsers = participants
+                        .filter(participant =>
+                            participant.user_id?.subscription?.is_active === true &&
+                            participant.user_id?.channel_subscription === true
+                        )
                         .map(participant => participant.user_id);
-                    // Если нет премиум пользователей
-                    if (!premiumUsers.length) {
-                        // Проверяем победы обычных пользователей
-                        const freeWinnersLastMonth = checkWinners(freeUsers);
-                        const neededFreeWinnersCount = promotion.winners_count - freeWinnersLastMonth.length;
-                        // Если все обычные пользователи побеждали в этом месяце то просто рандом
-                        if (freeWinnersLastMonth.length >= promotion.winners_count) {
-                            // Если достаточно пользователей, не побеждавших в этом месяце
-                            winners = randomUsers(freeWinnersLastMonth, promotion.winners_count);
-                        } else if (freeUsers.length >= neededFreeWinnersCount) {
-                            // Если недостаточно "чистых" победителей, но хватает обычных пользователей
-                            const winnersFromLastMonth = randomUsers(freeWinnersLastMonth, freeWinnersLastMonth.length);
-                            const additionalWinners = randomUsers(freeUsers, neededFreeWinnersCount);
-                            winners = [...winnersFromLastMonth, ...additionalWinners];
-                        } else {
-                            // Если вообще недостаточно пользователей
-                            const allPossibleWinners = [...freeWinnersLastMonth, ...freeUsers];
-                            winners = randomUsers(allPossibleWinners, Math.min(promotion.winners_count, allPossibleWinners.length));
-                            console.warn(`Недостаточно пользователей для выбора ${promotion.winners_count} победителей!`);
-                        }
-                    } else {
+
+                    // Получаем бесплатных пользователей
+                    const freeUsers = participants
+                        .filter(participant =>
+                            participant.user_id?.subscription?.is_active === false &&
+                            participant.user_id?.channel_subscription === true
+                        )
+                        .map(participant => participant.user_id);
+
+                    console.log('premiumUsers:', premiumUsers.length, premiumUsers);
+                    console.log('freeUsers:', freeUsers.length, freeUsers);
+
+                    // Проверяем тип акции
+                    if (!promotion.requires_subscription) { // Обычная акция
+                        console.log('Обрабатываем обычную акцию');
+
                         // Проверяем победы премиум пользователей
-                        const premiumWinnersLastMonth = checkWinners(premiumUsers);
-                        const neededPremiumWinnersCount = promotion.winners_count - premiumWinnersLastMonth.length;
-                        // Если все обычные пользователи побеждали в этом месяце то просто рандом
-                        if (premiumWinnersLastMonth.length >= promotion.winners_count) {
-                            // Если достаточно пользователей, не побеждавших в этом месяце
-                            winners = randomUsers(premiumWinnersLastMonth, promotion.winners_count);
-                        } else if (premiumUsers.length >= neededPremiumWinnersCount) {
-                            // Если недостаточно "чистых" победителей, но хватает обычных пользователей
-                            const winnersFromLastMonth = randomUsers(premiumWinnersLastMonth, premiumWinnersLastMonth.length);
-                            const additionalWinners = randomUsers(premiumUsers, neededPremiumWinnersCount);
-                            winners = [...winnersFromLastMonth, ...additionalWinners];
-                        } else {
-                            // Если вообще недостаточно пользователей
-                            const allPossibleWinners = [...premiumWinnersLastMonth, ...premiumUsers];
-                            winners = randomUsers(allPossibleWinners, Math.min(promotion.winners_count, allPossibleWinners.length));
-                            console.warn(`Недостаточно пользователей для выбора ${promotion.winners_count} победителей!`);
+                        const premiumNotWinners = checkWinners(premiumUsers) || []; // Те, кто НЕ побеждал в текущем месяце
+                        const premiumWinnersThisMonth = premiumUsers.filter(user =>
+                            !premiumNotWinners.some(notWinner => notWinner._id === user._id)
+                        );
+                        console.log('Премиум не побеждавшие:', premiumNotWinners.length);
+                        console.log('Премиум побеждавшие в этом месяце:', premiumWinnersThisMonth.length);
+
+                        // Проверяем победы обычных пользователей
+                        const freeNotWinners = checkWinners(freeUsers) || []; // Те, кто НЕ побеждал в текущем месяце
+                        const freeWinnersThisMonth = freeUsers.filter(user =>
+                            !freeNotWinners.some(notWinner => notWinner._id === user._id)
+                        );
+                        console.log('Обычные не побеждавшие:', freeNotWinners.length);
+                        console.log('Обычные побеждавшие в этом месяце:', freeWinnersThisMonth.length);
+
+                        // Все, кто выигрывал в этом месяце
+                        const allWinnersThisMonth = [...premiumWinnersThisMonth, ...freeWinnersThisMonth];
+                        console.log('Все побеждавшие в этом месяце:', allWinnersThisMonth.length);
+
+                        winners = [];
+                        let remainingWinnersCount = promotion.winners_count;
+
+                        // 1. Премиум не побеждавшие
+                        if (premiumNotWinners.length > 0 && remainingWinnersCount > 0) {
+                            const premiumCount = Math.min(remainingWinnersCount, premiumNotWinners.length);
+                            const premiumSelected = randomUsers(premiumNotWinners, premiumCount);
+                            winners = [...premiumSelected];
+                            remainingWinnersCount -= premiumCount;
+                            console.log('Выбрано премиум не побеждавших:', premiumCount);
+                        }
+
+                        // 2. Обычные не побеждавшие
+                        if (freeNotWinners.length > 0 && remainingWinnersCount > 0) {
+                            const freeCount = Math.min(remainingWinnersCount, freeNotWinners.length);
+                            const freeSelected = randomUsers(freeNotWinners, freeCount);
+                            winners = [...winners, ...freeSelected];
+                            remainingWinnersCount -= freeCount;
+                            console.log('Выбрано обычных не побеждавших:', freeCount);
+                        }
+
+                        // 3. Любые побеждавшие
+                        if (allWinnersThisMonth.length > 0 && remainingWinnersCount > 0) {
+                            const winnersCount = Math.min(remainingWinnersCount, allWinnersThisMonth.length);
+                            const winnersSelected = randomUsers(allWinnersThisMonth, winnersCount);
+                            winners = [...winners, ...winnersSelected];
+                            remainingWinnersCount -= winnersCount;
+                            console.log('Выбрано из побеждавших:', winnersCount);
+                        }
+
+                        if (remainingWinnersCount > 0) {
+                            console.warn(`Не удалось набрать ${promotion.winners_count} победителей, выбрано: ${winners.length}`);
+                        }
+
+                    } else { // Премиум акция
+                        console.log('Обрабатываем премиум акцию');
+
+                        const premiumNotWinners = checkWinners(premiumUsers) || []; // Те, кто НЕ побеждал в текущем месяце
+                        const premiumWinnersThisMonth = premiumUsers.filter(user =>
+                            !premiumNotWinners.some(notWinner => notWinner._id === user._id)
+                        );
+
+                        console.log('Премиум не побеждавшие:', premiumNotWinners.length);
+                        console.log('Премиум побеждавшие в этом месяце:', premiumWinnersThisMonth.length);
+
+                        winners = [];
+                        let remainingWinnersCount = promotion.winners_count;
+
+                        // 1. Премиум не побеждавшие
+                        if (premiumNotWinners.length > 0 && remainingWinnersCount > 0) {
+                            const premiumCount = Math.min(remainingWinnersCount, premiumNotWinners.length);
+                            const premiumSelected = randomUsers(premiumNotWinners, premiumCount);
+                            winners = [...premiumSelected];
+                            remainingWinnersCount -= premiumCount;
+                            console.log('Выбрано премиум не побеждавших:', premiumCount);
+                        }
+
+                        // 2. Премиум побеждавшие
+                        if (premiumWinnersThisMonth.length > 0 && remainingWinnersCount > 0) {
+                            const winnersCount = Math.min(remainingWinnersCount, premiumWinnersThisMonth.length);
+                            const winnersSelected = randomUsers(premiumWinnersThisMonth, winnersCount);
+                            winners = [...winners, ...winnersSelected];
+                            remainingWinnersCount -= winnersCount;
+                            console.log('Выбрано премиум побеждавших:', winnersCount);
+                        }
+
+                        if (remainingWinnersCount > 0) {
+                            console.warn(`Не удалось набрать ${promotion.winners_count} победителей, выбрано: ${winners.length}`);
                         }
                     }
+
+                    console.log('Итоговые победители:', winners.length, winners);
                 }
                 // Обновляем статус и даты победителей и проигравших
                 const update = await updateWinners(participants, winners);

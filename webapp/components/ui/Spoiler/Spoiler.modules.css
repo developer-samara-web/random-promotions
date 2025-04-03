@@ -1,0 +1,53 @@
+@reference "tailwindcss";
+
+.info {
+    @apply flex flex-col p-4 rounded-xl text-white border-[1px] overflow-hidden w-full;
+}
+
+.info--approved {
+    @apply bg-[#3bf6b114] border-[#307e62];
+}
+
+.info--rejected {
+    @apply bg-[#f63b3b14] border-[#4e1d1d];
+}
+
+.info--default {
+    @apply border-[#3b82f64f] bg-[#3b82f630];
+}
+
+.info__header {
+    @apply flex justify-between items-center;
+}
+
+.info__title {
+    @apply text-sm rounded-lg px-3 py-2;
+}
+
+.info__title--approved {
+    @apply bg-[#307e62];
+}
+
+.info__title--rejected {
+    @apply bg-[#4e1d1d];
+}
+
+.info__title--default {
+    @apply bg-blue-500;
+}
+
+.info__toggle {
+    @apply transition-colors bg-blue-500 rounded-2xl px-[6px] pt-[6px] pb-[5px] text-white;
+}
+
+.info__content {
+    @apply transition-all duration-300;
+}
+
+.info__content--open {
+    @apply max-h-none;
+}
+
+.info__content--closed {
+    @apply max-h-0;
+}

@@ -25,9 +25,9 @@ export async function POST(request) {
             .join('\n')
         // Получаем данные администратора из базы данных
         const telegram_id = JSON.parse(data.user).id;
-        const seller = await User.find({telegram_id: telegram_id});
+        const seller = await User.find({ telegram_id: telegram_id });
         // Проверка на существование администратора
-        if (!seller.length) { return NextResponse.json({ status: 400, error: "Вы не прошли авторизацию. Пройдите регистрацию в боте и если проблема повторяется, пожалуйста, свяжитесь с нашей технической поддержкой для уточнения причин." }) }
+        if (!seller.length) { return NextResponse.json({ status: 400, access: 'registration' }) }
         // Создаем секретный ключ
         const secretKey = crypto.createHmac('sha256', 'WebAppData')
             .update(process.env.TELEGRAM_TOKEN)
