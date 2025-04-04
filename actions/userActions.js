@@ -8,16 +8,16 @@ import logger from "#utils/logs.js";
 
 // Экшен "Профиль пользователя"
 export async function profileAction(telegram) {
-	try{
+	try {
 		telegram.action("user_profile", async (ctx) => {
-            // Получаем данные пользователя
+			// Получаем данные пользователя
 			const user = await getUser(ctx.from.id)
 			return await ctx.editMessageText(await profileMessage(user), {
 				reply_markup: profileKeyboard().reply_markup,
 				parse_mode: "HTML",
 			});
 		});
-	} catch (e){
+	} catch (e) {
 		logger.error('Ошибка экшена (user_profile):', e);
 	}
 };
@@ -26,10 +26,10 @@ export async function profileAction(telegram) {
 export async function subscribeUserAction(telegram) {
 	try {
 		telegram.action("user_subscribe", async (ctx) => {
-            // Получаем данные пользователя
+			// Получаем данные пользователя
 			const user = await getUser(ctx.from.id)
 			return await ctx.editMessageText(await subscribeUserMessage(user), {
-				reply_markup: subscribeUserKeyboard(user.is_auto_subscription).reply_markup,
+				reply_markup: subscribeUserKeyboard(user.subscription.is_auto_renewal, user.subscription.is_active).reply_markup,
 				parse_mode: "HTML",
 			});
 		});
@@ -42,19 +42,28 @@ export async function subscribeUserAction(telegram) {
 export async function subscribeToggleAction(telegram) {
 	try {
 		telegram.action("user_subscribe_toggle", async (ctx) => {
-            // Получаем данные пользователя
+			// Получаем данные пользователя
 			const user = await getUser(ctx.from.id)
-            // Обновляем данные пользователя
+			// Обновляем данные пользователя
 			const update = await updateUser(ctx.from.id, {
-				subscription: {
-					is_auto_renewal: !user.subscription.is_auto_renewal
-				}
+				'subscription.is_auto_renewal': !user.subscription.is_auto_renewal,
 			})
-            logger.info(`Пользователь (${update._id}) ${update.is_auto_subscription ? "включил" : "отключил"} автоподписку.`);
+			logger.info(`Пользователь (${update._id}) ${update.is_auto_subscription ? "включил" : "отключил"} автоподписку.`);
 			return await ctx.editMessageText(await subscribeUserMessage(update), {
-				reply_markup: subscribeUserKeyboard(update.is_auto_subscription).reply_markup,
+				reply_markup: subscribeUserKeyboard(update.subscription.is_auto_renewal, update.subscription.is_active).reply_markup,
 				parse_mode: "HTML",
 			});
+		});
+	} catch (e) {
+		logger.error('Ошибка экшена (user_subscribe):', e);
+	}
+};
+
+// Экшен "У вас нет активных подписок"
+export async function subscribeEmptyAction(telegram) {
+	try {
+		telegram.action("empty_action", async (ctx) => {
+			ctx.answerCbQuery();
 		});
 	} catch (e) {
 		logger.error('Ошибка экшена (user_subscribe):', e);

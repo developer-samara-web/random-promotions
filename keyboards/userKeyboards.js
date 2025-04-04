@@ -10,9 +10,16 @@ export function profileKeyboard() {
 }
 
 // Клавиатура "Настройка подписки пользователя"
-export function subscribeUserKeyboard(toggle) {
+export function subscribeUserKeyboard(autopay, premium) {
+    const firstButton = premium
+        ? Markup.button.callback(
+            autopay ? "❌ Отменить автопродление" : "❇️ Активировать автопродление",
+            "user_subscribe_toggle"
+        )
+        : Markup.button.callback("У вас нет активных подписок", "empty_action");
+
     return Markup.inlineKeyboard([
-        [Markup.button.callback(toggle ? "❌ Отменить автопродление" : "❇️ Активировать автопродление", "user_subscribe_toggle")],
+        [firstButton],
         [Markup.button.callback("⬅️ Назад", "user_profile")],
     ]);
 }
