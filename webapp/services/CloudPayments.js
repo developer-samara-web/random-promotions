@@ -30,21 +30,21 @@ export default async function CloudPayments(user, tariff, transaction, setError,
             skin: "modern",
             data
         },
-        async ({ publicId }) => {
+        async (options) => {
             // Получаем данные о подписке
             const { response: subscribeData } = await getSubscribe(user._id);
 
             if (subscribeData) {
                 // Экран успеха
                 setSuccess({ message: 'Спасибо за ваш платеж! ' })
-                
+
                 // Устанавливаем премиум статус пользователю
                 const updateUserData = await updateUser(user._id, {
                     'subscription.is_active': true,
                     'subscription.is_auto_renewal': true,
-                    'subscription.start_date': subscribeData.Model.StartDateIso,
-                    'subscription.end_date': subscribeData.Model.NextTransactionDateIso,
-                    'subscription.id': subscribeData.Id
+                    'subscription.start_date': subscribeData.Model[0].StartDateIso,
+                    'subscription.end_date': subscribeData.Model[0].NextTransactionDateIso,
+                    'subscription.id': subscribeData.Model[0].Id
                 })
 
                 if (updateUserData) {

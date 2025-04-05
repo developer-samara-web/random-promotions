@@ -19,8 +19,9 @@ export async function GET(request, ctx) {
             },
             body: JSON.stringify({ accountId: id }),
         });
+        const subscribeData = await subscribe.json();
         // Отправляем данные
-        return NextResponse.json({ response: subscribe }, { status: 200 });
+        return NextResponse.json({ response: subscribeData }, { status: 200 });
     } catch (e) {
         console.error('Ошибка при получении данных о подписке:', e);
         return NextResponse.json({ error: 'Что-то пошло не так. Попробуйте позже или обратитесь в поддержку.' }, { status: 500 });

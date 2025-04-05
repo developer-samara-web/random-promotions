@@ -12,7 +12,8 @@ const UserSchema = new mongoose.Schema({
         is_auto_renewal: { type: Boolean, default: false }, // Автопродление
         start_date: { type: Date, default: null }, // Дата начала подписки
         end_date: { type: Date, default: null }, // Дата окончания подписки
-        renewal_count: { type: Number, default: 0 } // Кол-во обновлений подписки
+        renewal_count: { type: Number, default: 0 }, // Кол-во обновлений подписки
+        id: { type: String }
     },
     stats: { // Статистика
         last_win_date: { type: Date, default: null }, // Последняя дата победы
