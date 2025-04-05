@@ -27,6 +27,21 @@ export async function setUser(data) {
     }
 }
 
+// Обновляем данные пользователя
+export async function updateUser(id, data) {
+    try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/${id}`, {
+            headers: { 'Content-Type': 'application/json' },
+            method: 'PUT',
+            body: JSON.stringify({ data })
+        });
+
+        return response.json();
+    } catch (e) {
+        console.error('Ошибка при создании пользователя:', e);
+    }
+}
+
 export async function getSubscribe(id) {
     try {
         const response = fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/subscribe/${id}`, {

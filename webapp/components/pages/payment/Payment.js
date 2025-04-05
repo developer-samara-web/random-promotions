@@ -5,6 +5,7 @@ import { getUser } from "@/controllers/Users";
 import { getTariff } from "@/controllers/Tariffs";
 import { setTransaction, getTransactions, delTransaction } from "@/controllers/Transactions";
 import Preloader from "@/components/ui/Preloader/Preloader";
+import Button from "@/components/ui/Button/Button";
 import Success from "@/components/ui/Success/Success";
 import Error from "@/components/ui/Error/Error";
 import CloudPayments from "@/services/CloudPayments";
@@ -66,6 +67,8 @@ export default function Payment({ tariffId }) {
         return (
             <Page>
                 <Error title="Ошибка оплаты" description={error.message} />
+                <Button name="Повторить попытку" icon="ArrowPathIcon" event={() => window.location.reload()} />
+                <Button name="Закрыть" icon="XCircleIcon" event={() => Telegram.WebApp.close()} />
             </Page>
         );
     }
@@ -79,12 +82,4 @@ export default function Payment({ tariffId }) {
             </Page>
         );
     }
-
-    // 
-    // return (
-    //     <Page>
-    //         Payment {tariff ? `для тарифа ${tariff.name}` : "загружается..."}
-    //         <Button name="Оплатить" event={() => CloudPayments(user, tariff, transaction)} />
-    //     </Page>
-    // );
 }

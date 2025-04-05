@@ -1,3 +1,6 @@
+import { delTransaction } from "@/controllers/Transactions";
+import { updateUser } from "@/controllers/Users";
+
 // Виджет оплаты подписки
 export default async function CloudPayments(user, tariff, transaction, setError, setSuccess) {
     // Создаём экземпляр виджета
@@ -7,7 +10,7 @@ export default async function CloudPayments(user, tariff, transaction, setError,
     const data = {
         CloudPayments: {
             recurrent: {
-                interval: 'Month',
+                interval: tariff.duration,
                 period: 1,
                 // StartDate
             }
@@ -26,13 +29,23 @@ export default async function CloudPayments(user, tariff, transaction, setError,
             skin: "modern",
             data
         },
-        (options) => {
-            // При успешной оплате
-            setSuccess({ message: 'Спасибо за ваш платеж!', options })
+        async (options) => {
+            // При успехе показываем экран успеха
+            setSuccess({ message: 'Спасибо за ваш платеж! ', options })
+            console.log(options)
+            // Устанавливаем премиум пользователю
+            const update = await updateUser(user._id, {
+                'subscription.is_active': true,
+                'subscription.is_auto_renewal': true,
+                'subscription.start_date': new Date(),
+                'subscription.end_date': new Date(),
+            })
         },
-        (reason, options) => {
-            // При ошибке
-            setError({ message: 'Спасибо за ваш платеж!', options, reason })
+        async (reason, options) => {
+            // При ошибке показываем экран ошибки
+            setError({ message: 'К сожалению, произошла ошибка при обработке платежа. Причина: [Недостаточно средств / Ошибка банка / Неверные данные карты / Технический сбой]', options, reason });
+            // Удаляем транзакцию
+            delTransaction(transaction._id);
         }
     );
 };

@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 const TariffSchema = new mongoose.Schema({
     name: { type: String, required: true, maxlength: 100 }, // Название тарифа
     amount: { type: Number, required: true, min: 0 }, // Цена тарифа
-    duration: { type: Number, required: true, min: 1 }, // Продолжительность тарифа в днях
+    duration: { type: String, enum: ['Day', 'Week', 'Month'], required: true }, // Продолжительность тарифа
     created_at: { type: Date, default: Date.now }, // Дата создания задачи
     updated_at: { type: Date, default: Date.now } // Дата обновления задачи
 });
