@@ -36,7 +36,7 @@ export default async function CloudPayments(user, tariff, transaction, setError,
 
             if (subscribeData) {
                 // Экран успеха
-                setSuccess({ message: 'Спасибо за ваш платеж! ' })
+                setSuccess({ message: `Спасибо за ваш платеж!\nСумма: ${subscribeData.Model[0].Amount} ${subscribeData.Model[0].Currency}\nСледующий платёж: ${subscribeData.Model[0].NextTransactionDateIso}\nID транзакции: ${transaction._id}\nСпасибо, что выбрали наш сервис! Если у вас возникнут вопросы, обращайтесь в поддержку.` })
 
                 // Устанавливаем премиум статус пользователю
                 const updateUserData = await updateUser(user._id, {
