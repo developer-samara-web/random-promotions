@@ -1,5 +1,5 @@
 // Виджет оплаты подписки
-export default async function CloudPayments(user, tariff, transaction) {
+export default async function CloudPayments(user, tariff, transaction, setError, setSuccess) {
     // Создаём экземпляр виджета
     const widget = new cp.CloudPayments();
 
