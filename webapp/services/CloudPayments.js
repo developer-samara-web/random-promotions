@@ -33,7 +33,7 @@ export default async function CloudPayments(user, tariff, transaction, setError,
             // При успехе показываем экран успеха
             setSuccess({ message: 'Спасибо за ваш платеж! ', options })
             // Устанавливаем премиум статус пользователю
-            const user = await updateUser(user._id, {
+            const updateUserData = await updateUser(user._id, {
                 $set: {
                     'subscription.is_active': true,
                     'subscription.is_auto_renewal': true,
@@ -42,7 +42,7 @@ export default async function CloudPayments(user, tariff, transaction, setError,
                 }
             })
 
-            if (user) {
+            if (updateUserData) {
                 // Обновляем статус транзакции
                 updateTransaction(transaction._id, {
                     $set: {
