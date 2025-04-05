@@ -26,3 +26,17 @@ export async function getTransactions(id) {
         console.error('Ошибка при получении транзакций пользователя:', e);
     }
 }
+
+// Контроллер "Удаление транзакции"
+export async function delTransaction(id) {
+    try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/transaction/${id}`, {
+            headers: { 'Content-Type': 'application/json' },
+            method: 'DELETE'
+        });
+
+        return response.json();
+    } catch (e) {
+        console.error('Ошибка при удалении транзакций пользователя:', e);
+    }
+}

@@ -75,7 +75,7 @@ export default function Payment({ tariffId }) {
         };
 
         fetchData();
-    }, [tariffId]);
+    }, [tariff, tariffId]);
 
     if (error) {
         return (
