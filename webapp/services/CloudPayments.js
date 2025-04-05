@@ -1,4 +1,4 @@
-import { delTransaction } from "@/controllers/Transactions";
+import { delTransaction, updateTransaction } from "@/controllers/Transactions";
 import { updateUser } from "@/controllers/Users";
 
 // Виджет оплаты подписки
@@ -32,13 +32,25 @@ export default async function CloudPayments(user, tariff, transaction, setError,
         async (options) => {
             // При успехе показываем экран успеха
             setSuccess({ message: 'Спасибо за ваш платеж! ', options })
-            // Устанавливаем премиум пользователю
-            const update = await updateUser(user._id, {
-                'subscription.is_active': true,
-                'subscription.is_auto_renewal': true,
-                'subscription.start_date': new Date(),
-                'subscription.end_date': new Date(),
+            // Устанавливаем премиум статус пользователю
+            const user = await updateUser(user._id, {
+                $set: {
+                    'subscription.is_active': true,
+                    'subscription.is_auto_renewal': true,
+                    'subscription.start_date': new Date(),
+                    'subscription.end_date': new Date()
+                }
             })
+
+            if (user) {
+                // Обновляем статус транзакции
+                updateTransaction(transaction._id, {
+                    $set: {
+                        'status': 'completed',
+                        'updated_at': new Date()
+                    }
+                })
+            }
         },
         async (reason, options) => {
             // При ошибке показываем экран ошибки

@@ -23,6 +23,27 @@ export async function GET(request, ctx) {
 }
 
 // Маршрут "Удаление транзакции"
+export async function PUT(request, ctx) {
+    try {
+        // Получаем id транзакции
+        const { id } = await ctx?.params;
+        // Получение данных
+        const body = await request.json();
+        // Подключаемся к базе данных
+        await connectToDatabase();
+        // Поиск и обновление транзакций
+        const transactions = await Transaction.findByIdAndUpdate({ _id: id }, { $set: body }, { new: true });
+        // Если транзакции нет
+        if (!transactions) { return NextResponse.json({ error: 'Ошибка обновления транзакции.' }, { status: 404 }) };
+        // Отправляем данные
+        return NextResponse.json({ response: 'Успешное обновление транзакции.' }, { status: 402 });
+    } catch (e) {
+        console.error('Ошибка при обновлении транзакции:', e);
+        return NextResponse.json({ status: 500, error: 'Что-то пошло не так. Попробуйте позже или обратитесь в поддержку.' }, { status: 500 });
+    }
+}
+
+// Маршрут "Удаление транзакции"
 export async function DELETE(request, ctx) {
     try {
         // Получаем id транзакции
@@ -47,7 +68,7 @@ export async function OPTIONS() {
         status: 204,
         headers: {
             'Access-Control-Allow-Origin': process.env.NEXT_PUBLIC_URL || '*',
-            'Access-Control-Allow-Methods': 'GET, DELETE',
+            'Access-Control-Allow-Methods': 'GET, PUT, DELETE',
             'Access-Control-Allow-Headers': 'Content-Type, Authorization',
             'Access-Control-Max-Age': '3600',
         },
