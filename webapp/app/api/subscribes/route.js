@@ -2,16 +2,16 @@
 import { NextResponse } from "next/server";
 
 // Маршрут "Получение данных о подписке"
-export async function GET(request) {
+export async function GET(request, ctx) {
     try {
-        // Получение данных
-        const { id } = await request.json();
+        // Получаем id подписки
+        const { id } = await ctx?.params;
         // Данные для авторизации
         const publicId = process.env.CLOUDPAYMENTS_PUBLICK_ID;
         const apiSecret = process.env.CLOUDPAYMENTS_PUBLICK_SECRET;
         const base64Auth = btoa(`${publicId}:${apiSecret}`);
         // Создаём задачу в боте
-        await fetch(`https://api.cloudpayments.ru/subscriptions/get`, {
+        const subscribe = await fetch(`https://api.cloudpayments.ru/subscriptions/get`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -20,7 +20,7 @@ export async function GET(request) {
             body: JSON.stringify({ id: id }),
         });
         // Отправляем данные
-        return NextResponse.json({ response: promotion }, { status: 200 });
+        return NextResponse.json({ response: subscribe }, { status: 200 });
     } catch (e) {
         console.error('Ошибка при получении данных о подписке:', e);
         return NextResponse.json({ error: 'Что-то пошло не так. Попробуйте позже или обратитесь в поддержку.' }, { status: 500 });
@@ -33,7 +33,7 @@ export async function OPTIONS() {
         status: 204,
         headers: {
             'Access-Control-Allow-Origin': process.env.NEXT_PUBLIC_URL || '*',
-            'Access-Control-Allow-Methods': 'GET, POST',
+            'Access-Control-Allow-Methods': 'GET',
             'Access-Control-Allow-Headers': 'Content-Type, Authorization',
             'Access-Control-Max-Age': '3600',
         },
