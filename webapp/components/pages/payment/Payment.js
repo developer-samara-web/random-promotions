@@ -40,7 +40,7 @@ export default function Payment({ tariffId }) {
                 setTransactionData(transactionData);
 
                 // Открываем оплату
-                const payment =  CloudPayments(userData, tariffData, transactionData);
+                const payment = await CloudPayments(userData, tariffData, transactionData);
                 console.log(payment)
             } catch (e) {
                 console.error("Ошибка при загрузке данных или оплате:", e);
