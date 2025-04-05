@@ -44,7 +44,7 @@ export default function Payment({ tariffId }) {
                                 title: "Продолжить оплату",
                                 callback: () => {
                                     // Запускаем оплату
-                                    CloudPayments(user, tariff, transactionsData);
+                                    CloudPayments(userData, tariffData, transactionsData);
                                 }
                             },
                             {
@@ -53,10 +53,10 @@ export default function Payment({ tariffId }) {
                                     // Удаление транзакции
                                     delTransaction(transactionsData._id)
                                     // Создаём новую транзакцию
-                                    const { response: transactionData } = await setTransaction({ user_id: userData._id, tariff_id: tariffData._id });
-                                    setTransactionData(transactionData);
+                                    const { response: transactionNewData } = await setTransaction({ user_id: userData._id, tariff_id: tariffData._id });
+                                    setTransactionData(transactionNewData);
                                     // Запускаем оплату
-                                    CloudPayments(user, tariff, transactionData);
+                                    CloudPayments(userData, tariffData, transactionNewData);
                                 }
                             }
                         ]
