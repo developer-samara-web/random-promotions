@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { getUser } from "@/controllers/Users";
 import { getTariff } from "@/controllers/Tariffs";
 import { setTransaction, getTransactions, delTransaction } from "@/controllers/Transactions";
+import Preloader from "@/components/ui/Preloader/Preloader";
 import Header from "@/components/ui/Header/Header";
 import Button from "@/components/ui/Button/Button";
 import Error from "@/components/ui/Error/Error";
@@ -12,6 +13,7 @@ import Page from "@/components/ui/Page/Page";
 
 // Компонент Payment
 export default function Payment({ tariffId }) {
+    const [isLoading, setIsLoading] = useState(true);
     const [user, setUser] = useState(null);
     const [tariff, setTariff] = useState(null);
     const [transaction, setTransactionData] = useState(null);
@@ -71,11 +73,22 @@ export default function Payment({ tariffId }) {
             } catch (e) {
                 console.error("Ошибка при загрузке данных или оплате:", e);
                 setError(e.message);
+            } finally {
+                setIsLoading(false)
             }
         };
 
         fetchData();
     }, [tariffId]);
+
+    // Загрузка
+    if (isLoading) {
+        return (
+            <Page>
+                <Preloader title="Проверяю данные тарифов" />
+            </Page>
+        );
+    }
 
     if (error) {
         return (
