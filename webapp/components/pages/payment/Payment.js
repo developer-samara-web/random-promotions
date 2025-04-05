@@ -82,7 +82,7 @@ export default function Payment({ tariffId }) {
             <Page>
                 <Header title="Оплата подписки" />
                 <Error title="Ошибка транзакции" description={error} />
-                {error.buttons && error.buttons.map(({ title }, id) => (
+                {error.buttons && error.buttons.map(({ title, callback }, id) => (
                     <Button key={id} name={title} event={callback} />
                 ))}
             </Page>

@@ -13,7 +13,7 @@ export async function GET(request, ctx) {
         // Поиск транзакций
         const transactions = await Transaction.findOne({ user_id: id, status: "in_progress" });
         // Если транзакции нет
-        if (!transactions.length) { return NextResponse.json({ access: true }, { status: 200 }) };
+        if (!transactions) { return NextResponse.json({ access: true }, { status: 200 }) };
         // Отправляем данные
         return NextResponse.json({ access: false, response: transactions }, { status: 402 });
     } catch (e) {
