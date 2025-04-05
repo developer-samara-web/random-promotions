@@ -36,7 +36,7 @@ export async function PUT(request, ctx) {
         // Если транзакции нет
         if (!transactions) { return NextResponse.json({ error: 'Ошибка обновления транзакции.' }, { status: 404 }) };
         // Отправляем данные
-        return NextResponse.json({ response: 'Успешное обновление транзакции.' }, { status: 402 });
+        return NextResponse.json({ response: 'Успешное обновление транзакции.' }, { status: 200 });
     } catch (e) {
         console.error('Ошибка при обновлении транзакции:', e);
         return NextResponse.json({ status: 500, error: 'Что-то пошло не так. Попробуйте позже или обратитесь в поддержку.' }, { status: 500 });

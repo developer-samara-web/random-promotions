@@ -1,4 +1,5 @@
 import { delTransaction, updateTransaction } from "@/controllers/Transactions";
+import { getSubscribe } from "@/controllers/Subscribes";
 import { updateUser } from "@/controllers/Users";
 
 // Виджет оплаты подписки
@@ -29,23 +30,29 @@ export default async function CloudPayments(user, tariff, transaction, setError,
             skin: "modern",
             data
         },
-        async (options) => {
-            // При успехе показываем экран успеха
-            setSuccess({ message: 'Спасибо за ваш платеж! ', options })
-            // Устанавливаем премиум статус пользователю
-            const updateUserData = await updateUser(user._id, {
-                'subscription.is_active': true,
-                'subscription.is_auto_renewal': true,
-                'subscription.start_date': new Date(),
-                'subscription.end_date': new Date()
-            })
+        async ({ publicId }) => {
+            // Получаем данные о подписке
+            const { response: subscribeData } = await getSubscribe(publicId);
 
-            if (updateUserData) {
-                // Обновляем статус транзакции
-                await updateTransaction(transaction._id, {
-                    status: 'completed',
-                    updated_at: new Date()
+            if (subscribeData) {
+                // Экран успеха
+                setSuccess({ message: 'Спасибо за ваш платеж! ' })
+                
+                // Устанавливаем премиум статус пользователю
+                const updateUserData = await updateUser(user._id, {
+                    'subscription.is_active': true,
+                    'subscription.is_auto_renewal': true,
+                    'subscription.start_date': subscribeData.Model.StartDateIso,
+                    'subscription.end_date': subscribeData.Model.NextTransactionDateIso
                 })
+
+                if (updateUserData) {
+                    // Обновляем статус транзакции
+                    await updateTransaction(transaction._id, {
+                        status: 'completed',
+                        updated_at: new Date()
+                    })
+                }
             }
         },
         async (reason, options) => {
