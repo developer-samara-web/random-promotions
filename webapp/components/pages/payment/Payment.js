@@ -78,7 +78,7 @@ export default function Payment({ tariffId }) {
         return (
             <Page>
                 <Success title="Успешная оплата" description={success.message} />
-                {success.body}
+                <Button name="Закрыть" icon="XCircleIcon" event={() => Telegram.WebApp.close()} />
             </Page>
         );
     }
