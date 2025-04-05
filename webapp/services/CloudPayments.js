@@ -23,6 +23,7 @@ export default async function CloudPayments(user, tariff, transaction) {
             currency: 'RUB',
             invoiceId: transaction._id,
             accountId: user._id,
+            skin: "modern",
             data
         },
         (options) => {
@@ -31,7 +32,7 @@ export default async function CloudPayments(user, tariff, transaction) {
         },
         (reason, options) => {
             // При ошибке
-            console.log('Успешная оплата', options, reason)
+            console.log('Не успешная оплата', options, reason)
         }
     );
 };
