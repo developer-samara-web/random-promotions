@@ -33,7 +33,7 @@ export async function updateUser(id, data) {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/${id}`, {
             headers: { 'Content-Type': 'application/json' },
             method: 'PUT',
-            body: JSON.stringify({ data })
+            body: JSON.stringify(data)
         });
 
         return response.json();
