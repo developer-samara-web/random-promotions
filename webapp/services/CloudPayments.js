@@ -34,21 +34,17 @@ export default async function CloudPayments(user, tariff, transaction, setError,
             setSuccess({ message: 'Спасибо за ваш платеж! ', options })
             // Устанавливаем премиум статус пользователю
             const updateUserData = await updateUser(user._id, {
-                $set: {
-                    'subscription.is_active': true,
-                    'subscription.is_auto_renewal': true,
-                    'subscription.start_date': new Date(),
-                    'subscription.end_date': new Date()
-                }
+                'subscription.is_active': true,
+                'subscription.is_auto_renewal': true,
+                'subscription.start_date': new Date(),
+                'subscription.end_date': new Date()
             })
 
             if (updateUserData) {
                 // Обновляем статус транзакции
-                updateTransaction(transaction._id, {
-                    $set: {
-                        'status': 'completed',
-                        'updated_at': new Date()
-                    }
+                await updateTransaction(transaction._id, {
+                    status: 'completed',
+                    updated_at: new Date()
                 })
             }
         },
