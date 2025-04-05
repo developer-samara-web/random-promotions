@@ -43,7 +43,8 @@ export default async function CloudPayments(user, tariff, transaction, setError,
                     'subscription.is_active': true,
                     'subscription.is_auto_renewal': true,
                     'subscription.start_date': subscribeData.Model.StartDateIso,
-                    'subscription.end_date': subscribeData.Model.NextTransactionDateIso
+                    'subscription.end_date': subscribeData.Model.NextTransactionDateIso,
+                    'subscription.id': subscribeData.Id
                 })
 
                 if (updateUserData) {

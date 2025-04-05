@@ -11,13 +11,13 @@ export async function GET(request, ctx) {
         const apiSecret = process.env.CLOUDPAYMENTS_PUBLICK_SECRET;
         const base64Auth = btoa(`${publicId}:${apiSecret}`);
         // Создаём задачу в боте
-        const subscribe = await fetch(`https://api.cloudpayments.ru/subscriptions/get`, {
+        const subscribe = await fetch(`https://api.cloudpayments.ru/subscriptions/find`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Basic ${base64Auth}`
             },
-            body: JSON.stringify({ id: id }),
+            body: JSON.stringify({ accountId: id }),
         });
         // Отправляем данные
         return NextResponse.json({ response: subscribe }, { status: 200 });
