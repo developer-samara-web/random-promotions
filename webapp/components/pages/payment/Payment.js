@@ -35,41 +35,13 @@ export default function Payment({ tariffId }) {
                 const { response: tariffData } = await getTariff(tariffId);
                 setTariff(tariffData);
 
-                // Проверяем наличие не закрытых транзакций
-                const { response: transactionsData } = await getTransactions(userData._id);
-
-                if (transactionsData) {
-                    setError({
-                        message: "У вас уже есть активная транзакция. Пожалуйста, продолжите оплату прошлой транзакции или начниет новую.",
-                        buttons: [
-                            {
-                                title: "Продолжить оплату",
-                                callback: () => {
-                                    // Запускаем оплату
-                                    CloudPayments(userData, tariffData, transactionsData);
-                                }
-                            },
-                            {
-                                title: "Начать новую",
-                                callback: async () => {
-                                    // Удаление транзакции
-                                    delTransaction(transactionsData._id)
-                                    // Создаём новую транзакцию
-                                    const { response: transactionNewData } = await setTransaction({ user_id: userData._id, tariff_id: tariffData._id });
-                                    setTransactionData(transactionNewData);
-                                    // Запускаем оплату
-                                    const payment = await CloudPayments(userData, tariffData, transactionNewData);
-                                }
-                            }
-                        ]
-                    });
-
-                    return;
-                }
-
                 // Создаём новую транзакцию
                 const { response: transactionData } = await setTransaction({ user_id: userData._id, tariff_id: tariffData._id });
                 setTransactionData(transactionData);
+
+                // Открываем оплату
+                const payment =  CloudPayments(userData, tariffData, transactionData);
+                console.log(payment)
             } catch (e) {
                 console.error("Ошибка при загрузке данных или оплате:", e);
                 setError(e.message);
