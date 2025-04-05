@@ -32,7 +32,6 @@ export default async function CloudPayments(user, tariff, transaction, setError,
         async (options) => {
             // При успехе показываем экран успеха
             setSuccess({ message: 'Спасибо за ваш платеж! ', options })
-            console.log(options)
             // Устанавливаем премиум пользователю
             const update = await updateUser(user._id, {
                 'subscription.is_active': true,

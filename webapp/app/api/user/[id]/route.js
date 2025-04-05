@@ -36,7 +36,7 @@ export async function PUT(request, ctx) {
         // Подключаемся к базе данных
         await connectToDatabase();
         // Получаем пользователя и обновляем
-        const user = await User.findOneAndUpdate({ id }, { $set: body }, { new: true });
+        const user = await User.findOneAndUpdate({ _id: id }, { $set: body }, { new: true });
         // Если пользователя не существует
         if (!user) { return NextResponse.json({ error: 'Пользователь не найден. Попробуйте повторить попытку позже или обратитесь в службу поддержки.' }, { status: 404 }) };
         // Отправляем данные
