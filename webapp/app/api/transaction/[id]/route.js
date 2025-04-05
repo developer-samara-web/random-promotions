@@ -30,7 +30,7 @@ export async function DELETE(request, ctx) {
         // Подключаемся к базе данных
         await connectToDatabase();
         // Поиск транзакций
-        const transactions = await Transaction.findById(id);
+        const transactions = await Transaction.findByIdAndDelete(id);
         // Если транзакции нет
         if (!transactions) { return NextResponse.json({ error: 'Ошибка удаления транзакции.' }, { status: 404 }) };
         // Отправляем данные
