@@ -32,7 +32,7 @@ export default async function CloudPayments(user, tariff, transaction, setError,
         },
         async ({ publicId }) => {
             // Получаем данные о подписке
-            const { response: subscribeData } = await getSubscribe(publicId);
+            const { response: subscribeData } = await getSubscribe(user._id);
 
             if (subscribeData) {
                 // Экран успеха
