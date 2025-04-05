@@ -81,7 +81,7 @@ export default function Payment({ tariffId }) {
         return (
             <Page>
                 <Header title="Оплата подписки" />
-                <Error title="Ошибка транзакции" description={error} />
+                <Error title="Ошибка транзакции" description={error.message} />
                 {error.buttons && error.buttons.map(({ title, callback }, id) => (
                     <Button key={id} name={title} event={callback} />
                 ))}
@@ -91,14 +91,8 @@ export default function Payment({ tariffId }) {
 
     return (
         <Page>
-            {error ? (
-                <div>Ошибка: {error}</div>
-            ) : (
-                <Page>
-                    Payment {tariff ? `для тарифа ${tariff.name}` : "загружается..."}
-                    <Button name="Оплатить" event={() => CloudPayments(user, tariff, transaction)} />
-                </Page>
-            )}
+            Payment {tariff ? `для тарифа ${tariff.name}` : "загружается..."}
+            <Button name="Оплатить" event={() => CloudPayments(user, tariff, transaction)} />
         </Page>
     );
 }
