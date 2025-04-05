@@ -56,7 +56,7 @@ export default function Payment({ tariffId }) {
                                     const { response: transactionNewData } = await setTransaction({ user_id: userData._id, tariff_id: tariffData._id });
                                     setTransactionData(transactionNewData);
                                     // Запускаем оплату
-                                    CloudPayments(userData, tariffData, transactionNewData);
+                                    const payment = await CloudPayments(userData, tariffData, transactionNewData);
                                 }
                             }
                         ]
