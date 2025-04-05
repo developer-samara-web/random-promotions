@@ -28,11 +28,11 @@ export default async function CloudPayments(user, tariff, transaction) {
         },
         (options) => {
             // При успешной оплате
-            return { message: 'Успешная оплата', options}
+            setSuccess({ message: 'Спасибо за ваш платеж!', options })
         },
         (reason, options) => {
             // При ошибке
-            return { message: 'Ошибка оплаты', options, reason}
+            setError({ message: 'Спасибо за ваш платеж!', options, reason })
         }
     );
 };

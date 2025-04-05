@@ -5,8 +5,7 @@ import { getUser } from "@/controllers/Users";
 import { getTariff } from "@/controllers/Tariffs";
 import { setTransaction, getTransactions, delTransaction } from "@/controllers/Transactions";
 import Preloader from "@/components/ui/Preloader/Preloader";
-import Header from "@/components/ui/Header/Header";
-import Button from "@/components/ui/Button/Button";
+import Success from "@/components/ui/Success/Success";
 import Error from "@/components/ui/Error/Error";
 import CloudPayments from "@/services/CloudPayments";
 import Page from "@/components/ui/Page/Page";
@@ -14,9 +13,10 @@ import Page from "@/components/ui/Page/Page";
 // Компонент Payment
 export default function Payment({ tariffId }) {
     const [isLoading, setIsLoading] = useState(true);
+    const [transaction, setTransactionData] = useState(null);
     const [user, setUser] = useState(null);
     const [tariff, setTariff] = useState(null);
-    const [transaction, setTransactionData] = useState(null);
+    const [success, setSuccess] = useState(null);
     const [error, setError] = useState(null);
 
     useEffect(() => {
@@ -40,8 +40,7 @@ export default function Payment({ tariffId }) {
                 setTransactionData(transactionData);
 
                 // Открываем оплату
-                const payment = await CloudPayments(userData, tariffData, transactionData);
-                console.log(payment)
+                CloudPayments(userData, tariffData, transactionData, setError, setSuccess);
             } catch (e) {
                 console.error("Ошибка при загрузке данных или оплате:", e);
                 setError(e.message);
@@ -62,22 +61,30 @@ export default function Payment({ tariffId }) {
         );
     }
 
+    // При оплате с ошибкой
     if (error) {
         return (
             <Page>
-                <Header title="Оплата подписки" />
-                <Error title="Ошибка транзакции" description={error.message} />
-                {error.buttons && error.buttons.map(({ title, callback }, id) => (
-                    <Button key={id} name={title} event={callback} />
-                ))}
+                <Error title="Ошибка оплаты" description={error.message} />
             </Page>
         );
     }
 
-    return (
-        <Page>
-            Payment {tariff ? `для тарифа ${tariff.name}` : "загружается..."}
-            <Button name="Оплатить" event={() => CloudPayments(user, tariff, transaction)} />
-        </Page>
-    );
+    // При успешной оплате
+    if (success) {
+        return (
+            <Page>
+                <Success title="Успешная оплата" description={success.message} />
+                {success.body}
+            </Page>
+        );
+    }
+
+    // 
+    // return (
+    //     <Page>
+    //         Payment {tariff ? `для тарифа ${tariff.name}` : "загружается..."}
+    //         <Button name="Оплатить" event={() => CloudPayments(user, tariff, transaction)} />
+    //     </Page>
+    // );
 }
