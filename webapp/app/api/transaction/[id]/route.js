@@ -32,7 +32,7 @@ export async function DELETE(request, ctx) {
         // Поиск транзакций
         const transactions = await Transaction.findById(id);
         // Если транзакции нет
-        if (!transactions.length) { return NextResponse.json({ error: 'Ошибка удаления транзакции.' }, { status: 404 }) };
+        if (!transactions) { return NextResponse.json({ error: 'Ошибка удаления транзакции.' }, { status: 404 }) };
         // Отправляем данные
         return NextResponse.json({ response: 'Успешное удаление транзакции.' }, { status: 402 });
     } catch (e) {
