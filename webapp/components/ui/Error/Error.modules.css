@@ -16,5 +16,5 @@
 }
 
 .error-description{
-    @apply text-sm text-red-100
+    @apply text-sm text-red-100 whitespace-pre-wrap
 }
