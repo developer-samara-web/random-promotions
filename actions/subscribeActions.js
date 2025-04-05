@@ -1,5 +1,6 @@
 // Импорты
 import { getUser } from "#controllers/userController.js";
+import { getTariffByAmount } from "#controllers/tariffController.js";
 import { subscribeMessage, subscribeShowMessage, subscribePaymentMessage } from "#messages/subscribeMessages.js";
 import { subscribeKeyboard, subscribeShowKeyboard, subscribePaymentKeyboard } from "#keyboards/subscribeKeyboards.js";
 
@@ -24,10 +25,12 @@ export async function subscribeAction (telegram) {
 export async function subscribeShowAction(telegram) {
 	try {
 		telegram.action(/^user_premium_(\d+)$/, async (ctx) => {
-			// Извлекаем цену из callback_data
-			const price = ctx.match[0].split("_")[2];
-			return await ctx.editMessageText(subscribeShowMessage(ctx, price), {
-				reply_markup: subscribeShowKeyboard(price).reply_markup,
+			// Получаем данные о пользователе
+			const user = await getUser(ctx.from.id);
+			// Получаем данные о тарифе
+			const tariff = await getTariffByAmount(ctx.match[0].split("_")[2]);
+			return await ctx.editMessageText(subscribeShowMessage(ctx, tariff.amount), {
+				reply_markup: subscribeShowKeyboard(tariff, user).reply_markup,
 				parse_mode: "HTML",
 			});
 		});

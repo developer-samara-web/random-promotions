@@ -6,21 +6,24 @@ import "./globals.css";
 // Импорт компонентов
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
+import { checkAuth } from "@/controllers/Auth";
 import Registration from "@/components/ui/Registration/Registration";
-import getAuth from "@/controllers/Auth";
-import Page from "@/components/ui/Page/Page";
 import Preloader from "@/components/ui/Preloader/Preloader";
+import Page from "@/components/ui/Page/Page";
 import Error from "@/components/ui/Error/Error";
 import Script from 'next/script';
 
+// Компонент
 export default function RootLayout({ children }) {
-  const [isScriptLoaded, setIsScriptLoaded] = useState(false);
+  const [isTelegramScriptLoaded, setIsTelegramScriptLoaded] = useState(false);
+  const [isPaymentScriptLoaded, setIsPaymentScriptLoaded] = useState(false);
   const [check, setCheck] = useState(null);
   const [error, setError] = useState(null);
   const pathname = usePathname();
 
   useEffect(() => {
-    if (!isScriptLoaded) return;
+    if (!isTelegramScriptLoaded) return;
+    if (!isPaymentScriptLoaded) return;
 
     // Список исключенных маршрутов
     const excludedRoutes = ['/policy', '/oferta'];
@@ -39,7 +42,7 @@ export default function RootLayout({ children }) {
             return;
           }
           // Проверяем авторизацию пользователя
-          const { access, error } = await getAuth(Telegram.WebApp.initData);
+          const { access, error } = await checkAuth(Telegram.WebApp.initData);
           // Если нет ошибки
           if (!error) { setCheck(true) };
           // Если авторизация не пройдена
@@ -53,14 +56,15 @@ export default function RootLayout({ children }) {
     };
 
     fetchAuth();
-  }, [isScriptLoaded, pathname]);
+  }, [isTelegramScriptLoaded, isPaymentScriptLoaded, pathname]);
 
   // Если проверка еще не завершена
   if (check === null) {
     return (
       <html lang="ru">
         <head>
-          <Script src="https://telegram.org/js/telegram-web-app.js" onLoad={() => setIsScriptLoaded(true)} />
+          <Script src="https://telegram.org/js/telegram-web-app.js" onLoad={() => setIsTelegramScriptLoaded(true)} />
+          <Script src="https://widget.cloudpayments.ru/bundles/cloudpayments.js" onLoad={() => setIsPaymentScriptLoaded(true)} />
         </head>
         <body className="root">
           <Page>

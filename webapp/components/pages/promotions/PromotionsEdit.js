@@ -3,12 +3,11 @@
 // Импорт компонентов
 import { useState, useEffect } from "react";
 import { getPromotion, updatePromotion } from "@/controllers/Promotions";
-import { checkAdmin } from "@/controllers/Users";
+import { checkAdmin } from "@/controllers/Auth";
 import Page from "@/components/ui/Page/Page";
 import Header from "@/components/ui/Header/Header";
 import Form from "@/components/ui/Form/Form";
 import fields from "@/data/fields/Promotion.json";
-import Button from "@/components/ui/Button/Button";
 import Preloader from "@/components/ui/Preloader/Preloader";
 import Error from "@/components/ui/Error/Error";
 

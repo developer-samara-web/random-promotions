@@ -4,7 +4,7 @@ import "@/components/ui/Form/Form.modules.css";
 // Импорт компонентов
 import { useState } from "react"
 import { MuiFileInput } from "mui-file-input"
-import uploadDigitalOcean from "@/controllers/DigitalOcean";
+import uploadDigitalOcean from "@/controllers/Upload";
 import styleFileInput from "@/data/style/File"
 import Button from "@/components/ui/Button/Button";
 import Switch from "@/components/ui/Switch/Switch";

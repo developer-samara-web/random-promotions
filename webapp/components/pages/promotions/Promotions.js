@@ -2,10 +2,10 @@
 
 // Импорт компонентов
 import { useState, useEffect } from "react";
-import { checkAdmin } from "@/controllers/Users";
+import { checkAdmin } from "@/controllers/Auth";
+import Preloader from "@/components/ui/Preloader/Preloader";
 import Page from "@/components/ui/Page/Page";
 import Header from "@/components/ui/Header/Header";
-import Preloader from "@/components/ui/Preloader/Preloader";
 import Error from "@/components/ui/Error/Error";
 import List from "@/components/ui/List/List";
 

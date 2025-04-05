@@ -1,25 +1,38 @@
-// Импорт компонентов
+// Импорты
 import { NextResponse } from 'next/server';
 import connectToDatabase from '@/services/mongodb';
 import User from '@/models/User';
 
-// Получаем данные пользователя
+// Маршрут "Получение данных пользователя"
 export async function GET(request, ctx) {
     try {
-        // Получаем id акции
+        // Получаем id пользователя
         const { id } = await ctx?.params;
-        // Проверяем id акции
-        if (id === 'undefined') { return NextResponse.json({ status: 404, error: 'Ошибка при загрузке акции. Если проблема повторяется, пожалуйста, свяжитесь с нашей технической поддержкой для уточнения причин.' }) }
+        // Проверяем данные пользователя
+        if (id === 'undefined') { return NextResponse.json({ error: 'Ошибка при загрузке пользователя. Если проблема повторяется, пожалуйста, свяжитесь с нашей технической поддержкой для уточнения причин.' }, { status: 404 }) };
         // Подключаемся к базе данных
         await connectToDatabase();
-        // Получаем акцию
+        // Получаем пользователя
         const user = await User.findOne({ telegram_id: id });
-        // Если акции не существует
-        if (!user) { return NextResponse.json({ status: 404, error: 'Акция не найдена. Попробуйте повторить попытку позже или обратитесь в службу поддержки.' }) }
+        // Если пользователя не существует
+        if (!user) { return NextResponse.json({ error: 'Пользователь не найден. Попробуйте повторить попытку позже или обратитесь в службу поддержки.' }, { status: 404 }) };
         // Отправляем данные
-        return NextResponse.json({ status: 200, response: user })
-    } catch (error) {
-        console.error('Ошибка при получении акции:', error);
-        return NextResponse.json({ status: 500, error: 'Что-то пошло не так. Попробуйте повторить попытку позже или обратитесь в поддержку.' })
+        return NextResponse.json({ response: user }, { status: 200 });
+    } catch (e) {
+        console.error('Ошибка при получении данных пользователя:', e);
+        return NextResponse.json({ error: 'Что-то пошло не так. Попробуйте повторить попытку позже или обратитесь в поддержку.' }, { status: 500 });
     }
+}
+
+// Настройка методов и заголовков
+export async function OPTIONS() {
+    return NextResponse.json(null, {
+        status: 204,
+        headers: {
+            'Access-Control-Allow-Origin': process.env.NEXT_PUBLIC_URL || '*',
+            'Access-Control-Allow-Methods': 'GET',
+            'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+            'Access-Control-Max-Age': '3600',
+        },
+    });
 }

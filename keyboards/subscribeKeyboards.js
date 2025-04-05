@@ -1,6 +1,9 @@
 // Импорт
 import { Markup } from "telegraf";
 
+// Логирование
+import logger from "#utils/logs.js";
+
 // Клавиатура "Меню премиум подписки"
 export function subscribeKeyboard() {
     return Markup.inlineKeyboard([
@@ -12,10 +15,10 @@ export function subscribeKeyboard() {
 }
 
 // Клавиатура "Меню оплаты выбранной подписки"
-export function subscribeShowKeyboard(price) {
+export function subscribeShowKeyboard(tariff) {
     try {
         return Markup.inlineKeyboard([
-            [Markup.button.callback(`💳 Клауд Пайментс | ${price} руб`, `user_premium_payment_${price}`)],
+            [Markup.button.webApp(`💳 Клауд Пайментс | ${tariff.amount} руб`, `${process.env.TELEGRAM_WEBAPP}/payment/${tariff._id}`)],
             [Markup.button.callback("⬅️ Назад", "user_premium")],
         ]);
     } catch (error) {

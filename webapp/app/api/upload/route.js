@@ -1,8 +1,9 @@
-import { NextResponse } from 'next/server'
-import { v4 as uuidv4 } from 'uuid'
-import { S3, PutObjectCommand } from '@aws-sdk/client-s3'
-import { File } from 'buffer'
-import sharp from 'sharp'
+// Импорты
+import { NextResponse } from "next/server";
+import { S3, PutObjectCommand } from "@aws-sdk/client-s3";
+import { v4 as uuidv4 } from "uuid";
+import { File } from "buffer";
+import sharp from "sharp";
 
 // Конфиг загрузки
 const s3Client = new S3({
@@ -15,24 +16,23 @@ const s3Client = new S3({
     },
 });
 
-// Функция отправки файлов в облако
+// Маршрут "Загрузка файла"
 export async function POST(request) {
     try {
         // Получаем данные из формы
-        const form = await request.formData()
-        const file = form.get('file')
-        if (!file) {  return NextResponse.json({ status: 404, message: 'Файл не загружен' }) }
+        const form = await request.formData();
+        const file = form.get('file');
+        if (!file) { return NextResponse.json({ message: 'Файл не загружен' }, { status: 404 }) };
         // Проверяем, что это файл
-        if (!(file instanceof File)) { return NextResponse.json({ status: 400, message: 'Объект не является файлом' }) }
+        if (!(file instanceof File)) { return NextResponse.json({ message: 'Объект не является файлом' }, { status: 400 }) };
         // Создаём уникальный ID для файла
-        const file_id = `${uuidv4()}.jpg`; // Принудительно задаём расширение JPG
+        const file_id = `${uuidv4()}.jpg`;
         // Преобразуем файл в массив байтов
         const buffer = await file.arrayBuffer();
         // Используем sharp для создания отрисованного изображения в формате JPG
         const imageBuffer = await sharp(Buffer.from(buffer))
             .jpeg({ quality: 80 })
             .toBuffer()
-
         // Загружаем обработанное изображение в S3
         const data = await s3Client.send(
             new PutObjectCommand({
@@ -42,18 +42,18 @@ export async function POST(request) {
                 ContentType: 'image/jpeg',
                 ACL: "public-read",
             })
-        )
+        );
         // Проверяем результат загрузки
-        if (!data) { return NextResponse.json({ status: 400, message: 'Ошибка загрузки файла' }) }
+        if (!data) { return NextResponse.json({ message: 'Ошибка загрузки файла' }, { status: 400 }) };
         // Возвращаем URL загруженного файла
         return NextResponse.json({
             status: 200,
             message: 'Файл успешно загружен',
             file_url: `https://${process.env.SPACES_NAME}.${process.env.SPACES_REGION}.digitaloceanspaces.com/${process.env.SPACES_FOLDER}/${file_id}`,
-        })
-    } catch (error) {
-        console.error('Ошибка при загрузке файла:', error)
-        return NextResponse.json({ status: 500, message: 'Ошибка обработки запроса' })
+        });
+    } catch (e) {
+        console.error('Ошибка при загрузке файла:', e);
+        return NextResponse.json({ message: 'Ошибка обработки запроса' }, { status: 500 });
     }
 }
 
@@ -62,10 +62,10 @@ export async function OPTIONS() {
     return NextResponse.json(null, {
         status: 204,
         headers: {
-            'Access-Control-Allow-Origin': process.env.APP_URL,
+            'Access-Control-Allow-Origin': process.env.NEXT_PUBLIC_URL || '*',
             'Access-Control-Allow-Methods': 'POST',
             'Access-Control-Allow-Headers': 'Content-Type, Authorization',
             'Access-Control-Max-Age': '3600',
         },
-    })
+    });
 }

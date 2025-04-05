@@ -1,46 +1,45 @@
-import { NextResponse } from 'next/server'
-import connectToDatabase from '@/services/mongodb'
-import Promotion from '@/models/Promotion'
+// Импорты
+import { NextResponse } from "next/server";
+import connectToDatabase from "@/services/mongodb";
+import Promotion from "@/models/Promotion";
 
-// Получаем список администраторов
+// Маршрут "Получение акций"
 export async function GET(request, ctx) {
     try {
         // Получаем id акции
         const { id } = await ctx?.params;
-        // Проверяем id акции
-        if (id === 'undefined') { return NextResponse.json({ status: 404, error: 'Ошибка при загрузке акции. Если проблема повторяется, пожалуйста, свяжитесь с нашей технической поддержкой для уточнения причин.' }) }
         // Подключаемся к базе данных
         await connectToDatabase();
         // Получаем акцию
         const promotion = await Promotion.findById(id);
         // Если акции не существует
-        if (!promotion) { return NextResponse.json({ status: 404, error: 'Акция не найдена. Попробуйте повторить попытку позже или обратитесь в службу поддержки.' }) }
+        if (!promotion) { return NextResponse.json({ error: 'Акция не найдена. Попробуйте повторить попытку позже или обратитесь в службу поддержки.' }, { status: 404 }) };
         // Отправляем данные
-        return NextResponse.json({ status: 200, response: promotion })
-    } catch (error) {
-        console.error('Ошибка при получении акции:', error);
-        return NextResponse.json({ status: 500, error: 'Что-то пошло не так. Попробуйте повторить попытку позже или обратитесь в поддержку.' })
+        return NextResponse.json({ response: promotion }, { status: 200 });
+    } catch (e) {
+        console.error('Ошибка при получении акции:', e);
+        return NextResponse.json({ error: 'Что-то пошло не так. Попробуйте повторить попытку позже или обратитесь в поддержку.' }, { status: 500 });
     }
 }
 
-// Редактирование акции
+// Маршрут "Редактирование акции"
 export async function PUT(request, ctx) {
     try {
         // Получаем id акции
         const { id } = await ctx?.params;
         // Подключаемся к базе данных
         await connectToDatabase();
-        // Получение данные формы
+        // Получение данные
         const query = await request.json();
         // Получаем акцию и обновляем
-        const promotion = await Promotion.findByIdAndUpdate(id, query, { new: true })
-        // Если ошибка
-        if (!promotion) { return NextResponse.json({ status: 404, error: 'Не удалось отредактировать акцию.' }) }
+        const promotion = await Promotion.findByIdAndUpdate(id, query, { new: true });
+        // Если ошибка обновления
+        if (!promotion) { return NextResponse.json({ error: 'Не удалось отредактировать акцию.' }, { tatus: 404 }) };
         // Отправляем данные
-        return NextResponse.json({ status: 200, response: promotion })
-    } catch (error) {
-        console.error('Ошибка при создании акции:', error)
-        return NextResponse.json({ status: 500, error: 'Что-то пошло не так. Попробуйте повторить попытку позже или обратитесь в поддержку.' })
+        return NextResponse.json({ response: promotion }, { status: 200 });
+    } catch (e) {
+        console.error('Ошибка при создании акции:', e);
+        return NextResponse.json({ error: 'Что-то пошло не так. Попробуйте повторить попытку позже или обратитесь в поддержку.' }, { status: 500 });
     }
 }
 
@@ -49,10 +48,10 @@ export async function OPTIONS() {
     return NextResponse.json(null, {
         status: 204,
         headers: {
-            'Access-Control-Allow-Origin': process.env.APP_URL,
+            'Access-Control-Allow-Origin': process.env.NEXT_PUBLIC_URL || '*',
             'Access-Control-Allow-Methods': 'GET, PUT',
             'Access-Control-Allow-Headers': 'Content-Type, Authorization',
             'Access-Control-Max-Age': '3600',
         },
-    })
+    });
 }

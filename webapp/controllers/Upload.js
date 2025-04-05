@@ -1,4 +1,4 @@
-// Загрузка файла на облако
+// Контроллер "Загрузка файлов"
 export default async function uploadDigitalOcean(data) {
     try {
         const file = new FormData()

@@ -1,4 +1,4 @@
-// Получение участия
+// Контроллер "Получение участника"
 export async function getParticipant(user, promotion) {
     try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/participant/${promotion}/${user}`, {
@@ -12,21 +12,7 @@ export async function getParticipant(user, promotion) {
     }
 }
 
-// Получение всех участий
-export async function getParticipants(user_id) {
-    try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/participant/all/${user_id}`, {
-            headers: { 'Content-Type': 'application/json' },
-            method: 'GET'
-        });
-
-        return response.json();
-    } catch (e) {
-        console.error('Ошибка получения данных участий:', e);
-    }
-}
-
-// Регистрация участия в акции
+// Контроллер "Регистрация участника"
 export async function setParticipant(promotion_id, user_id) {
     try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/participant`, {
@@ -41,6 +27,20 @@ export async function setParticipant(promotion_id, user_id) {
         return response.json();
     } catch (e) {
         console.error('Ошибка при регистрации пользователя в акции:', e); ц
+    }
+}
+
+// Контроллер "Получение всех участий пользователя"
+export async function getParticipants(user_id) {
+    try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/participant/all/${user_id}`, {
+            headers: { 'Content-Type': 'application/json' },
+            method: 'GET'
+        });
+
+        return response.json();
+    } catch (e) {
+        console.error('Ошибка получения данных участий:', e);
     }
 }
 

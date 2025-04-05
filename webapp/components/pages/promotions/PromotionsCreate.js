@@ -3,7 +3,7 @@
 // Импорт компонентов
 import { useState, useEffect } from 'react';
 import { setPromotion } from "@/controllers/Promotions";
-import { checkAdmin } from "@/controllers/Users";
+import { checkAdmin } from "@/controllers/Auth";
 import Page from "@/components/ui/Page/Page";
 import Preloader from "@/components/ui/Preloader/Preloader";
 import Header from "@/components/ui/Header/Header";
