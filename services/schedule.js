@@ -9,7 +9,7 @@ import logger from "#utils/logs.js";
 const scheduledJobs = new Map();
 
 // Инициализация планировщика
-export async function initSchedule (telegram) {
+export async function initSchedule(telegram) {
     try {
         // Получаем все задачи
         const schedules = await getSchedules();
@@ -23,15 +23,5 @@ export async function initSchedule (telegram) {
 
 // Добавление задачи в планировщик
 export async function addSchedule(schedule, telegram) {
-    // Получаем тип задачи
-    const { type } = schedule;
-    // Проверяем тип задачи
-    if (type === 'promotion') {
-        return addPromotionSchedule(schedule, telegram, scheduledJobs);
-    } else if (type === 'subscription') {
-        return addSubscriptionSchedule(schedule, telegram, scheduledJobs);
-    } else {
-        logger.error(`Неизвестный тип задачи: ${type}`);
-        return null;
-    }
+    return addPromotionSchedule(schedule, telegram, scheduledJobs);
 }

@@ -2,12 +2,16 @@
 import { Markup } from "telegraf";
 
 // Клавиатура "Главное меню"
-export function startKeyboard() {
-    return Markup.inlineKeyboard([
+export function startKeyboard(subscription) {
+    const premiumKeyboard = subscription.is_active ? [
+        [Markup.button.callback("👤 Мой Профиль", "user_profile")],
+    ] : [
         [Markup.button.callback("👤 Мой Профиль", "user_profile")],
         [Markup.button.callback("🔥 2 дня за 1 рубль 🔥", "user_premium_1")],
         [Markup.button.callback("⭐️ Премиум подписка ⭐️", "user_premium")]
-    ]);
+    ]
+
+    return Markup.inlineKeyboard([...premiumKeyboard]);
 }
 
 // Клавиатура "Правила"

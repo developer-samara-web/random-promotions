@@ -27,23 +27,4 @@ export default async function (app, telegram) {
             return res.status(403).send(`Ошибка доступа.`);
         }
     });
-
-    // Создание расписания подписки
-    app.post('/schedule/subscribes/create', async (req, res) => {
-        try {
-            // Получаем id пользова
-            const { user_id } = req.body;
-            // Получаем время акции
-            const { start_date, end_date } = await getPromotion(promotion_id);
-            // Создаём новую задачу в базе
-            const schedule = await setSchedule({ promotion_id, start_date, end_date });
-            // Отправляем в планеровщик
-            const newJob = addSchedule(schedule, telegram);
-            // Логирование
-            logger.info(`Задача создана: ${newJob}`);
-            return res.status(200).json({ status: 'success' });
-        } catch (e) {
-            return res.status(403).send(`Ошибка доступа.`);
-        }
-    });
 }

@@ -7,14 +7,25 @@ export default async function CloudPayments(user, tariff, transaction, setError,
     // Создаём экземпляр виджета
     const widget = new cp.CloudPayments();
 
-    // Рекуррентные платежи
+    // Определяем параметры рекуррентного платежа в зависимости от тарифа
+    let recurrentData = {
+        interval: tariff.duration,
+        period: 1
+    };
+
+    // Особые условия для акционного тарифа (1 рубль за 2 дня)
+    if (tariff.amount === 1 && tariff.name.includes("Акция")) {
+        recurrentData = {
+            interval: tariff.duration,
+            period: 1, // Через 2 дня
+            Amount: 500, // Следующий платеж будет 500 рублей
+            StartDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000) // Через 2 дня
+        };
+    }
+
     const data = {
         CloudPayments: {
-            recurrent: {
-                interval: tariff.duration,
-                period: 1,
-                // StartDate
-            }
+            recurrent: recurrentData
         }
     };
 
@@ -37,13 +48,21 @@ export default async function CloudPayments(user, tariff, transaction, setError,
             if (subscribeData) {
                 // Экран успеха
                 setSuccess({ message: `Спасибо за ваш платеж!\nСумма: ${subscribeData.Model[0].Amount} ${subscribeData.Model[0].Currency}\nСледующий платёж: ${subscribeData.Model[0].NextTransactionDateIso}\nID транзакции: ${transaction._id}\nСпасибо, что выбрали наш сервис! Если у вас возникнут вопросы, обращайтесь в поддержку.` })
+                
+                // Время окончания подписки
+                let endDate = new Date(subscribeData.Model[0].NextTransactionDateIso);
+
+                // Для акционного тарифа устанавливаем срок действия 2 дня
+                if (tariff.amount === 1 && tariff.name.includes("Акция")) {
+                    endDate = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000);
+                }
 
                 // Устанавливаем премиум статус пользователю
                 const updateUserData = await updateUser(user._id, {
                     'subscription.is_active': true,
                     'subscription.is_auto_renewal': true,
                     'subscription.start_date': subscribeData.Model[0].StartDateIso,
-                    'subscription.end_date': subscribeData.Model[0].NextTransactionDateIso,
+                    'subscription.end_date': endDate,
                     'subscription.id': subscribeData.Model[0].Id
                 })
 

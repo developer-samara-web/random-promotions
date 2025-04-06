@@ -7,8 +7,8 @@ export async function GET(request, ctx) {
         // Получаем id подписки
         const { id } = await ctx?.params;
         // Данные для авторизации
-        const publicId = process.env.CLOUDPAYMENTS_PUBLICK_ID;
-        const apiSecret = process.env.CLOUDPAYMENTS_PUBLICK_SECRET;
+        const publicId = process.env.CLOUDPAYMENTS_PUBLIC_ID;
+        const apiSecret = process.env.CLOUDPAYMENTS_PUBLIC_SECRET;
         const base64Auth = btoa(`${publicId}:${apiSecret}`);
         // Создаём задачу в боте
         const subscribe = await fetch(`https://api.cloudpayments.ru/subscriptions/find`, {

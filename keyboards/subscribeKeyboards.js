@@ -19,7 +19,7 @@ export function subscribeShowKeyboard(tariff) {
     try {
         return Markup.inlineKeyboard([
             [Markup.button.webApp(`💳 Клауд Пайментс | ${tariff.amount} руб`, `${process.env.TELEGRAM_WEBAPP}/payment/${tariff._id}`)],
-            [Markup.button.callback("⬅️ Назад", "user_premium")],
+            [Markup.button.callback("⬅️ Главное меню", "start_menu")],
         ]);
     } catch (e) {
         logger.error("Ошибка в userPremiumShowKeyboards:", e);

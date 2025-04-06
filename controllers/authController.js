@@ -26,7 +26,7 @@ export default async (ctx) => {
       // Если администратор
       if (user.role === "admin") { return await ctx.replyWithHTML(adminMessage(ctx), adminKeyboard()) }
       // Если пользователь
-      return await ctx.replyWithHTML(startMessage(ctx), startKeyboard());
+      return await ctx.replyWithHTML(startMessage(ctx), startKeyboard(user.subscription));
     }
   } catch (e) {
     logger.error('Ошибка регистрации пользователя:', e);

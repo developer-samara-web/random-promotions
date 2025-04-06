@@ -1,5 +1,5 @@
 // Импорты
-import { setUser, checkUser } from "#controllers/userController.js";
+import { setUser, getUser, checkUser } from "#controllers/userController.js";
 import { startMessage, rulesAcceptMessage, errorMessage } from "#messages/mainMessages.js";
 import { startKeyboard, rulesAcceptKeyboard, errorKeyboard } from "#keyboards/mainKeyboards.js";
 
@@ -10,8 +10,9 @@ import logger from "#utils/logs.js";
 export async function startAction(telegram) {
 	try {
 		telegram.action("start_menu", async (ctx) => {
+			const { subscription } = await getUser(ctx.from.id);
 			return await ctx.editMessageText(startMessage(ctx), {
-				reply_markup: startKeyboard().reply_markup,
+				reply_markup: startKeyboard(subscription).reply_markup,
 				parse_mode: "HTML",
 			});
 		});
@@ -22,7 +23,7 @@ export async function startAction(telegram) {
 
 // Экшен "Правила"
 export async function rulesAction(telegram) {
-	try{
+	try {
 		telegram.action("rules_accept", async (ctx) => {
 			// Получаем данные пользователя
 			const { id, username = null, first_name = null } = ctx.from;
@@ -43,7 +44,7 @@ export async function rulesAction(telegram) {
 				parse_mode: "HTML"
 			});
 		});
-	} catch (e){
+	} catch (e) {
 		logger.error('Ошибка экшена (rules_accept):', e);
 	}
 }

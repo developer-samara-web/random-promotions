@@ -19,7 +19,7 @@ export default async function (app, telegram) {
             const participants = await getParticipants(promotion_id);
             // Обновляем пост телеграмм
             await updatePost(telegram, promotion, participants);
-            logger.info(`Пост обновлён: ${process.env.NEXT_PUBLIC_TELEGRAM_CHANEL_URL}/${promotion.message_id}`);
+            logger.info(`Пост обновлён: ${process.env.TELEGRAM_CHANEL_URL}/${promotion.message_id}`);
             return res.status(200).json({ status: 'success' });
         } catch (e) {
             return res.status(403).send(`Ошибка доступа.`);

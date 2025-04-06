@@ -2,6 +2,7 @@
 import { getUser, updateUser } from "#controllers/userController.js";
 import { profileMessage, subscribeUserMessage } from "#messages/userMessages.js";
 import { profileKeyboard, subscribeUserKeyboard } from "#keyboards/userKeyboards.js";
+import { updatePayment } from "#controllers/paymentsController.js";
 
 // Логирование
 import logger from "#utils/logs.js";
@@ -48,7 +49,12 @@ export async function subscribeToggleAction(telegram) {
 			const update = await updateUser(ctx.from.id, {
 				'subscription.is_auto_renewal': !user.subscription.is_auto_renewal,
 			})
-			logger.info(`Пользователь (${update._id}) ${update.is_auto_subscription ? "включил" : "отключил"} автоподписку.`);
+
+			await updatePayment(user.subscription.id, {
+				MaxPeriods: !user.subscription.is_auto_renewal ? 100 : 1
+			})
+
+			logger.info(`Пользователь ${update.subscription.is_auto_renewal ? "включил" : "отключил"} автоподписку: ID:${update._id}`);
 			return await ctx.editMessageText(await subscribeUserMessage(update), {
 				reply_markup: subscribeUserKeyboard(update.subscription.is_auto_renewal, update.subscription.is_active).reply_markup,
 				parse_mode: "HTML",

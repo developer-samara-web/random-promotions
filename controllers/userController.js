@@ -56,14 +56,14 @@ export async function setUser(body) {
 		// Проверка данных
 		if (!user) { return null };
 		// Отправляем данные
-		logger.info(`Пользователь создан: ${user._id}`);
+		logger.info(`Пользователь создан: ID:${user._id}`);
 		return user;
 	} catch (e) {
 		logger.error('Ошибка создания пользователя:', e);
 	}
 };
 
-// Контроллер "Обновление пользователя"
+// Контроллер "Обновление пользователя по telegram_id"
 export async function updateUser(id, body) {
 	try {
 		// Проверка входных данных
@@ -79,7 +79,30 @@ export async function updateUser(id, body) {
 		// Проверка данных
 		if (!user) { return null };
 		// Отправляем данные
-		logger.info(`Пользователь обновлён: ${user._id}`);
+		logger.info(`Пользователь обновлён: ID:${user._id}`);
+		return user;
+	} catch (e) {
+		logger.error('Ошибка обновления пользователя:', e);
+	}
+};
+
+// Контроллер "Обновление пользователя по id"
+export async function updateUserById(id, body) {
+	try {
+		// Проверка входных данных
+		if (!id || !body) { throw new Error('Ошибка данных, id или body не заполнены.') };
+		// Подключаемся к базе
+		await connectToDatabase();
+		// Обновляем данные
+		const user = await User.findOneAndUpdate(
+			{ _id: id },
+			{ $set: body },
+			{ new: true }
+		);
+		// Проверка данных
+		if (!user) { return null };
+		// Отправляем данные
+		logger.info(`Пользователь обновлён: ID:${user._id}`);
 		return user;
 	} catch (e) {
 		logger.error('Ошибка обновления пользователя:', e);
