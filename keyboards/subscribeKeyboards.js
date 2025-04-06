@@ -21,8 +21,8 @@ export function subscribeShowKeyboard(tariff) {
             [Markup.button.webApp(`💳 Клауд Пайментс | ${tariff.amount} руб`, `${process.env.TELEGRAM_WEBAPP}/payment/${tariff._id}`)],
             [Markup.button.callback("⬅️ Назад", "user_premium")],
         ]);
-    } catch (error) {
-        logger.error("Ошибка в userPremiumShowKeyboards:", error);
+    } catch (e) {
+        logger.error("Ошибка в userPremiumShowKeyboards:", e);
     }
 }
 

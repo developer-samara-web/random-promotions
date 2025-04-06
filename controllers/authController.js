@@ -8,7 +8,7 @@ import { adminKeyboard } from "#keyboards/adminKeyboards.js";
 // Логирование
 import logger from "#utils/logs.js";
 
-// Авторизация / Регистрация
+// Контроллер "Авторизация / Регистрация"
 export default async (ctx) => {
   // Проверка входных данных
   if (ctx.chat.type !== 'private') return;

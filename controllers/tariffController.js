@@ -5,7 +5,7 @@ import Tariff from "#models/Tariff.js";
 // Логирование
 import logger from "#utils/logs.js";
 
-// Получаем тариф
+// Контроллер "Получаем тариф"
 export async function getTariff(id) {
     try {
         // Подключаемся к базе
@@ -21,7 +21,7 @@ export async function getTariff(id) {
     }
 };
 
-// Получаем все тарифы
+// Контроллер "Получаем все тарифы"
 export async function getTariffs() {
     try {
         // Подключаемся к базе
@@ -37,7 +37,7 @@ export async function getTariffs() {
     }
 };
 
-// Получаем тариф по amount
+// Контроллер "Получаем тариф по amount"
 export async function getTariffByAmount(amount) {
     try {
         // Подключаемся к базе

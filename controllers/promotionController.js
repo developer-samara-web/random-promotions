@@ -5,7 +5,7 @@ import Promotion from "#models/Promotion.js";
 // Логирование
 import logger from "#utils/logs.js";
 
-// Получение акции
+// Контроллер "Получение данных акции"
 export async function getPromotion(id) {
 	try {
 		// Проверка входных данных
@@ -23,7 +23,7 @@ export async function getPromotion(id) {
 	}
 };
 
-// Создание акции
+// Контроллер "Создание акции"
 export async function setPromotion(body) {
 	try {
 		// Проверка входных данных
@@ -44,7 +44,7 @@ export async function setPromotion(body) {
 	}
 };
 
-// Обновление акции
+// Контроллер "Обновление акции"
 export async function updatePromotion(id, body) {
 	try {
 		// Проверка входных данных
@@ -60,23 +60,9 @@ export async function updatePromotion(id, body) {
 		// Проверка данных
 		if (!promotion) { return null };
 		// Отправляем данные
-		logger.info(`Акция обновлена: ${promotion._id}`);
+		logger.info(`Акция обновлена: ID:${promotion._id}`);
 		return promotion;
 	} catch (e) {
 		logger.error('Ошибка обновления акции:', e);
-	}
-};
-
-// Отправка публикации
-export async function publishPromotion(id, promotion, telegram) {
-	try {
-		const message = `🎉 Новая акция!\n\n${promotion.name}\n\n${promotion.description}`;
-
-		await telegram.sendPhoto(id, promotion.image, {
-			caption: message,
-			parse_mode: 'HTML'
-		});
-	} catch (e) {
-		logger.error('Ошибка получения акции:', e);
 	}
 };

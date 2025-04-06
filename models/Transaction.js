@@ -1,7 +1,7 @@
 // Импорты
 import mongoose from 'mongoose';
 
-// Задачи планировщика
+// Транзакция
 const TransactionSchema = new mongoose.Schema({
     user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, // ID пользователя
     tariff_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Tariff', required: true }, // ID тарифа

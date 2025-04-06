@@ -1,12 +1,12 @@
 // Импорты
 import connectToDatabase from "#services/mongodb.js";
-import User from "#models/User.js";
 import Participant from "#models/Participant.js";
+import User from "#models/User.js";
 
 // Логирование
 import logger from "#utils/logs.js";
 
-// Получение пользователя
+// Контроллер "Получение пользователя"
 export async function getUser(id) {
 	try {
 		// Проверка входных данных
@@ -24,7 +24,7 @@ export async function getUser(id) {
 	}
 };
 
-// Получаем пользователей
+// Контроллер "Получаем пользователей"
 export async function getUsers(body) {
 	try {
 		// Проверка входных данных
@@ -42,7 +42,7 @@ export async function getUsers(body) {
 	}
 }
 
-// Регистрация пользователя
+// Контроллер "Регистрация пользователя"
 export async function setUser(body) {
 	try {
 		// Проверка входных данных
@@ -63,7 +63,7 @@ export async function setUser(body) {
 	}
 };
 
-// Обновление пользователя
+// Контроллер "Обновление пользователя"
 export async function updateUser(id, body) {
 	try {
 		// Проверка входных данных
@@ -86,7 +86,7 @@ export async function updateUser(id, body) {
 	}
 };
 
-// Проверка подписки на канал
+// Контроллер "Проверка подписки на канал"
 export async function checkUser(ctx) {
 	try {
 		// Проверка входных данных
@@ -104,6 +104,7 @@ export async function checkUser(ctx) {
 	}
 }
 
+// Контроллер "Обновление даты победы пользователей"
 export async function updateWinners(participants, winners) {
 	try {
 		// Получаем текущую дату
@@ -122,7 +123,6 @@ export async function updateWinners(participants, winners) {
 				{ _id: { $in: winnerParticipantIds } },
 				{ $set: { status: 'winner' } }
 			);
-			logger.info(`Обновили статусы победителей: ${winnerParticipantIds.length} шт`);
 		}
 
 		// Обновляем проигравших в Participant
@@ -132,7 +132,6 @@ export async function updateWinners(participants, winners) {
 				{ _id: { $in: loserParticipantIds } },
 				{ $set: { status: 'loser' } }
 			);
-			logger.info(`Обновили статусы проигравших: ${loserParticipantIds.length} шт`);
 		}
 
 		// Обновляем дату победы у победителей
@@ -141,11 +140,10 @@ export async function updateWinners(participants, winners) {
 				{ _id: { $in: winnerUserIds } },
 				{ $set: { 'stats.last_win_date': currentDate } }
 			);
-			logger.info(`Обновили дату победы: ${winnerUserIds.length} шт`);
 		}
 		// Возвращаем список логинов победителей
 		if (winners.length) {
-			return winners.map(user => `@${user.username}\n`)
+			return winners.map(user => `@${user.username}\n`);
 		} else {
 			return ['Никто не участвовал в розыгрыше\n']
 		}

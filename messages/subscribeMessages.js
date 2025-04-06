@@ -1,4 +1,4 @@
-// Импорт компонентов
+// Импорт
 import formatDate from "#utils/formatDate.js";
 
 // Сообщение "Меню премиум подписки"

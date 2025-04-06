@@ -5,7 +5,7 @@ import { resultMessage, winnerMessage } from "#messages/postMessages.js";
 // Логирование
 import logger from "#utils/logs.js";
 
-// Отправка поста акции
+// Контроллер "Отправка поста акции"
 export async function sendPromotionPost(telegram, promotion) {
     try {
         // Отправляем сообщение в телеграм
@@ -23,7 +23,7 @@ export async function sendPromotionPost(telegram, promotion) {
     }
 };
 
-// Отправка поста результатов
+// Контроллер "Отправка поста результатов"
 export async function sendResultPost(telegram, promotion, winners) {
     try {
         // Отправляем сообщение в телеграм
@@ -40,7 +40,7 @@ export async function sendResultPost(telegram, promotion, winners) {
     }
 };
 
-// Обновляем сообщение
+// Контроллер "Обновление поста акции"
 export async function updatePost(telegram, promotion, counter = null) {
     try {
         // Проверяем данные
@@ -61,7 +61,7 @@ export async function updatePost(telegram, promotion, counter = null) {
     }
 };
 
-// Уведомление о победителе
+// Контроллер "Уведомление о победе в личном сообщении"
 export async function sendWinnerPost(telegram, promotion, user) {
     try {
         const post = `https://t.me/etetettetetetettet/${promotion.message_id}`;

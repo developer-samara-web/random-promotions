@@ -10,7 +10,6 @@ import Header from "@/components/ui/Header/Header";
 import Form from "@/components/ui/Form/Form";
 import Error from "@/components/ui/Error/Error";
 import fields from "@/data/fields/Promotion.json";
-
 import Button from '@/components/ui/Button/Button';
 
 // Компонент
@@ -58,6 +57,7 @@ export default function Create() {
         <Page>
             <Header title="Создание акции" />
             <Form onSubmit={setPromotion} fields={fields} formData={formData} setFormData={setFormData} Telegram={window.Telegram} buttonName="Создать акцию" buttonIcon="CheckCircleIcon" />
+            <Button name="Закрыть приложение" icon="XCircleIcon" event={() => Telegram.WebApp.close()} />
         </Page>
     );
 }

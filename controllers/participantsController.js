@@ -6,7 +6,7 @@ import User from "#models/User.js";
 // Логирование
 import logger from "#utils/logs.js";
 
-// Получение всех участий в акции
+// Контроллер "Получение всех участников акций (число)"
 export async function getParticipants(promotion_id) {
     try {
         // Проверка входных данных
@@ -24,6 +24,7 @@ export async function getParticipants(promotion_id) {
     }
 };
 
+// Контроллер "Получение всех участников акции"
 export async function getParticipantsWinners(body) {
     try {
         // Проверка входных данных

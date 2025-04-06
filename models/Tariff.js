@@ -1,7 +1,7 @@
 // Импорты
 import mongoose from 'mongoose';
 
-// Задачи планировщика
+// Тариф
 const TariffSchema = new mongoose.Schema({
     name: { type: String, required: true, maxlength: 100 }, // Название тарифа
     amount: { type: Number, required: true, min: 0 }, // Цена тарифа

@@ -26,6 +26,8 @@
     "#models/*": "./models/*",
     "#controllers/*": "./controllers/*",
     "#services/*": "./services/*",
+    "#routes/*": "./routes/*",
+    "#schedules/*": "./schedules/*",
     "#utils/*": "./utils/*"
   }
 }

@@ -13,8 +13,8 @@ let telegram;
 try {
 	telegram = new Telegraf(process.env.TELEGRAM_TOKEN);
 	logger.info("Бот успешно запустился.");
-} catch (error) {
-	logger.error("Ошибка при запуске бота:", error);
+} catch (e) {
+	logger.error("Ошибка при запуске бота:", e);
 	process.exit(1);
 }
 

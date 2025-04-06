@@ -5,7 +5,7 @@ import Schedule from "#models/Schedule.js";
 // Логирование
 import logger from "#utils/logs.js";
 
-// Получаем все задачи
+// Контроллер "Получаем все задачи"
 export async function getSchedules() {
     try {
         // Подключаемся к базе
@@ -26,7 +26,7 @@ export async function getSchedules() {
     }
 };
 
-// Добавляем задачи
+// Контроллер "Создание задачи"
 export async function setSchedule(body) {
     try {
         // Проверка входных данных
@@ -44,7 +44,7 @@ export async function setSchedule(body) {
     }
 };
 
-// Обновление задачи
+// Контроллер "Обновление задачи"
 export async function updateSchedule(id, body) {
     try {
         // Проверка входных данных
@@ -64,7 +64,7 @@ export async function updateSchedule(id, body) {
     }
 };
 
-// Удаление задачи
+// Контроллер "Удаление задачи"
 export async function delSchedule(id) {
     try {
         // Проверка входных данных

@@ -15,7 +15,7 @@ export default function Error({ title, description }) {
                     <span>ERROR</span>
                 </div>
             </div>
-            <div className="error-description">{description}</div>
+            <div className="error-description ">{description}</div>
         </div>
     );
 }

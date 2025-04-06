@@ -50,7 +50,7 @@ export default function RootLayout({ children }) {
           // Если произошла ошибка
           if (error) { setError(error); setCheck(error) }
         }
-      } catch (error) {
+      } catch (e) {
         setCheck(false);
       }
     };
@@ -75,21 +75,21 @@ export default function RootLayout({ children }) {
     );
   }
 
-  // Если ошибка авторизации
-  if (check === false) {
-    return (
-      <html lang="ru">
-        <head>
-          <Script src="https://telegram.org/js/telegram-web-app.js" onLoad={() => setIsScriptLoaded(true)} />
-        </head>
-        <body className="root">
-          <Page>
-            <Error title="Произошла ошибка" description="Произошла ошибка при авторизации. Если проблема повторяется, пожалуйста, свяжитесь с нашей технической поддержкой для уточнения причин." />
-          </Page>
-        </body>
-      </html>
-    );
-  }
+  // // Если ошибка авторизации
+  // if (check === false) {
+  //   return (
+  //     <html lang="ru">
+  //       <head>
+  //         <Script src="https://telegram.org/js/telegram-web-app.js" onLoad={() => setIsScriptLoaded(true)} />
+  //       </head>
+  //       <body className="root">
+  //         <Page>
+  //           <Error title="Произошла ошибка" description="Произошла ошибка при авторизации. Если проблема повторяется, пожалуйста, свяжитесь с нашей технической поддержкой для уточнения причин." />
+  //         </Page>
+  //       </body>
+  //     </html>
+  //   );
+  // }
 
   // Если авторизация не пройдена
   if (check === 'registration') {

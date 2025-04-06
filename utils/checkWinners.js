@@ -2,11 +2,11 @@
 export default function checkWinners(premiumUsers) {
     // Если пользователи пусты
     if (!Array.isArray(premiumUsers) || premiumUsers.length === 0) { return null }
-
+    // Подбираем даты
     const currentDate = new Date();
     const currentMonth = currentDate.getMonth();
     const currentYear = currentDate.getFullYear();
-
+    // Возвращаем данные
     return premiumUsers.filter(user => {
         // Если дата победы отсутствует (null) - пользователь подходит
         if (!user.stats?.last_win_date) { return true }

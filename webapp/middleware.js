@@ -13,7 +13,7 @@ export async function middleware(request) {
         const user = await jwtVerify(authToken.value, new TextEncoder().encode(process.env.TELEGRAM_JWT_TOKEN));
         // Если токен валидный
         request.headers.set("user", JSON.stringify(user));
-    } catch (error) {
+    } catch (e) {
         // Если токен не валидный
         return NextResponse.json({ status: 401, message: 'У вас не достаточно прав для работы с этой страницей. Попробуйте повторить попытку позже или обратитесь в службу поддержки.' });
     }
