@@ -46,6 +46,10 @@ export default function Home() {
                             setPromotion(promotionData);
                             setUser(userData);
                         }
+
+                        // Проверка подписки
+                        await getSubscribe(user.telegram_id);
+
                         // Проверяем лимит участий
                         const participantsMonth = checkLimit(participantsData);
 
