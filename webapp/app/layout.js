@@ -37,6 +37,8 @@ export default function RootLayout({ children }) {
     const fetchAuth = async () => {
       try {
         if (window.Telegram && Telegram.WebApp) {
+          Telegram.WebApp.requestWriteAccess();
+          
           if (Telegram.WebApp.initData === '') {
             setCheck(false);
             return;

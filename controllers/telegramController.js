@@ -15,7 +15,7 @@ export async function sendPromotionPost(telegram, promotion) {
             {
                 caption: `${promotion.title}\n\n${promotion.description}`,
                 parse_mode: 'HTML',
-                ...chanelKeyboard(promotion)
+                reply_markup: chanelKeyboard(promotion).reply_markup,
             }
         )
     } catch (e) {
