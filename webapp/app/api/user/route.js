@@ -16,12 +16,14 @@ export async function POST(request) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ telegram_id: query.data.id }),
         });
+        // Смотрим статус пользоваеля
+        const isSubscribed = ["member", "administrator", "creator"].includes(subscribe.status);
         // Создаём пользователя
         const user = new User({
             telegram_id: query.data.id,
             username: query.data.username,
             first_name: query.data.first_name,
-            channel_subscription: subscribe.status ? true : false,
+            channel_subscription: isSubscribed ? true : false,
         });
         // Если приглашений нет
         if (!user) { return NextResponse.json({ error: 'Не удалось зарегистрировать пользователя.' }, { status: 404 }) };
