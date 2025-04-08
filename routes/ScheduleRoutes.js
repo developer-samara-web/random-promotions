@@ -23,7 +23,6 @@ export default async function (app, telegram) {
             logger.info(`Задача создана: ID:${promotion_id}`);
             return res.status(200).json({ status: 'success' });
         } catch (e) {
-            console.log(e)
             return res.status(403).send(`Ошибка доступа.`);
         }
     });

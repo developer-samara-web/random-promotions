@@ -10,7 +10,7 @@ import Oferta from "@/components/ui/Oferta/Oferta";
 // Регистрация
 const setUserHandler = async (user) => {
     const userData = await setUser(user);
-    if (!userData) { console.log('Ошибка регистрации'); return; }
+    if (!userData) return; 
     return window.location.reload();
 }
 

@@ -44,12 +44,10 @@ export async function updateUser(id, data) {
 
 export async function getSubscribe(id) {
     try {
-        const response = fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/subscribe/${id}`, {
+        await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/subscribe/${id}`, {
             headers: { 'Content-Type': 'application/json' },
             method: 'GET'
         });
-
-        return response.json();
     } catch (e) {
         console.error('Ошибка при проверке подписки пользователя:', e);
     }

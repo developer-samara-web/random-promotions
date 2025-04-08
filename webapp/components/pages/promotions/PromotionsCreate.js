@@ -57,7 +57,7 @@ export default function Create() {
         <Page>
             <Header title="Создание акции" />
             <Form onSubmit={setPromotion} fields={fields} formData={formData} setFormData={setFormData} Telegram={window.Telegram} buttonName="Создать акцию" buttonIcon="CheckCircleIcon" />
-            <Button name="Закрыть приложение" icon="XCircleIcon" event={() => Telegram.WebApp.close()} />
+            <Button name="Закрыть приложение" icon="XCircleIcon" className="text-yellow-900 !bg-yellow-400" event={() => Telegram.WebApp.close()} />
         </Page>
     );
 }

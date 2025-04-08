@@ -2,6 +2,7 @@
 import { setUser, getUser, checkUser } from "#controllers/userController.js";
 import { startMessage, rulesAcceptMessage, errorMessage } from "#messages/mainMessages.js";
 import { startKeyboard, rulesAcceptKeyboard, errorKeyboard } from "#keyboards/mainKeyboards.js";
+import { getTariffs } from "#controllers/tariffController.js";
 
 // Логирование
 import logger from "#utils/logs.js";
@@ -11,8 +12,10 @@ export async function startAction(telegram) {
 	try {
 		telegram.action("start_menu", async (ctx) => {
 			const { subscription } = await getUser(ctx.from.id);
+			const tariffs = await getTariffs();
+			const promoTarifs = tariffs.find((tariff) => tariff.main_menu)
 			return await ctx.editMessageText(startMessage(ctx), {
-				reply_markup: startKeyboard(subscription).reply_markup,
+				reply_markup: startKeyboard(subscription, promoTarifs).reply_markup,
 				parse_mode: "HTML",
 			});
 		});

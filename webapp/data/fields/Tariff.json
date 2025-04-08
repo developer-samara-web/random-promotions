@@ -1,0 +1,58 @@
+[
+    {
+        "id": 1,
+        "name": "_id",
+        "placeholder": "ID",
+        "type": "text",
+        "visible": false,
+        "required": true
+    },
+    {
+        "id": 2,
+        "name": "name",
+        "placeholder": "Название",
+        "type": "text",
+        "visible": true,
+        "required": true
+    },
+    {
+        "id": 3,
+        "name": "type",
+        "placeholder": "Тип",
+        "type": "text",
+        "visible": true,
+        "required": true
+    },
+    {
+        "id": 4,
+        "name": "duration",
+        "placeholder": "Период",
+        "type": "text",
+        "visible": true,
+        "required": true
+    },
+    {
+        "id": 5,
+        "name": "initialAmount",
+        "placeholder": "Первый платёж",
+        "type": "text",
+        "visible": true,
+        "required": true
+    },
+    {
+        "id": 6,
+        "name": "recurringAmount",
+        "placeholder": "Стоимость",
+        "type": "text",
+        "visible": true,
+        "required": true
+    },
+    {
+        "id": 7,
+        "name": "main_menu",
+        "placeholder": "Показать на главной",
+        "type": "toogle",
+        "visible": true,
+        "required": true
+    }
+]

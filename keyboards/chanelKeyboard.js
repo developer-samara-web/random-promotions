@@ -7,3 +7,10 @@ export function chanelKeyboard(promotion, counter = null) {
         [Markup.button.url(`${promotion.requires_subscription ? '🌟 ' : ''}Участвовать ${counter ? `(${counter})` : ''}`, `${process.env.TELEGRAM_BOT_URL}?startapp=${promotion._id}`)]
     ]);
 }
+
+// Клавиатура "Участие в акции"
+export function winnerKeyboard() {
+    return Markup.inlineKeyboard([
+        [Markup.button.callback("🚀 Главное меню", "start_menu")]
+    ]);
+}

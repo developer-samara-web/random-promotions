@@ -3,6 +3,7 @@
 // Импорт компонентов
 import { useState, useEffect } from "react";
 import { checkAdmin } from "@/controllers/Auth";
+import { getPromotions } from "@/controllers/Promotions";
 import Preloader from "@/components/ui/Preloader/Preloader";
 import Page from "@/components/ui/Page/Page";
 import Header from "@/components/ui/Header/Header";
@@ -11,6 +12,7 @@ import List from "@/components/ui/List/List";
 
 // Компонент
 export default function Promotions() {
+    const [promotions, setPromotions] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
 
@@ -24,6 +26,8 @@ export default function Promotions() {
                 setIsLoading(true)
                 return;
             }
+            const { response: promotions } = await getPromotions();
+            setPromotions(promotions)
             // Установка состояния загрузки
             setIsLoading(true)
         }
@@ -52,7 +56,7 @@ export default function Promotions() {
     return (
         <Page>
             <Header title="Список акций" />
-            <List/>
+            <List name="Список тарифов:" items={promotions} search={true}/>
         </Page>
     );
 }

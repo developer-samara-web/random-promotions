@@ -21,7 +21,7 @@ export default function Profile({ username, participants }) {
                 </div>
             </div>
             <div className='profile-button'>
-                <Button name="Закрыть приложение" icon="XCircleIcon" event={() => Telegram.WebApp.close()} />
+                <Button name="Закрыть приложение" icon="XCircleIcon" className="text-yellow-900 !bg-yellow-400" event={() => Telegram.WebApp.close()} />
             </div>
         </section>
     )

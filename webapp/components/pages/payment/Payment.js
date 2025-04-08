@@ -3,13 +3,16 @@
 import { useState, useEffect } from "react";
 import { getUser } from "@/controllers/Users";
 import { getTariff } from "@/controllers/Tariffs";
-import { setTransaction, getTransactions, delTransaction } from "@/controllers/Transactions";
+import { setTransaction } from "@/controllers/Transactions";
+import formatDate from "@/utils/formatDate";
 import Preloader from "@/components/ui/Preloader/Preloader";
 import Button from "@/components/ui/Button/Button";
 import Success from "@/components/ui/Success/Success";
 import Error from "@/components/ui/Error/Error";
 import CloudPayments from "@/services/CloudPayments";
 import Page from "@/components/ui/Page/Page";
+import Image from "next/image";
+import Header from "@/components/ui/Header/Header";
 
 // Компонент Payment
 export default function Payment({ tariffId }) {
@@ -19,6 +22,8 @@ export default function Payment({ tariffId }) {
     const [tariff, setTariff] = useState(null);
     const [success, setSuccess] = useState(null);
     const [error, setError] = useState(null);
+
+    const start_param = Telegram?.WebApp?.initDataUnsafe?.start_param || null;
 
     useEffect(() => {
         if (!tariffId) return;
@@ -41,7 +46,7 @@ export default function Payment({ tariffId }) {
                 setTransactionData(transactionData);
 
                 // Открываем оплату
-                CloudPayments(userData, tariffData, transactionData, setError, setSuccess);
+                CloudPayments(userData, tariffData, transactionData, setError, setSuccess, start_param);
             } catch (e) {
                 console.error("Ошибка при загрузке данных или оплате:", e);
                 setError(e.message);
@@ -66,9 +71,13 @@ export default function Payment({ tariffId }) {
     if (error) {
         return (
             <Page>
+                <Header title="🎉 Ошибка транзакции" description="ID: 67f53ad2b049a490a0bc1b86" />
+                <Image src="/no-credit-card.png" width="120" height="120" alt="no-credit-card" />
                 <Error title="Ошибка оплаты" description={error.message} />
-                <Button name="Повторить попытку" icon="ArrowPathIcon" event={() => window.location.reload()} />
-                <Button name="Закрыть" icon="XCircleIcon" event={() => Telegram.WebApp.close()} />
+                <div className="w-full flex flex-col gap-3">
+                    <Button name="Повторить попытку" icon="ArrowPathIcon" event={() => window.location.reload()} />
+                    <Button name="Закрыть приложение" icon="XCircleIcon" className="text-yellow-900 !bg-yellow-400" event={() => Telegram.WebApp.close()} />
+                </div>
             </Page>
         );
     }
@@ -77,8 +86,25 @@ export default function Payment({ tariffId }) {
     if (success) {
         return (
             <Page>
-                <Success title="Успешная оплата" description={success.message} />
-                <Button name="Закрыть" icon="XCircleIcon" event={() => Telegram.WebApp.close()} />
+                {start_param ? (
+                    <div className="flex flex-col gap-5 justify-between w-full">
+                        <Header title="🎉 Успешная транзакция" description="ID: 67f53ad2b049a490a0bc1b86" />
+                        <div className="flex flex-col gap-5 items-center w-full">
+                            <Image src="/payment-check.png" width="100" height="100" alt="payment-check" />
+                            <Success title="🎉 Успешная транзакция" description={success.message} />
+                        </div>
+                        <Button name="Принять участие в раздаче" icon="ArrowRightCircleIcon" link="/" />
+                    </div>
+                ) : (
+                    <div className="flex flex-col gap-5 justify-between w-full">
+                        <Header title="🎉 Успешная транзакция" description="ID: 67f53ad2b049a490a0bc1b86" />
+                        <div className="flex flex-col gap-5 items-center w-full">
+                            <Image src="/payment-check.png" width="100" height="100" alt="payment-check" />
+                            <Success title="🎉 Успешная транзакция" description={success.message} />
+                        </div>
+                        <Button name="Закрыть приложение" icon="XCircleIcon" className="text-yellow-900 !bg-yellow-400" event={() => Telegram.WebApp.close()} />
+                    </div>
+                )}
             </Page>
         );
     }

@@ -50,7 +50,7 @@
     {
         "id": 7,
         "name": "requires_subscription",
-        "placeholder": "Для премиум пользователей",
+        "placeholder": "Только для подписчиков:",
         "type": "toogle",
         "visible": true,
         "required": true

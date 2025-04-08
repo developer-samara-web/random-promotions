@@ -4,65 +4,85 @@ import "@/components/ui/List/List.modules.css";
 // Импорт компонентов
 import { useState, useEffect } from "react";
 import { getPromotions } from "@/controllers/Promotions";
+import TarifFields from "@/data/fields/Tariff.json";
+import PromotionFields from "@/data/fields/Promotion.json";
 import Button from "@/components/ui/Button/Button";
 import Preloader from "@/components/ui/Preloader/Preloader";
 import Error from "@/components/ui/Error/Error";
 import Image from "@/components/ui/Image/Image";
 
 // Компонент
-export default function List() {
-    const [promotions, setPromotions] = useState(null);
+export default function List({ name, search, items }) {
     const [searchQuery, setSearchQuery] = useState('');
 
-    // Получаем все акции
-    useEffect(() => {
-        const fetchPromotions = async () => {
-            const { response, error } = await getPromotions();
-            // Если ошибка
-            if (error) return;
-            // Записываем данные
-            setPromotions(response)
-        }
-        // Запускаем
-        fetchPromotions()
-    }, [])
-
     // Фильтрация акций
-    const filteredPromotions = promotions?.filter(({ title }) =>
-        name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    const filteredItems = items.filter(item => {
+        const searchField = item.title || item.name;
+        return searchField.toLowerCase().includes(searchQuery.toLowerCase());
+    });
 
     return (
         <section className="list">
-            <input className="list-input" placeholder="Поиск по названию..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
-            {filteredPromotions ? (
-                filteredPromotions.length > 0 ? (
-                    filteredPromotions.map(({ _id, title, title_id, description, status, banner_image }) => (
-                        <div className="list-item" key={_id}>
-                            <div className="list-header">
-                                <div className="list-id">#{title_id}</div>
-                                <span className={`list-status ${status !== "draft" ? 'list-active' : 'list-deactive'}`} >
-                                    {status}
-                                </span>
-                            </div>
-                            <div className="list-content">
-                                <Image className="list-image" url={banner_image} width={350} height={350} alt={name} />
-                                <div className="list-title">{title}</div>
-                                <div className="list-description">{description}</div>
-                            </div>
-                            {status === "draft" && (
-                                <div className="list-buttons">
-                                    <Button name="Редактировать" icon="PencilSquareIcon" link={`/promotions/edit/${_id}`} />
+
+            <div className="list-items flex flex-col gap-5">
+                <div className="list-header">
+                    {search && (<input className="list-input" placeholder={`Поиск...`} value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />)}
+                </div>
+                <h2 className="list-title">{name}</h2>
+                {search ? filteredItems ? (
+                    filteredItems.map((item) => (
+                        <div key={item._id} className="list-item">
+                            <div className="flex justify-center w-full py-4 bg-[#2b7fff24] rounded-t-xl border-b border-[#224684]">
+                                <div className="list-badge bg-[#2b7fff] rounded-4xl px-3 py-1 text-xs font-medium uppercase truncate mx-10">
+                                    {item.title}
                                 </div>
-                            )}
+                            </div>
+
+                            <div className="divide-y divide-[#224684] w-full">
+                                {PromotionFields.map((field) => {
+                                    if (!item.hasOwnProperty(field.name)) return null;
+
+                                    return (
+                                        <div key={field.id} className="w-full p-3 flex justify-between">
+                                            <span className="font-medium text-xs truncate">{field.placeholder}:</span>
+                                            <span className="font-medium text-xs truncate">
+                                                {item[field.name]}
+                                            </span>
+                                        </div>
+                                    );
+                                })}
+                            </div>
                         </div>
                     ))
                 ) : (
                     <Error title="Акции не найдены" description="Попробуйте изменить поисковый запрос или попробуйте повторить попытку позже." />
-                )
-            ) : (
-                <Preloader />
-            )}
+                ) : (
+                    items.map((item) => (
+                        <div key={item._id} className="list-item">
+                            <div className="flex justify-center w-full py-4 bg-[#2b7fff24] rounded-t-xl border-b border-[#224684]">
+                                <div className="list-badge bg-[#2b7fff] rounded-4xl px-3 py-1 text-xs font-medium uppercase">
+                                    {item.name}
+                                </div>
+                            </div>
+
+                            <div className="divide-y divide-[#224684] w-full">
+                                {TarifFields.map((field) => {
+                                    if (!item.hasOwnProperty(field.name)) return null;
+
+                                    return (
+                                        <div key={field.id} className="w-full p-3 flex justify-between">
+                                            <span className="font-medium text-xs">{field.placeholder}:</span>
+                                            <span className="font-medium text-xs">
+                                                {item[field.name]}
+                                            </span>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    ))
+                )}
+            </div>
         </section>
     );
 }

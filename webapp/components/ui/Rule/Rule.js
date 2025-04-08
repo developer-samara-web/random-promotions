@@ -16,7 +16,7 @@ export default function Rule({ name, description, image, icon, button, count, st
                 </div>
             </div>
             {status && <Icon name="CheckIcon" className="size-8 text-white bg-[#2b7fff] p-2 rounded-xl" />}
-            {!status && button && (<Button name={button.name} className={button.style} event={button.onClick || null} />)}
+            {!status && button && (<Button name={button.name} className={button.style} link={button.link || null} event={button.onClick || null} />)}
             {!status && count && (<div className="border-[1px] border-[#f63b3b70] bg-[#ff2b2b54] rounded-xl px-3 py-2 text-xs font-medium"> {count} </div>)}
         </div>
     )

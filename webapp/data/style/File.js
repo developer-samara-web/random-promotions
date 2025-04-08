@@ -2,9 +2,9 @@ export default function () {
     return {
         width: '100%',
         height: '50px',
-        backgroundColor: '#1c3a70',
+        backgroundColor: '#3b82f630',
         color: '#fff',
-        border: '1px solid #316bcb',
+        border: '1px solid #3b82f64f',
         outline: 'none',
         borderRadius: '10px',
 

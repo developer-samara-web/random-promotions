@@ -1,33 +1,21 @@
 @reference "tailwindcss";
 
 .promotion{
-    @apply flex flex-col gap-3 text-white w-full
+    @apply flex flex-row gap-3 text-white w-full
 }
 
 .promotion-image{
-    @apply p-3
+    @apply rounded-xl w-[80px]
 }
 
 .promotion-content{
-    @apply flex flex-col border-[1px] border-[#3b82f64f] bg-[#3b82f630] rounded-xl
+    @apply flex flex-col border-[1px] border-[#3b82f64f] bg-[#3b82f630] rounded-xl w-full p-3 truncate
 }
 
 .promotion-title{
-    @apply text-base uppercase font-medium px-3 pt-3 truncate
+    @apply text-sm uppercase font-medium truncate
 }
 
 .promotion-description{
-    @apply text-xs text-slate-300 px-3 pb-3
-}
-
-.promotion-list{
-    @apply mt-2
-}
-
-.promotion-line{
-    @apply flex justify-between border-t border-[#3b82f64f] items-center py-3 p-5
-}
-
-.promotion-name{
-    @apply uppercase text-xs font-medium
+    @apply text-xs text-slate-300 truncate
 }

@@ -14,10 +14,9 @@ export async function GET(request, ctx) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ telegram_id: id }),
         });
-        // Если подписки нет
-        if (!user) { return NextResponse.json({ access: false }, { status: 401 }) };
+        const subscribe = await user.json()
         // Отправляем данные
-        return NextResponse.json({ access: true }, { status: 200 });
+        return NextResponse.json({ access: subscribe.access }, { status: 200 });
     } catch (e) {
         console.error('Ошибка при получении акции:', e);
         return NextResponse.json({ error: 'Что-то пошло не так. Попробуйте повторить попытку позже или обратитесь в поддержку.' }, { status: 500 });

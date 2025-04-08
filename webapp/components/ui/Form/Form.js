@@ -77,11 +77,16 @@ export default function Form({ onSubmit, fields, buttonName, buttonIcon, formDat
         }
 
         try {
-            const data = {
-                ...formData,
-                start_date: new Date(formData.start_date).toISOString(),
-                end_date: new Date(formData.end_date).toISOString()
+            let data = { ...formData };
+
+            if (formData.start_date && formData.end_date) {
+                data = {
+                    ...formData,
+                    start_date: new Date(formData.start_date).toISOString(),
+                    end_date: new Date(formData.end_date).toISOString()
+                }
             }
+
             await onSubmit(data);
 
             setFormData({});
@@ -103,7 +108,7 @@ export default function Form({ onSubmit, fields, buttonName, buttonIcon, formDat
     return (
         <form className="form" onSubmit={handleSubmit}>
             {success && (
-                <div className="sticky top-5 left-0">
+                <div className="sticky top-5 left-0 z-50">
                     <Success title="Акция создалась" description="Акция отправлена в очередь и будет опубликована согласно расписанию." />
                 </div>
             )}
@@ -120,7 +125,7 @@ export default function Form({ onSubmit, fields, buttonName, buttonIcon, formDat
                         {type === 'toogle' ? (
                             <Switch
                                 value={formData.requires_subscription || false}
-                                placeholder="Только для подписчиков"
+                                placeholder={placeholder}
                                 onChange={handleSwitchChange}
                             />
                         ) : name === 'description' ? (

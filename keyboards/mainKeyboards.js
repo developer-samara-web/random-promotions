@@ -2,16 +2,26 @@
 import { Markup } from "telegraf";
 
 // Клавиатура "Главное меню"
-export function startKeyboard(subscription) {
-    const premiumKeyboard = subscription.is_active ? [
+export function startKeyboard(subscription, tariffs) {
+    // Нормализуем
+    const normalizedTariffs = Array.isArray(tariffs) ? tariffs : (tariffs ? [tariffs] : []);
+
+    // Создаем кнопки тарифов
+    const tariffButtons = normalizedTariffs.map(item => 
+        [Markup.button.callback(item.name, `user_premium_${item._id}`)]
+    );
+
+    // Формируем клавиатуру в зависимости от статуса подписки
+    const premiumKeyboard = subscription?.is_active ? [
         [Markup.button.callback("👤 Мой Профиль", "user_profile")],
+        [Markup.button.callback("⭐️ Управление подпиской", "premium_manage")]
     ] : [
         [Markup.button.callback("👤 Мой Профиль", "user_profile")],
-        [Markup.button.callback("🔥 2 дня за 1 рубль 🔥", "user_premium_1")],
-        [Markup.button.callback("⭐️ Премиум подписка ⭐️", "user_premium")]
-    ]
+        ...tariffButtons,
+        [Markup.button.callback("⭐️ Оформить подписку", "user_premium")]
+    ];
 
-    return Markup.inlineKeyboard([...premiumKeyboard]);
+    return Markup.inlineKeyboard(premiumKeyboard);
 }
 
 // Клавиатура "Правила"

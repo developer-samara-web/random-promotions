@@ -26,6 +26,10 @@ export default async function (app, telegram) {
                 if (SubscriptionId) {
                     const { Model } = await getSubscribe(SubscriptionId);
                     await updateUserById(AccountId, {
+                        'subscription.is_active': true,
+                        'subscription.is_auto_renewal': true,
+                        'subscription.id': SubscriptionId,
+                        'subscription.start_date': new Date(),
                         'subscription.end_date': Model.NextTransactionDateIso,
                         'subscription.renewal_count': Model.SuccessfulTransactionsNumber,
                     })

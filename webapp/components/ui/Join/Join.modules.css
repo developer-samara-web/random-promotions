@@ -8,8 +8,8 @@
     @apply flex flex-col items-center
 }
 
-.join-icon{
-    @apply size-25 p-5 border-[1px] border-[#58ff5852] bg-[#0e2c33] rounded-4xl mb-5
+.join-image{
+    @apply mb-10
 }
 
 .join-title{
