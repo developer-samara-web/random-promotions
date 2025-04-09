@@ -9,7 +9,7 @@ export function subscribeKeyboard(tariffs) {
     const buttons = tariffs.map(tariff => {
         let buttonText;
         // Форматируем текст кнопки в зависимости от типа тарифа
-        buttonText = `❤️‍🔥 ${tariff.name} | ${tariff.initial_amount || tariff.recurring_amount} рублей`;
+        buttonText = `${tariff.name}`;
         // Создаем callback данные в формате "user_premium_<цена>"
         const callbackData = `user_premium_${tariff._id}`;
         return [Markup.button.callback(buttonText, callbackData)];
