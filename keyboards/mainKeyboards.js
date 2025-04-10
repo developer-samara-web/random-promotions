@@ -8,7 +8,7 @@ export function startKeyboard(subscription, tariffs) {
 
     // Создаем кнопки тарифов
     const tariffButtons = normalizedTariffs.map(item => 
-        [Markup.button.callback(item.name, `user_premium_${item._id}`)]
+        [Markup.button.callback(item.name, `user_premium_rules_${item._id}`)]
     );
 
     // Формируем клавиатуру в зависимости от статуса подписки
