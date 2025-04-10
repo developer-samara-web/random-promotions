@@ -14,7 +14,6 @@ export function startKeyboard(subscription, tariffs) {
     // Формируем клавиатуру в зависимости от статуса подписки
     const premiumKeyboard = subscription?.is_active ? [
         [Markup.button.callback("👤 Мой Профиль", "user_profile")],
-        [Markup.button.callback("⭐️ Управление подпиской", "premium_manage")]
     ] : [
         [Markup.button.callback("👤 Мой Профиль", "user_profile")],
         ...tariffButtons,

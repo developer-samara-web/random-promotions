@@ -11,7 +11,7 @@ export function subscribeKeyboard(tariffs) {
         // Форматируем текст кнопки в зависимости от типа тарифа
         buttonText = `${tariff.name}`;
         // Создаем callback данные в формате "user_premium_<цена>"
-        const callbackData = `user_premium_${tariff._id}`;
+        const callbackData = `user_premium_rules_${tariff._id}`;
         return [Markup.button.callback(buttonText, callbackData)];
     });
     // Добавляем кнопку "Назад" в конец клавиатуры
@@ -28,6 +28,20 @@ export function subscribeShowKeyboard(tariff) {
         ]);
     } catch (e) {
         logger.error("Ошибка в userPremiumShowKeyboards:", e);
+    }
+}
+
+// Клавиатура "Меню правил оплаты выбранной подписки"
+export function subscribeShowRulesKeyboard(tariff) {
+    try {
+        return Markup.inlineKeyboard([
+            [
+                Markup.button.callback("⬅️ Назад", `user_premium`),
+                Markup.button.callback("✅ Я согласен(-а)", `user_premium_${tariff._id}`)
+            ],
+        ]);
+    } catch (e) {
+        logger.error("Ошибка в userPremiumShowRulesKeyboards:", e);
     }
 }
 

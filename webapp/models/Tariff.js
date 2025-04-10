@@ -9,6 +9,7 @@ const TariffSchema = new mongoose.Schema({
     initial_amount: { type: Number, required: true, min: 0, default: 0 }, // Начальная сумма платежа
     recurring_amount: { type: Number, required: true, min: 0 }, // Сумма последующих платежей
     duration: { type: String, enum: ['Day', 'Week', 'Month'], required: true }, // Продолжительность тарифа
+    rules: { type: String }, // Правила тарифа
     created_at: { type: Date, default: Date.now }, // Дата создания задачи
     updated_at: { type: Date, default: Date.now } // Дата обновления задачи
 });

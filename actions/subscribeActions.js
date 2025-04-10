@@ -1,8 +1,8 @@
 // Импорты
 import { getUser } from "#controllers/userController.js";
 import { getTariff, getTariffs } from "#controllers/tariffController.js";
-import { subscribeMessage, subscribeShowMessage, subscribePaymentMessage } from "#messages/subscribeMessages.js";
-import { subscribeKeyboard, subscribeShowKeyboard, subscribePaymentKeyboard } from "#keyboards/subscribeKeyboards.js";
+import { subscribeMessage, subscribeShowMessage, subscribeShowRulesMessage, subscribePaymentMessage } from "#messages/subscribeMessages.js";
+import { subscribeKeyboard, subscribeShowKeyboard, subscribeShowRulesKeyboard, subscribePaymentKeyboard } from "#keyboards/subscribeKeyboards.js";
 
 // Логирование
 import logger from "#utils/logs.js";
@@ -32,6 +32,24 @@ export async function subscribeShowAction(telegram) {
 			const tariff = await getTariff(ctx.match[0].split("_")[2]);
 			return await ctx.editMessageText(subscribeShowMessage(tariff), {
 				reply_markup: subscribeShowKeyboard(tariff, user).reply_markup,
+				parse_mode: "HTML",
+			});
+		});
+	} catch (e) {
+		logger.error("Ошибка экшена (user_premium_number):", e);
+	}
+};
+
+// Экшен "Согласие с правилами выбранной подписки подписки"
+export async function subscribeShowRulesAction(telegram) {
+	try {
+		telegram.action(/^user_premium_rules_[a-f\d]{24}$/i, async (ctx) => {
+			// Получаем данные о пользователе
+			const user = await getUser(ctx.from.id);
+			// Получаем данные о тарифе
+			const tariff = await getTariff(ctx.match[0].split("_")[3]);
+			return await ctx.editMessageText(subscribeShowRulesMessage(tariff), {
+				reply_markup: subscribeShowRulesKeyboard(tariff, user).reply_markup,
 				parse_mode: "HTML",
 			});
 		});
