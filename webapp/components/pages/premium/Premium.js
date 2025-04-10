@@ -53,7 +53,7 @@ export default function Premium() {
             </Block>
             <div className="flex flex-col gap-3 w-full">
                 {tariffs && tariffs.map((item) => (
-                    <Button key={item._id} name={item.name} link={`/payment/${item._id}`} />
+                    <Button key={item._id} name={item.name} link={`/premium/rules/${item._id}`} />
                 ))}
                 <Button name="Вернуться" icon="ArrowLeftCircleIcon" className="text-yellow-900 !bg-yellow-400" link={`/`} />
             </div>

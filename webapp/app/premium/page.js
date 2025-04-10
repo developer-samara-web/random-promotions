@@ -8,6 +8,6 @@ export const metadata = {
 };
 
 // Компонент
-export default async function HomePage() {
+export default async function PremiumPage() {
   return <Premium />;
 }
