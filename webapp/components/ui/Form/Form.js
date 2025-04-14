@@ -26,22 +26,6 @@ export default function Form({ onSubmit, fields, buttonName, buttonIcon, formDat
 
     // Обработка переключателя картинок
     const handleFileChange = async (newFile, fieldName) => {
-        const MAX_FILE_SIZE = 3 * 1024 * 1024; // 3 MB
-        const allowedFormats = ["image/png", "image/jpeg", "image/jpg"];
-        const isImage = allowedFormats.includes(newFile.type);
-        const isSizeValid = newFile.size <= MAX_FILE_SIZE;
-
-        if (!isImage || !isSizeValid) {
-            setError((prevData) => {
-                const newError = isImage
-                    ? "Размер файла не должен превышать 3 MB."
-                    : "Доступные форматы PNG, JPG, JPEG.";
-                return prevData.includes(newError) ? prevData : [...prevData, newError];
-            });
-            setFiles((prevFiles) => ({ ...prevFiles, [fieldName]: null }));
-            return;
-        }
-
         try {
             // Загружаем файл в DigitalOcean
             const { file_url } = await uploadDigitalOcean(newFile);
