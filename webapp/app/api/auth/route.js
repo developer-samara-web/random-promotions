@@ -47,7 +47,7 @@ export async function POST(request) {
         // Устанавливаем токен в куки
         const response = NextResponse.json({ message: "Успешная авторизация." }, { status: 200 });
         // Устанавливаем куки с токеном
-        response.cookies.set("authToken", token, { httpOnly: true, secure: true, sameSite: "strict", path: "/", maxAge: 60 * 60 });
+        response.cookies.set("authToken", token, { httpOnly: true, secure: true, sameSite: "none", path: "/", maxAge: 60 * 60 });
         // Ответаем клиенту
         return response;
     } catch (e) {
