@@ -41,7 +41,7 @@ export async function POST(request) {
         // Получаем пользователя
         const user = JSON.parse(decodeURIComponent(data.user));
         // Проверяем данные пользователя
-        if (!user?.id || !user?.username) { return NextResponse.json({ error: "Данные пользователя не верны. Если проблема повторяется, пожалуйста, свяжитесь с нашей технической поддержкой для уточнения причин." }, { status: 401 }) };
+        if (!user?.id) { return NextResponse.json({ error: "Данные пользователя не верны. Если проблема повторяется, пожалуйста, свяжитесь с нашей технической поддержкой для уточнения причин." }, { status: 401 }) };
         // Генерируем JWT токен
         const token = jwt.sign({ id: user.id, username: user.username }, process.env.TELEGRAM_JWT_TOKEN, { expiresIn: "60m" });
         // Устанавливаем токен в куки
