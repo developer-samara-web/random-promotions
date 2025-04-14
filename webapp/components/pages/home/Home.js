@@ -52,6 +52,13 @@ export default function Home() {
                             setUser(userData);
                         }
 
+                        // Проверка участия
+                        const { access } = await getParticipant(userData._id, promotionData._id);
+                        if (!access) {
+                            setScreen('participant');
+                            return;
+                        }
+
                         // Проверяем лимит участий
                         const participantsMonth = checkLimit(participantsData);
 
@@ -68,17 +75,19 @@ export default function Home() {
 
                         if (rulesStatus) {
                             setRules({ ...rules });
-                            const { access } = await getParticipant(userData._id, promotionData._id);
 
                             if (access) {
                                 await setParticipant(promotionData._id, userData._id);
                                 setScreen('participant-access');
+                                return;
                             } else {
                                 setScreen('participant');
+                                return;
                             }
                         } else {
                             setRules({ ...rules });
                             setScreen('rules');
+                            return;
                         }
 
                     } else { // Показываем профиль пользователя
@@ -177,7 +186,7 @@ export default function Home() {
                             <h3 className="text-base font-bold uppercase text-white">{promotion.title}</h3>
                         </div>
                         <div className="flex flex-col">
-                            <p className="text-sm text-white">{promotion.description}</p>
+                            <p className="text-sm text-white white-space: pre-line" dangerouslySetInnerHTML={{ __html: promotion.description.replace(/\n/g, "<br />") }}></p>
                         </div>
                         <Button name="Закрыть" icon="XCircleIcon" className="text-yellow-900 !bg-yellow-400 hover:!bg-yellow-500 transition-colors" event={() => setPopap(false)} />
                     </div>
