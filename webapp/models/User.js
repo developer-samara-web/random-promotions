@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 const UserSchema = new mongoose.Schema({
     role: { type: String, enum: ['user', 'admin'], default: 'user' }, // Ротль пользователя
     telegram_id: { type: Number, required: true, unique: true }, // ID пользователя телеграма
-    username: { type: String, required: true }, // Ник пользователя
+    username: { type: String }, // Ник пользователя
     first_name: { type: String, required: true }, // Имя пользователя
     subscription: { // Подписка "Премиум"
         is_active: { type: Boolean, default: false }, // Активность подписки
