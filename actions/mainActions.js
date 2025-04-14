@@ -11,11 +11,12 @@ import logger from "#utils/logs.js";
 export async function startAction(telegram) {
 	try {
 		telegram.action("start_menu", async (ctx) => {
-			const { subscription } = await getUser(ctx.from.id);
+			const user = await getUser(ctx.from.id);
+			if(!user) throw new Error('Пользователь не найден');
 			const tariffs = await getTariffs();
 			const promoTarifs = tariffs.find((tariff) => tariff.main_menu)
 			return await ctx.editMessageText(startMessage(ctx), {
-				reply_markup: startKeyboard(subscription, promoTarifs).reply_markup,
+				reply_markup: startKeyboard(user.subscription, promoTarifs).reply_markup,
 				parse_mode: "HTML",
 			});
 		});
