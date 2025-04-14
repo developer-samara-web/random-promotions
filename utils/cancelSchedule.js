@@ -1,13 +1,11 @@
 // Функция отмены задачи
 export default function (jobName, scheduledJobs) {
-    const startJobKey = `${jobName}_start`;
-    const endJobKey = `${jobName}_end`;
-    const disableJobKey = `${jobName}_disable`;
-    const checkJobKey = `${jobName}_check`;
+    const keys = [`${jobName}_start`, `${jobName}_end`, `${jobName}_disable`, `${jobName}_check`];
 
-    [startJobKey, endJobKey, disableJobKey, checkJobKey].forEach(key => {
-        if (scheduledJobs.has(key)) {
-            scheduledJobs.get(key).cancel();
+    keys.forEach(key => {
+        const job = scheduledJobs.get(key);
+        if (job) {
+            job.cancel();
             scheduledJobs.delete(key);
         }
     });
