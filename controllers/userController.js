@@ -166,7 +166,9 @@ export async function updateWinners(participants, winners) {
 		}
 		// Возвращаем список логинов победителей
 		if (winners.length) {
-			return winners.map(user => `@${user.username}`);
+			return winners.map(user =>
+				user.username !== 'username' ? `@${user.username}` : `<a href="tg://user?id=${user.telegram_id}">${user.first_name}(${user.telegram_id})</a>`
+			);
 		} else {
 			return ['Никто не участвовал в розыгрыше\n']
 		}
