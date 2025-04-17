@@ -17,10 +17,13 @@ export default async function (app, telegram) {
             const promotion = await getPromotion(promotion_id);
             // Получаем участников
             const participants = await getParticipants(promotion_id);
-            // Проверка статуса участия
-            if (promotion.status === 'completed') { await updatePost(telegram, promotion) };
             // Обновляем пост телеграмм
-            await updatePost(telegram, promotion, participants);
+            if (promotion.status === 'completed') {
+                await updatePost(telegram, promotion)
+            } else {
+                await updatePost(telegram, promotion, participants);
+            };
+            // Обновляем пост телеграмм
             logger.info(`Пост обновлён: ${process.env.TELEGRAM_CHANEL_URL}/${promotion.message_id}`);
             return res.status(200).json({ status: 'success' });
         } catch (e) {
