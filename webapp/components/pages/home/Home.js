@@ -44,6 +44,12 @@ export default function Home() {
                         const { error: promotionError, response: promotionData } = await getPromotion(promotion_id);
                         const { error: participantsError, response: participantsData } = await getParticipants(userData._id);
 
+                        // Проверка окончания акции
+                        if(promotionData.status === 'completed') {
+                            setScreen('end');
+                            return;
+                        }
+
                         // Проверка получения данных
                         if (!userError || !promotionError || participantsError) {
                             setParticipants(participantsData);
