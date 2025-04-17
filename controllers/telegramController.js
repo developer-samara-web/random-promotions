@@ -42,7 +42,7 @@ export async function sendResultPost(telegram, promotion, winners) {
 };
 
 // Контроллер "Обновление поста акции"
-export async function updatePost(telegram, promotion, counter = null) {
+export async function updatePost(telegram, promotion, counter = null, retries = 3) {
     try {
         // Проверяем данные
         if (!promotion.message_id) { throw new Error('Не указан message_id') }
@@ -58,7 +58,21 @@ export async function updatePost(telegram, promotion, counter = null) {
             }
         );
     } catch (e) {
-        logger.error('Ошибка обновления поста в телеграм:', e);
+        // Проверяем, является ли ошибка 429
+        if (e.message.includes('429: Too Many Requests') && retries > 0) {
+            // Извлекаем время ожидания из сообщения об ошибке
+            const retryAfterMatch = e.message.match(/retry after (\d+)/);
+            const retryAfter = retryAfterMatch ? parseInt(retryAfterMatch[1], 10) * 1000 : 5000;
+            logger.warn(`Получена ошибка 429, повторная попытка через ${retryAfter / 1000} секунд. Осталось попыток: ${retries}`);
+            // Ждем перед повторной попыткой
+            await new Promise((resolve) => setTimeout(resolve, retryAfter));
+            // Повторяем запрос с уменьшенным количеством попыток
+            return await updatePost(telegram, promotion, counter, retries - 1);
+        } else {
+            // Логируем другие ошибки
+            logger.error('Ошибка обновления поста в Telegram:', e);
+            throw e; // Пробрасываем ошибку дальше, если не 429 или закончились попытки
+        }
     }
 };
 
