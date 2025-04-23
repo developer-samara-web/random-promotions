@@ -8,7 +8,6 @@ export async function GET(request, ctx) {
     try {
         // Получаем id пользователя
         const { id } = await ctx?.params;
-        console.log(id)
         // Подключаемся к базе данных
         await connectToDatabase();
         // Поиск транзакций
