@@ -23,6 +23,7 @@ export async function subscribeAction(telegram) {
 				return await ctx.editMessageText(subscribeMessage(ctx), {
 					reply_markup: subscribeKeyboard(tariffs).reply_markup,
 					parse_mode: "HTML",
+					disable_web_page_preview: true,
 				});
 			}
 		});
