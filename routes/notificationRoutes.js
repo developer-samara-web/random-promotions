@@ -1,10 +1,10 @@
 // Импорты
 import { updateUserById } from "#controllers/userController.js";
 import { updateTransaction, getTransactions } from "#controllers/transactionController.js";
+import { sendPaymentSuccesPost, sendPaymentFailedPost} from "#controllers/telegramController.js"
 import { setSchedule } from "#controllers/scheduleController.js";
 import { getTariff } from "#controllers/tariffController.js";
 import { initSchedule } from "#services/schedule.js";
-import { sendPaymentSuccesPost, sendPaymentFailedPost, sendAuthPost } from "#controllers/telegramController.js"
 import calculatePeriod from "#utils/calculatePeriod.js";
 
 // Логирование
