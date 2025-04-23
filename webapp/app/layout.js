@@ -24,10 +24,18 @@ export default function RootLayout({ children }) {
     if (!isTelegramScriptLoaded) return;
 
     // Список исключенных маршрутов
-    const excludedRoutes = ['/policy', '/oferta', '/payment'];
+    const excludedRoutes = [
+      /^\/policy(\/|$)/,
+      /^\/oferta(\/|$)/,
+      /^\/payment(\/|$)/,
+      /^\/payment\/view\//
+    ];
+
+    // Проверка с использованием регулярных выражений
+    const shouldExclude = excludedRoutes.some(route => route.test(pathname));
 
     // Если путь не входит в список исключенных маршрутов
-    if (excludedRoutes.includes(pathname)) {
+    if (shouldExclude) {
       setCheck(true);
       return;
     }
@@ -75,21 +83,21 @@ export default function RootLayout({ children }) {
     );
   }
 
-  // // Если ошибка авторизации
-  // if (check === false) {
-  //   return (
-  //     <html lang="ru">
-  //       <head>
-  //         <Script src="https://telegram.org/js/telegram-web-app.js" onLoad={() => setIsTelegramScriptLoaded(true)} />
-  //       </head>
-  //       <body className="root">
-  //         <Page>
-  //           <Error title="Произошла ошибка" description="Произошла ошибка при авторизации. Если проблема повторяется, пожалуйста, свяжитесь с нашей технической поддержкой для уточнения причин." />
-  //         </Page>
-  //       </body>
-  //     </html>
-  //   );
-  // }
+  // Если ошибка авторизации
+  if (check === false) {
+    return (
+      <html lang="ru">
+        <head>
+          <Script src="https://telegram.org/js/telegram-web-app.js" onLoad={() => setIsTelegramScriptLoaded(true)} />
+        </head>
+        <body className="root">
+          <Page>
+            <Error title="Произошла ошибка" description="Произошла ошибка при авторизации. Если проблема повторяется, пожалуйста, свяжитесь с нашей технической поддержкой для уточнения причин." />
+          </Page>
+        </body>
+      </html>
+    );
+  }
 
   // Если авторизация не пройдена
   if (check === 'registration') {
