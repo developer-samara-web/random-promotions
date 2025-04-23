@@ -2,6 +2,8 @@
 import { getUser } from "#controllers/userController.js";
 import { startMessage, rulesMessage } from "#messages/mainMessages.js";
 import { startKeyboard, rulesKeyboard } from "#keyboards/mainKeyboards.js";
+import { subscribeMessage, subscribeActiveSubscribeMessage } from "#messages/subscribeMessages.js";
+import { subscribeKeyboard, subscribeActiveSubscribeKeyboard } from "#keyboards/subscribeKeyboards.js";
 import { adminMessage } from "#messages/adminMessages.js";
 import { adminKeyboard } from "#keyboards/adminKeyboards.js";
 import { getTariffs } from "#controllers/tariffController.js";
@@ -11,8 +13,27 @@ import logger from "#utils/logs.js";
 
 // Контроллер "Авторизация / Регистрация"
 export default async (ctx) => {
+
   // Проверка входных данных
   if (ctx.chat.type !== 'private') return;
+
+  // Открываем меню премиума
+  if (ctx.message?.text === '/start premium') {
+    const user = await getUser(ctx.from.id);
+    const tariffs = await getTariffs();
+    if (user.subscription.is_active) {
+      return await ctx.replyWithHTML(subscribeActiveSubscribeMessage(), {
+        reply_markup: subscribeActiveSubscribeKeyboard().reply_markup,
+        parse_mode: "HTML",
+      });
+    } else {
+      return await ctx.replyWithHTML(subscribeMessage(ctx), {
+        reply_markup: subscribeKeyboard(tariffs).reply_markup,
+        parse_mode: "HTML",
+      });
+    }
+  }
+
   // Проверка на команду
   if (ctx.message?.text !== '/start') return;
 

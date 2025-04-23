@@ -1,95 +1,73 @@
 // Импорты
 import { updateUserById } from "#controllers/userController.js";
-import { getSubscribe } from "#controllers/subscribeController.js";
+import { updateTransaction, getTransactions } from "#controllers/transactionController.js";
+import { setSchedule } from "#controllers/scheduleController.js";
+import { getTariff } from "#controllers/tariffController.js";
+import { initSchedule } from "#services/schedule.js";
+import { sendPaymentSuccesPost, sendPaymentFailedPost, sendAuthPost } from "#controllers/telegramController.js"
+import calculatePeriod from "#utils/calculatePeriod.js";
 
 // Логирование
 import logger from "#utils/logs.js";
 
-// Маршруты "Уведомления о подписке"
+// Маршруты "Уведомления о транзакциях"
 export default async function (app, telegram) {
-    // Проверка подписки на канал
-
     app.post('/notification', async (req, res) => {
         try {
-            const { SubscriptionId, AccountId, Status, NextTransactionDate, SuccessfulTransactionsNumber } = req.body;
-            // Если подписка активна
-            if (Status === "Active") {
-                await updateUserById(AccountId, {
-                    'subscription.end_date': NextTransactionDate,
-                    'subscription.renewal_count': SuccessfulTransactionsNumber,
-                })
-                logger.info(`Оплата подписки: ID:${AccountId}`);
-            }
+            // Получаем данные
+            const { Success, OrderId, CardId, Status } = req.body;
+            // Получаем транзакцию
+            const transaction = await updateTransaction(OrderId, {});
+            // Если транзакции не существует
+            if (!transaction) return res.status(200).send('OK');
+            // Получаем пользователя
+            const user = await updateUserById(transaction.user_id, {});
+            // Если пользователя не существует
+            if (!user) return res.status(200).send('OK');
 
-            // Если подписка повторно оплачена
-            if (Status === "Completed") {
-                if (SubscriptionId) {
-                    const { Model } = await getSubscribe(SubscriptionId);
-                    await updateUserById(AccountId, {
+            logger.info(`Новое уведомление: USER:${user._id} - ORDER:${OrderId} - ${Status} - ${Success}`);
+
+            // Успешная транзакция
+            if (Success) {
+                // Если платёж подтверждён
+                if (Status === 'CONFIRMED') {
+                    // Обновляем транзакцию
+                    const { tariff_id } = await updateTransaction(OrderId, { status: 'completed' });
+                    // Получаем период действия оплаченной подписки
+                    const { duration } = await getTariff(tariff_id);
+                    // Вычисляем даты начала и окончания подписки
+                    let { start_date, end_date } = calculatePeriod(duration);
+                    // Получаем кол-во удачных транзакций
+                    const transactions = await getTransactions(user._id);
+                    // Обновляем пользователя
+                    await updateUserById(user._id, {
                         'subscription.is_active': true,
                         'subscription.is_auto_renewal': true,
-                        'subscription.id': SubscriptionId,
-                        'subscription.start_date': new Date(),
-                        'subscription.end_date': Model.NextTransactionDateIso,
-                        'subscription.renewal_count': Model.SuccessfulTransactionsNumber,
-                    })
+                        'subscription.card_id': CardId,
+                        'subscription.start_date': start_date,
+                        'subscription.end_date': end_date,
+                        'subscription.renewal_count': transactions.length,
+                    });
+                    // Создать задачу в базе
+                    await setSchedule({ user_id: user._id, tariff_id: tariff_id, type: 'subscription', start_date, end_date });
+                    // Отправляем сообщение
+                    await sendPaymentSuccesPost(telegram, user);
+                    // Обновляем задачи
+                    initSchedule(telegram);
+                    logger.info(`Успешная оплата: ID:${user._id}`);
                 }
-
-                logger.info(`Оплата подписки: ID:${AccountId}`);
+            } else {
+                // Обновляем транзакцию
+                await updateTransaction(OrderId, { status: 'failed' });
+                // Отправляем сообщение
+                await sendPaymentFailedPost(telegram, user);
+                logger.info(`Неудачная оплата: ID:${user._id}`);
             }
-
-            // Если подписка повторно оплачена
-            if (Status === "Expired") {
-                await updateUserById(AccountId, {
-                    'subscription.is_active': false,
-                    'subscription.is_auto_renewal': false,
-                    'subscription.start_date': null,
-                    'subscription.end_date': null,
-                    'subscription.id': null
-                })
-                logger.info(`Подписка истекла: ID:${AccountId}`);
-            }
-
-            // Если Транзакция не прошла 1-2 раза
-            if (Status === "PastDue") {
-                await updateUserById(AccountId, {
-                    'subscription.is_active': false,
-                    'subscription.is_auto_renewal': false,
-                    'subscription.start_date': null,
-                    'subscription.end_date': null,
-                    'subscription.id': null
-                })
-                logger.info(`Ошибка оплаты подписки 1-2: ID:${AccountId}`);
-            }
-
-            // Если Транзакция не прошла 3 раза
-            if (Status === "Rejected") {
-                await updateUserById(AccountId, {
-                    'subscription.is_active': false,
-                    'subscription.is_auto_renewal': false,
-                    'subscription.start_date': null,
-                    'subscription.end_date': null,
-                    'subscription.id': null
-                })
-                logger.info(`Ошибка оплаты подписки 3: ID:${AccountId}`);
-            }
-
-            // Если отменил подписку Status = Cancelled
-            if (Status === "Cancelled") {
-                await updateUserById(AccountId, {
-                    'subscription.is_active': false,
-                    'subscription.is_auto_renewal': false,
-                    'subscription.start_date': null,
-                    'subscription.end_date': null,
-                    'subscription.id': null
-                })
-                logger.info(`Отмена подписки: ID:${AccountId}`);
-            }
-
-            return res.status(200).json({ code: 0 });
+            // Отправляем ответ
+            return res.status(200).send('OK');
         } catch (e) {
             logger.info(`Ошибка получения уведомлений:`, e);
-            return res.status(500).json({ code: 0 });
+            return res.status(200).send('OK');
         }
     });
 }

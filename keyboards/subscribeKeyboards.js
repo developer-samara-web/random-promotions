@@ -20,10 +20,10 @@ export function subscribeKeyboard(tariffs) {
 }
 
 // Клавиатура "Меню оплаты выбранной подписки"
-export function subscribeShowKeyboard(tariff) {
+export function subscribeShowKeyboard(tariff, user) {
     try {
         return Markup.inlineKeyboard([
-            [Markup.button.webApp(`💳 Клауд Пайментс | ${tariff.initial_amount || tariff.recurring_amount} руб`, `${process.env.TELEGRAM_WEBAPP}/payment/${tariff._id}`)],
+            [Markup.button.url(`💳 Оплатить | ${tariff.recurring_amount} руб`, `${process.env.TELEGRAM_WEBAPP}/payment/${tariff._id}/${user.telegram_id}`)],
             [Markup.button.callback("⬅️ Главное меню", "start_menu")],
         ]);
     } catch (e) {
@@ -49,6 +49,13 @@ export function subscribeShowRulesKeyboard(tariff) {
 export function subscribePaymentKeyboard() {
     return Markup.inlineKeyboard([
         [Markup.button.callback("👤 Профиль", "user_profile")],
+        [Markup.button.callback("⬅️ Главное меню", "start_menu")],
+    ]);
+}
+
+// Клавиатура "Ошибка подписки"
+export function subscribeActiveSubscribeKeyboard() {
+    return Markup.inlineKeyboard([
         [Markup.button.callback("⬅️ Главное меню", "start_menu")],
     ]);
 }

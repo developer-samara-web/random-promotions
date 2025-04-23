@@ -8,6 +8,7 @@ import { getUser, getSubscribe } from "@/controllers/Users";
 import Preloader from '@/components/ui/Preloader/Preloader';
 import Join from "@/components/ui/Join/Join";
 import Rule from '@/components/ui/Rule/Rule';
+import Limit from '@/components/ui/Limit/Limit';
 import Page from "@/components/ui/Page/Page";
 import Header from "@/components/ui/Header/Header";
 import Error from "@/components/ui/Error/Error";
@@ -52,7 +53,7 @@ export default function Home() {
                         }
 
                         // Проверка окончания акции
-                        if(promotionData.status === 'completed') {
+                        if (promotionData.status === 'completed') {
                             setScreen('end');
                             return;
                         }
@@ -193,8 +194,8 @@ export default function Home() {
                 <div className='text-sm uppercase text-slate-400 font-medium text-center'>Выполните условия:</div>
                 {rules.registration && <Rule name="Регистрация" description="в системе" image="/logo.jpg" button={{ name: "Пройти", style: "!py-4 !h-2 !w-28 !text-[9px] !rounded-xl", onClick: () => Telegram.WebApp.openTelegramLink(`${process.env.NEXT_PUBLIC_TELEGRAM_BOT_URL}`) }} status={rules.registration} />}
                 {rules.subscribe && <Rule name="Mr. Раздачкин" description="Подписка" image="/logo.jpg" button={{ name: "Подписаться", style: "!py-4 !h-2 !w-28 !text-[9px] !rounded-xl", onClick: () => Telegram.WebApp.openTelegramLink(`${process.env.NEXT_PUBLIC_TELEGRAM_CHANEL_URL}`) }} status={!rules.subscribe} />}
-                {rules.premium && <Rule name="Premium" description="Платная подписка" icon="StarIcon" button={{ name: "Подробнее", style: "!py-4 !h-2 !w-28 !text-[9px] !rounded-xl", link: "/premium" }} status={!rules.premium} />}
-                {rules.free && <Rule name="Free лимит" description="Участий в раздачах" icon="ExclamationTriangleIcon" button={{ name: "Подробнее", style: "!py-4 !h-2 !w-28 !text-[9px] !rounded-xl", link: "/premium" }} status={!rules.free} />}
+                {rules.premium && <Rule name="Premium" description="Платная подписка" icon="StarIcon" button={{ name: "Подробнее", style: "!py-4 !h-2 !w-28 !text-[9px] !rounded-xl", onClick: () => Telegram.WebApp.openTelegramLink(`${process.env.NEXT_PUBLIC_TELEGRAM_BOT_URL}?start=premium`) }} status={!rules.premium} />}
+                {rules.free && !rules.premium && <Limit name="ВЫ ИЗРАСХОДОВАЛИ СВОЙ ЛИМИТ" icon="ExclamationTriangleIcon" button={{ name: "Купить премиум", style: "", onClick: () => Telegram.WebApp.openTelegramLink(`${process.env.NEXT_PUBLIC_TELEGRAM_BOT_URL}?start=premium`) }} status={!rules.free} />}
                 <Button name="Проверить условия" icon="ArrowPathIcon" event={() => refreshRulesHandler(user)} />
                 <Button name="Закрыть приложение" icon="XCircleIcon" className="text-yellow-900 !bg-yellow-400" event={() => Telegram.WebApp.close()} />
                 <div className={`fixed bottom-0 left-0 right-0 transform transition-transform duration-300 ease-out ${popup ? 'translate-y-0' : 'translate-y-full'} rounded-t-3xl bg-[#172b51] w-full p-5 text-black border-t border-slate-900 z-50`}>

@@ -10,7 +10,7 @@ export const metadata = {
 
 // Компонент
 export default function PaymentPage({ params }) {
-    const { tariff_id } = React.use(params);
+    const { tariff_id, user_id } = React.use(params);
 
-    return <Payment tariffId={tariff_id} />
+    return <Payment tariffId={tariff_id} userId={user_id} />
 }

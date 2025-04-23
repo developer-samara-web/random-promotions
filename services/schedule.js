@@ -1,6 +1,7 @@
 // Импорты
 import { getSchedules } from "#controllers/scheduleController.js";
 import { addPromotionSchedule } from "#schedules/Promotions.js";
+import { addSubscriptionSchedule } from "#schedules/Subscription.js";
 
 // Логирование
 import logger from "#utils/logs.js";
@@ -22,6 +23,15 @@ export async function initSchedule(telegram) {
 }
 
 // Добавление задачи в планировщик
-export async function addSchedule(schedule, telegram) {
-    return addPromotionSchedule(schedule, telegram, scheduledJobs);
+export function addSchedule(schedule, telegram) {
+    const { type } = schedule;
+
+    if (type === 'promotion') {
+        return addPromotionSchedule(schedule, telegram, scheduledJobs);
+    } else if (type === 'subscription') {
+        return addSubscriptionSchedule(schedule, telegram, scheduledJobs);
+    } else {
+        logger.error(`Неизвестный тип задачи: ${type}`);
+        return null;
+    }
 }

@@ -1,6 +1,8 @@
 // Импорты
-import { chanelKeyboard, winnerKeyboard } from "#keyboards/chanelKeyboard.js";
-import { resultMessage, winnerMessage } from "#messages/postMessages.js";
+import { ResultMessage, WinnerMessage } from "#messages/Promotion.js";
+import { PaymentSuccessMessage, PaymentErrorMessage, PaymentAuthMessage } from "#messages/Payment.js";
+import { chanelKeyboard } from "#keyboards/chanelKeyboard.js";
+import { MainMenuKeyboard } from "#keyboards/mainKeyboards.js";
 
 // Логирование
 import logger from "#utils/logs.js";
@@ -29,7 +31,7 @@ export async function sendResultPost(telegram, promotion, winners) {
         // Отправляем сообщение в телеграм
         return await telegram.telegram.sendMessage(
             process.env.TELEGRAM_GROUP_ID,
-            resultMessage(promotion, winners),
+            ResultMessage(promotion, winners),
             {
                 reply_to_message_id: promotion.message_id,
                 disable_web_page_preview: true,
@@ -83,11 +85,62 @@ export async function sendWinnerPost(telegram, promotion, user) {
 
         return await telegram.telegram.sendMessage(
             user.telegram_id,
-            winnerMessage(promotion, post),
+            WinnerMessage(promotion, post),
             {
                 parse_mode: 'HTML',
                 disable_web_page_preview: false,
-                reply_markup: winnerKeyboard().reply_markup
+                reply_markup: MainMenuKeyboard().reply_markup
+            }
+        );
+    } catch (e) {
+        logger.error('Ошибка отправки поста с победителями:', e);
+    }
+};
+
+// Контроллер "Уведомление об успешной оплате"
+export async function sendPaymentSuccesPost(telegram, user) {
+    try {
+        return await telegram.telegram.sendMessage(
+            user.telegram_id,
+            PaymentSuccessMessage(user.subscription.end_date),
+            {
+                parse_mode: 'HTML',
+                disable_web_page_preview: false,
+                reply_markup: MainMenuKeyboard().reply_markup
+            }
+        );
+    } catch (e) {
+        logger.error('Ошибка отправки поста с победителями:', e);
+    }
+};
+
+// Контроллер "Уведомление об неуспешной оплате"
+export async function sendPaymentFailedPost(telegram, user) {
+    try {
+        return await telegram.telegram.sendMessage(
+            user.telegram_id,
+            PaymentErrorMessage(user.subscription.end_date),
+            {
+                parse_mode: 'HTML',
+                disable_web_page_preview: false,
+                reply_markup: MainMenuKeyboard().reply_markup
+            }
+        );
+    } catch (e) {
+        logger.error('Ошибка отправки поста с победителями:', e);
+    }
+};
+
+// Контроллер "Уведомление регистрации оплаты"
+export async function sendAuthPost(telegram, user) {
+    try {
+        return await telegram.telegram.sendMessage(
+            user.telegram_id,
+            PaymentAuthMessage(user.subscription.end_date),
+            {
+                parse_mode: 'HTML',
+                disable_web_page_preview: false,
+                reply_markup: MainMenuKeyboard().reply_markup
             }
         );
     } catch (e) {

@@ -16,5 +16,5 @@
 }
 
 .success-description{
-    @apply text-sm whitespace-pre-wrap
+    @apply text-sm whitespace-pre-wrap font-normal
 }

@@ -37,8 +37,8 @@ export function rulesAcceptKeyboard() {
     ]);
 }
 
-// Клавиатура "Ошибка"
-export function errorKeyboard() {
+// Клавиатура "Главное меню"
+export function MainMenuKeyboard() {
     return Markup.inlineKeyboard([
         [Markup.button.callback("🚀 Главное меню", "start_menu")]
     ]);

@@ -10,7 +10,6 @@ import Button from "@/components/ui/Button/Button";
 import Header from "@/components/ui/Header/Header";
 
 export default function PremiumRules({ tariffId }) {
-    const [spoiler, setSpoiler] = useState(false);
     const [tariff, setTariff] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -25,7 +24,7 @@ export default function PremiumRules({ tariffId }) {
         }
         // Запуск функции
         fetchTariffs();
-    }, [])
+    }, [tariffId])
 
     // Загрузка данных
     if (!isLoading) {
@@ -41,7 +40,7 @@ export default function PremiumRules({ tariffId }) {
             <Header title="Премиум подписка" />
             <Block className="gap-3">
                 <h2 className="font-medium">⚠️ Условия оказания услуг:</h2>
-                <div className="text-sm mt-2">Осуществляя оплату, <b>Вы подтверждаете ознакомление со всеми текущими тарифами сервиса</b>, а также даете согласие на дальнейшую пролонгацию платежей.</div>
+                <div className="text-sm mt-2">Осуществляя оплату, <b>Вы подтверждаете ознакомление со всеми текущими тарифами сервиса.</b></div>
                 <div className="text-sm mt-2">{tariff.rules}</div>
             </Block>
             <div className="flex flex-col gap-3 w-full">

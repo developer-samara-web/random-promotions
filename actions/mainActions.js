@@ -1,7 +1,7 @@
 // Импорты
-import { setUser, getUser, checkUser } from "#controllers/userController.js";
+import { setUser, getUser, checkUser, updateUser } from "#controllers/userController.js";
 import { startMessage, rulesAcceptMessage, errorMessage } from "#messages/mainMessages.js";
-import { startKeyboard, rulesAcceptKeyboard, errorKeyboard } from "#keyboards/mainKeyboards.js";
+import { startKeyboard, rulesAcceptKeyboard, MainMenuKeyboard } from "#keyboards/mainKeyboards.js";
 import { getTariffs } from "#controllers/tariffController.js";
 
 // Логирование
@@ -38,9 +38,11 @@ export async function rulesAction(telegram) {
 			// Если пользователь не создался
 			if (!user) {
 				await ctx.editMessageText(errorMessage(), {
-					reply_markup: errorKeyboard().reply_markup,
+					reply_markup: MainMenuKeyboard().reply_markup,
 					parse_mode: "HTML"
 				});
+
+				await updateUser()
 			}
 			// Если пользователь создался
 			await ctx.editMessageText(rulesAcceptMessage(), {
