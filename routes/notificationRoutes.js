@@ -19,11 +19,11 @@ export default async function (app, telegram) {
             // Получаем транзакцию
             const transaction = await updateTransaction(OrderId, {});
             // Если транзакции не существует
-            if (!transaction) return res.status(200).send('OK');
+            if (!transaction) return res.status(200).send('200 OK');
             // Получаем пользователя
             const user = await updateUserById(transaction.user_id, {});
             // Если пользователя не существует
-            if (!user) return res.status(200).send('OK');
+            if (!user) return res.status(200).send('200 OK');
 
             logger.info(`Новое уведомление: USER:${user._id} - ORDER:${OrderId} - ${Status} - ${Success}`);
 
@@ -64,10 +64,10 @@ export default async function (app, telegram) {
                 logger.info(`Неудачная оплата: ID:${user._id}`);
             }
             // Отправляем ответ
-            return res.status(200).send('OK');
+            return res.status(200).send('200 OK');
         } catch (e) {
             logger.info(`Ошибка получения уведомлений:`, e);
-            return res.status(200).send('OK');
+            return res.status(200).send('200 OK');
         }
     });
 }
