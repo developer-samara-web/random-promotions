@@ -63,7 +63,7 @@ export default function PaymentResult({ transactionId }) {
                         <Image src="/payment-check.png" width="120" height="120" alt="no-credit-card" />
                         <Success title="Информация" description="Мы подтвердили получение оплаты. Теперь вы сможете наслаждаться всеми преимуществами премиум подписки. Мы рады, что вы с нами!" />
                         <div className="w-full flex flex-col gap-3">
-                            <Button name="Вернуться в бота" icon="XCircleIcon" className="text-yellow-900 !bg-yellow-400" event={() => window.location.href = 'tg://close'} />
+                            <Button name="Вернуться в бота" icon="XCircleIcon" className="text-yellow-900 !bg-yellow-400" link={process.env.NEXT_PUBLIC_TELEGRAM_BOT_URL} />
                         </div>
                     </>
                 ) : transaction.status === 'in_progress' ? (
@@ -72,7 +72,7 @@ export default function PaymentResult({ transactionId }) {
                         <Image src="/payment-check.png" width="120" height="120" alt="no-credit-card" />
                         <Success title="Информация" description="Мы получили вашу оплату за подписку и сейчас ее обрабатываем. Пожалуйста, подождите немного. Вы получите подтверждение в нашем телеграм боте." />
                         <div className="w-full flex flex-col gap-3">
-                            <Button name="Вернуться в бота" icon="XCircleIcon" className="text-yellow-900 !bg-yellow-400" event={() => Telegram.WebApp.close()} />
+                            <Button name="Вернуться в бота" icon="XCircleIcon" className="text-yellow-900 !bg-yellow-400" link={process.env.NEXT_PUBLIC_TELEGRAM_BOT_URL} />
                         </div>
                     </>
                 ) : (
@@ -81,7 +81,7 @@ export default function PaymentResult({ transactionId }) {
                         <Image src="/no-credit-card.png" width="120" height="120" alt="no-credit-card" />
                         <Error title="Информация" description="Мы обнаружили проблему при обработке платежа. Если проблема сохраняется, свяжитесь с нашей службой поддержки. Мы постараемся помочь вам решить проблему!" />
                         <div className="w-full flex flex-col gap-3">
-                            <Button name="Вернуться в бота" icon="XCircleIcon" className="text-yellow-900 !bg-yellow-400" event={() => Telegram.WebApp.close()} />
+                            <Button name="Вернуться в бота" icon="XCircleIcon" className="text-yellow-900 !bg-yellow-400" link={process.env.NEXT_PUBLIC_TELEGRAM_BOT_URL} />
                         </div>
                     </>
                 )
