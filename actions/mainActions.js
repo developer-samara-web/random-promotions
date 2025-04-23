@@ -18,6 +18,7 @@ export async function startAction(telegram) {
 			return await ctx.editMessageText(startMessage(ctx), {
 				reply_markup: startKeyboard(user.subscription, promoTarifs).reply_markup,
 				parse_mode: "HTML",
+				disable_web_page_preview: true,
 			});
 		});
 	} catch (e) {

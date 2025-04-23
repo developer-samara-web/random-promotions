@@ -53,9 +53,9 @@ export default async (ctx) => {
       const tariffs = await getTariffs();
       const promoTarifs = tariffs.find((tariff) => tariff.main_menu)
       // Если пользователь
-      return await ctx.replyWithHTML(startMessage(ctx), startKeyboard(user.subscription, promoTarifs));
-    }
-  } catch (e) {
-    logger.error('Ошибка регистрации пользователя:', e);
+      return await ctx.replyWithHTML(startMessage(ctx), { disable_web_page_preview: true, ...startKeyboard(user.subscription, promoTarifs) });
   }
+  } catch (e) {
+  logger.error('Ошибка регистрации пользователя:', e);
+}
 };
