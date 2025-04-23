@@ -44,11 +44,13 @@ export async function subscribeShowAction(telegram) {
 				return await ctx.editMessageText(subscribeActiveSubscribeMessage(tariff), {
 					reply_markup: subscribeActiveSubscribeKeyboard().reply_markup,
 					parse_mode: "HTML",
+					disable_web_page_preview: true,
 				});
 			} else {
 				return await ctx.editMessageText(subscribeShowMessage(), {
 					reply_markup: subscribeShowKeyboard(tariff, user).reply_markup,
 					parse_mode: "HTML",
+					disable_web_page_preview: true,
 				});
 			}
 		});

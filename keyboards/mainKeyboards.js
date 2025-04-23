@@ -14,10 +14,12 @@ export function startKeyboard(subscription, tariffs) {
     // Формируем клавиатуру в зависимости от статуса подписки
     const premiumKeyboard = subscription?.is_active ? [
         [Markup.button.callback("👤 Мой Профиль", "user_profile")],
+        [Markup.button.callback("🆘 Tex. Поддержка", "user_support")],
     ] : [
         [Markup.button.callback("👤 Мой Профиль", "user_profile")],
         ...tariffButtons,
-        [Markup.button.callback("⭐️ Оформить подписку", "user_premium")]
+        [Markup.button.callback("⭐️ Оформить подписку", "user_premium")],
+        [Markup.button.callback("🆘 Tex. Поддержка", "user_support")]
     ];
 
     return Markup.inlineKeyboard(premiumKeyboard);

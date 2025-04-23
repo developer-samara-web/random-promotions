@@ -1,6 +1,6 @@
 // Импорты
 import { startAction, rulesAction } from "#actions/mainActions.js";
-import { profileAction } from "#actions/userActions.js";
+import { profileAction, supportAction } from "#actions/userActions.js";
 import { subscribeAction, subscribeShowAction, subscribeShowRulesAction } from "#actions/subscribeActions.js";
 import { adminAction } from "#actions/adminActions.js";
 
@@ -12,6 +12,7 @@ export default (telegram) => {
 
   //userActions
   profileAction(telegram);
+  supportAction(telegram);
 
   //subscribeActions
   subscribeAction(telegram);
