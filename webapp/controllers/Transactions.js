@@ -1,4 +1,4 @@
-// Создание транзакции
+// Создание транзраздачи
 export async function setTransaction(data) {
     try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/transaction`, {
@@ -9,7 +9,7 @@ export async function setTransaction(data) {
 
         return response.json();
     } catch (e) {
-        console.error('Ошибка при создании транзакции:', e);
+        console.error('Ошибка при создании транзраздачи:', e);
     }
 }
 
@@ -41,7 +41,7 @@ export async function getTransactions(id) {
     }
 }
 
-// Контроллер "Обновления транзакции"
+// Контроллер "Обновления транзраздачи"
 export async function updateTransaction(id, data) {
     try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/transaction/${id}`, {
@@ -56,7 +56,7 @@ export async function updateTransaction(id, data) {
     }
 }
 
-// Контроллер "Удаление транзакции"
+// Контроллер "Удаление транзраздачи"
 export async function delTransaction(id) {
     try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/transaction/${id}`, {

@@ -7,7 +7,7 @@ import { MainMenuKeyboard } from "#keyboards/Main.js";
 // Логирование
 import logger from "#utils/logs.js";
 
-// Контроллер "Отправка поста акции"
+// Контроллер "Отправка поста раздачи"
 export async function sendPromotionPost(telegram, promotion) {
     try {
         // Отправляем сообщение в телеграм
@@ -43,7 +43,7 @@ export async function sendResultPost(telegram, promotion, winners) {
     }
 };
 
-// Контроллер "Обновление поста акции"
+// Контроллер "Обновление поста раздачи"
 export async function updatePost(telegram, promotion, counter = null, retries = 3) {
     try {
         // Проверяем данные

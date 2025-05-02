@@ -5,21 +5,21 @@ import Transaction from "#models/Transaction.js";
 // Логирование
 import logger from "#utils/logs.js";
 
-// Контроллер "Получение транзакции"
+// Контроллер "Получение транзраздачи"
 export async function getTransaction(id) {
     try {
         // Проверка входных данных
         if (!id) { throw new Error('Ошибка данных, id не заполнен.') };
         // Подключаемся к базе
         await connectToDatabase();
-        // Получаем транзакцию
+        // Получаем транзраздачу
         const transaction = await Transaction.find(id);
         // Проверяем данные
         if (!transaction) { return null };
         // Отправляем данные
         return transaction;
     } catch (e) {
-        logger.error('Ошибка получения транзакции:', e);
+        logger.error('Ошибка получения транзраздачи:', e);
     }
 };
 
@@ -30,7 +30,7 @@ export async function getTransactions(id) {
         if (!id) { throw new Error('Ошибка данных, id не заполнен.') };
         // Подключаемся к базе
         await connectToDatabase();
-        // Получаем транзакцию
+        // Получаем транзраздачу
         const transactions = await Transaction.find({
             user_id: id,
             status: 'completed'
@@ -44,7 +44,7 @@ export async function getTransactions(id) {
     }
 };
 
-// Контроллер "Обновление транзакции"
+// Контроллер "Обновление транзраздачи"
 export async function updateTransaction(id, body) {
     try {
         // Проверка входных данных
@@ -63,18 +63,18 @@ export async function updateTransaction(id, body) {
         logger.info(`Транзакция обновлена: ID:${transaction._id}`);
         return transaction;
     } catch (e) {
-        logger.error('Ошибка получения транзакции:', e);
+        logger.error('Ошибка получения транзраздачи:', e);
     }
 };
 
-// Контроллер "Создание транзакции"
+// Контроллер "Создание транзраздачи"
 export async function setTransaction(body) {
     try {
         // Проверка входных данных
         if (!body) { throw new Error('Ошибка данных, body не заполнены.') };
         // Подключаемся к базе
         await connectToDatabase();
-        // Создаём новую транзакцию
+        // Создаём новую транзраздачу
 		const transaction = new Transaction(body);
 		// Сохраняем в базе
 		await transaction.save();
@@ -84,6 +84,6 @@ export async function setTransaction(body) {
 		logger.info(`Транзакция создана: ID:${transaction._id}`);
 		return transaction;
     } catch (e) {
-        logger.error('Ошибка получения транзакции:', e);
+        logger.error('Ошибка получения транзраздачи:', e);
     }
 };

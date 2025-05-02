@@ -102,7 +102,7 @@ export function addPromotionSchedule(schedule, telegram, scheduledJobs) {
                 await updateSchedule(_id, { status: 'completed' });
                 logger.info(`Раздача завершена: ID:${promotion_id}`);
             } catch (e) {
-                logger.error(`Ошибка завершения акции ${promotion_id}:`, e);
+                logger.error(`Ошибка завершения раздачи ${promotion_id}:`, e);
             } finally {
                 cancelSchedule(jobName, scheduledJobs);
             }

@@ -3,7 +3,7 @@ import Home from "@/components/pages/home/Home";
 
 // SEO
 export const metadata = {
-  title: "Mr.Раздачкин | Регистрация в акции",
+  title: "Mr.Раздачкин | Регистрация в раздачи",
   description: "https://t.me/mr_razdachkin",
 };
 

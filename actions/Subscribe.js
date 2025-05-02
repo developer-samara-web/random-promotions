@@ -66,7 +66,7 @@ export async function subscribeShowAction(telegram) {
 			}
 			// Получаем данные тарифа
 			const tariff = await getTariff(ctx.match[0].split("_")[2]);
-			// Создаём транзакцию
+			// Создаём транзраздачу
 			const transaction = await setTransaction({
 				user_id: user._id,
 				tariff_id: tariff._id,

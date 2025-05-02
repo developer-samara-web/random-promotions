@@ -6,7 +6,7 @@ import User from '@/models/User';
 // Проверка лимита участий
 export async function GET(request, ctx) {
     try {
-        // Получаем id акции
+        // Получаем id раздачи
         const { user_id } = await ctx?.params;
 
         // Подключаемся к базе
@@ -36,7 +36,7 @@ export async function GET(request, ctx) {
 
         return NextResponse.json({ access: true });
     } catch (error) {
-        console.error('Ошибка при получении акции:', error);
+        console.error('Ошибка при получении раздачи:', error);
         return NextResponse.json({ status: 500, error: 'Что-то пошло не так. Попробуйте повторить попытку позже или обратитесь в поддержку.' })
     }
 }

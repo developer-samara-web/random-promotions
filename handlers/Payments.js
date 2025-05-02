@@ -18,7 +18,7 @@ export async function PaymentCheckout(Telegram) {
 			const { userId, transactionId } = JSON.parse(ctx.preCheckoutQuery.invoice_payload);
 			// Подтверждаем платёж
 			await ctx.answerPreCheckoutQuery(true);
-			// Обновляем статус транзакции
+			// Обновляем статус транзраздачи
 			await updateTransaction(transactionId, { status: 'accepted' });
 			// Логируем
 			logger.info(`Успешное подтверждение оплаты: ID:${userId}`);
@@ -37,7 +37,7 @@ export async function PaymentSuccess(Telegram) {
 		try {
 			// Получаем данные call-бэка
 			const { userId, transactionId, tariffId } = JSON.parse(ctx.message.successful_payment.invoice_payload);
-			// Обновляем статус транзакции
+			// Обновляем статус транзраздачи
 			const { message_id } = await updateTransaction(transactionId, { status: 'completed' });
 			// Получаем данные тарифа
 			const tariff = await getTariff(tariffId);

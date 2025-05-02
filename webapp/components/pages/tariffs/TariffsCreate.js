@@ -59,7 +59,7 @@ export default function Tariffs() {
     return (
         <Page>
             <Header title="Создание тарифа" />
-            <Form onSubmit={setTariff} fields={fields} formData={formData} setFormData={setFormData} Telegram={window.Telegram} buttonName="Создать акцию" buttonIcon="CheckCircleIcon" />
+            <Form onSubmit={setTariff} fields={fields} formData={formData} setFormData={setFormData} Telegram={window.Telegram} buttonName="Создать раздачу" buttonIcon="CheckCircleIcon" />
             <Button name="Назад" icon="XCircleIcon" className="text-yellow-900 !bg-yellow-400" link="/tariffs" />
         </Page>
     );

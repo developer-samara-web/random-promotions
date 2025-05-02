@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 // Задачи планировщика
 const ScheduleSchema = new mongoose.Schema({
     user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // ID Пользователя
-    promotion_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Promotion' }, // ID Акции
+    promotion_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Promotion' }, // ID Раздачи
     tariff_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Tariff' }, // ID Тарифа
     type: { type: String, enum: ['subscription', 'promotion'] },
     start_date: { type: Date }, // Дата начала задачи

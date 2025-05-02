@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import connectToDatabase from "@/services/mongodb";
 import Transaction from "@/models/Transaction";
 
-// Маршрут "Получение данных о транзакциии"
+// Маршрут "Получение данных о транзраздачии"
 export async function GET(request, ctx) {
     try {
         // Получаем id пользователя
@@ -12,7 +12,7 @@ export async function GET(request, ctx) {
         await connectToDatabase();
         // Поиск транзакций
         const transaction = await Transaction.findOne({ _id: id, });
-        // Если транзакции нет
+        // Если транзраздачи нет
         if (!transaction) { return NextResponse.json({ error: true }, { status: 404 }) };
         // Отправляем данные
         return NextResponse.json({ response: transaction }, { status: 200 });
@@ -22,10 +22,10 @@ export async function GET(request, ctx) {
     }
 }
 
-// Маршрут "Удаление транзакции"
+// Маршрут "Удаление транзраздачи"
 export async function PUT(request, ctx) {
     try {
-        // Получаем id транзакции
+        // Получаем id транзраздачи
         const { id } = await ctx?.params;
         // Получение данных
         const body = await request.json();
@@ -33,31 +33,31 @@ export async function PUT(request, ctx) {
         await connectToDatabase();
         // Поиск и обновление транзакций
         const transactions = await Transaction.findByIdAndUpdate({ _id: id }, { $set: body }, { new: true });
-        // Если транзакции нет
-        if (!transactions) { return NextResponse.json({ error: 'Ошибка обновления транзакции.' }, { status: 404 }) };
+        // Если транзраздачи нет
+        if (!transactions) { return NextResponse.json({ error: 'Ошибка обновления транзраздачи.' }, { status: 404 }) };
         // Отправляем данные
-        return NextResponse.json({ response: 'Успешное обновление транзакции.' }, { status: 200 });
+        return NextResponse.json({ response: 'Успешное обновление транзраздачи.' }, { status: 200 });
     } catch (e) {
-        console.error('Ошибка при обновлении транзакции:', e);
+        console.error('Ошибка при обновлении транзраздачи:', e);
         return NextResponse.json({ status: 500, error: 'Что-то пошло не так. Попробуйте позже или обратитесь в поддержку.' }, { status: 500 });
     }
 }
 
-// Маршрут "Удаление транзакции"
+// Маршрут "Удаление транзраздачи"
 export async function DELETE(request, ctx) {
     try {
-        // Получаем id транзакции
+        // Получаем id транзраздачи
         const { id } = await ctx?.params;
         // Подключаемся к базе данных
         await connectToDatabase();
         // Поиск транзакций
         const transactions = await Transaction.findByIdAndDelete(id);
-        // Если транзакции нет
-        if (!transactions) { return NextResponse.json({ error: 'Ошибка удаления транзакции.' }, { status: 404 }) };
+        // Если транзраздачи нет
+        if (!transactions) { return NextResponse.json({ error: 'Ошибка удаления транзраздачи.' }, { status: 404 }) };
         // Отправляем данные
-        return NextResponse.json({ response: 'Успешное удаление транзакции.' }, { status: 402 });
+        return NextResponse.json({ response: 'Успешное удаление транзраздачи.' }, { status: 402 });
     } catch (e) {
-        console.error('Ошибка при удалении транзакции:', e);
+        console.error('Ошибка при удалении транзраздачи:', e);
         return NextResponse.json({ status: 500, error: 'Что-то пошло не так. Попробуйте позже или обратитесь в поддержку.' }, { status: 500 });
     }
 }

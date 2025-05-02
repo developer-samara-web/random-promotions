@@ -2,7 +2,7 @@
     {
         "id": 1,
         "name": "title",
-        "placeholder": "Название акции",
+        "placeholder": "Название раздачи",
         "type": "text",
         "visible": true,
         "required": true
@@ -10,7 +10,7 @@
     {
         "id": 2,
         "name": "description",
-        "placeholder": "Подробное описание акции",
+        "placeholder": "Подробное описание раздачи",
         "type": "text",
         "visible": true,
         "required": true
@@ -26,7 +26,7 @@
     {
         "id": 4,
         "name": "banner_image",
-        "placeholder": "Фото поста акции",
+        "placeholder": "Фото поста раздачи",
         "type": "image",
         "visible": true,
         "required": true
@@ -34,7 +34,7 @@
     {
         "id": 5,
         "name": "start_date",
-        "placeholder": "Дата начала акции",
+        "placeholder": "Дата начала раздачи",
         "type": "date",
         "visible": true,
         "required": true
@@ -42,7 +42,7 @@
     {
         "id": 6,
         "name": "end_date",
-        "placeholder": "Дата конца акции",
+        "placeholder": "Дата конца раздачи",
         "type": "date",
         "visible": true,
         "required": true

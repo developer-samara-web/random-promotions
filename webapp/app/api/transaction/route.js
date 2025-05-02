@@ -3,23 +3,23 @@ import { NextResponse } from "next/server";
 import connectToDatabase from "@/services/mongodb";
 import Transaction from "@/models/Transaction";
 
-// Маршрут "Создание транзакции"
+// Маршрут "Создание транзраздачи"
 export async function POST(request) {
     try {
         // Подключаемся к базе данных
         await connectToDatabase();
         // Получаем данные
         const { user_id, tariff_id } = await request.json();
-        // Создаём транзакцию
+        // Создаём транзраздачу
         const transaction = new Transaction({ user_id, tariff_id });
-        // Если транзакции нет
-        if (!transaction) { return NextResponse.json({ error: 'Не удалось создать транзакцию.' }, { status: 404 }) };
-        // Сохраняем транзакцию
+        // Если транзраздачи нет
+        if (!transaction) { return NextResponse.json({ error: 'Не удалось создать транзраздачу.' }, { status: 404 }) };
+        // Сохраняем транзраздачу
         await transaction.save();
         // Отправляем данные
         return NextResponse.json({ response: transaction }, { status: 200 });
     } catch (e) {
-        console.error('Ошибка при создании транзакции:', e);
+        console.error('Ошибка при создании транзраздачи:', e);
         return NextResponse.json({ status: 500, error: 'Что-то пошло не так. Попробуйте позже или обратитесь в поддержку.' }, { status: 500 });
     }
 }

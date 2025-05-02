@@ -31,7 +31,7 @@ export async function POST(request) {
         const tariff = new Tariff(query);
         // Если раздача не создалась
         if (!tariff) { return NextResponse.json({ error: 'Не удалось создать тариф.' }, { status: 404 }) };
-        // Сохраняем акцию
+        // Сохраняем раздачу
         await tariff.save();
         // Отправляем данные
         return NextResponse.json({ response: tariff }, { status: 200 });

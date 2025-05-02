@@ -6,9 +6,9 @@ import Promotion from '@/models/Promotion';
 // Получаем список Участий пользователя
 export async function GET(request, ctx) {
     try {
-        // Получаем id акции
+        // Получаем id раздачи
         const { user_id } = await ctx?.params;
-        // Проверяем id акции
+        // Проверяем id раздачи
         if (user_id === 'undefined') { return NextResponse.json({ status: 404, error: 'Ошибка при загрузке участий.' }) }
         // Подключаемся к базе данных
         await connectToDatabase();
@@ -21,7 +21,7 @@ export async function GET(request, ctx) {
         // Отправляем данные
         return NextResponse.json({ status: 200, response: participant })
     } catch (error) {
-        console.error('Ошибка при получении акции:', error);
+        console.error('Ошибка при получении раздачи:', error);
         return NextResponse.json({ status: 500, error: 'Что-то пошло не так. Попробуйте повторить попытку позже или обратитесь в поддержку.' })
     }
 }

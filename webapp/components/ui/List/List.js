@@ -51,7 +51,7 @@ export default function List({ name, search, items, button }) {
                         </div>
                     ))
                 ) : (
-                    <Error title="Акции не найдены" description="Попробуйте изменить поисковый запрос или попробуйте повторить попытку позже." />
+                    <Error title="Раздачи не найдены" description="Попробуйте изменить поисковый запрос или попробуйте повторить попытку позже." />
                 ) : (
                     items.map((item) => (
                         <div key={item._id} className="list-item">

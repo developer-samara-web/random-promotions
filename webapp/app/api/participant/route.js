@@ -25,7 +25,7 @@ export async function POST(request) {
         // Отправляем данные
         return NextResponse.json({ response: participant }, { status: 200 });
     } catch (error) {
-        console.error('Ошибка при создании акции:', error)
+        console.error('Ошибка при создании раздачи:', error)
         return NextResponse.json({ status: 500, error: 'Что-то пошло не так. Попробуйте позже или обратитесь в поддержку.' }, { status: 500 });
     }
 }

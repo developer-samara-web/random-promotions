@@ -6,7 +6,7 @@ import Participant from '@/models/Participant';
 // Поиск участия
 export async function GET(request, ctx) {
     try {
-        // Получаем id акции
+        // Получаем id раздачи
         const { promotion_id, user_id } = await ctx?.params;
         // Подключаемся к базе
         await connectToDatabase();
@@ -20,7 +20,7 @@ export async function GET(request, ctx) {
         // Отправляем данные
         return NextResponse.json({ access: false })
     } catch (error) {
-        console.error('Ошибка при получении акции:', error);
+        console.error('Ошибка при получении раздачи:', error);
         return NextResponse.json({ status: 500, error: 'Что-то пошло не так. Попробуйте повторить попытку позже или обратитесь в поддержку.' })
     }
 }

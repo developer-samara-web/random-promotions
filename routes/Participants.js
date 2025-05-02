@@ -11,9 +11,9 @@ export default async function (app, telegram) {
     // Создание участия
     app.post('/participants/update', async (req, res) => {
         try {
-            // Получаем id акции
+            // Получаем id раздачи
             const { promotion_id } = req.body;
-            // Получаем время акции
+            // Получаем время раздачи
             const promotion = await getPromotion(promotion_id);
             // Получаем участников
             const participants = await getParticipants(promotion_id);

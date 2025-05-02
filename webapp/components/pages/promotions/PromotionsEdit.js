@@ -27,7 +27,7 @@ export default function Edit({ id }) {
                 setIsLoading(true)
                 return;
             }
-            // Получаем данные акции
+            // Получаем данные раздачи
             const { response, error } = await getPromotion(id);
             if (error) {
                 setError(error);

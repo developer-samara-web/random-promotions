@@ -16,7 +16,7 @@ export default function Promotions() {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    // Получаем акцию
+    // Получаем раздачу
     useEffect(() => {
         const isAdmin = async () => {
             const { isAdmin } = await checkAdmin();

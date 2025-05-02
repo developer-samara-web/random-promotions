@@ -5,48 +5,48 @@ import Promotion from "#models/Promotion.js";
 // Логирование
 import logger from "#utils/logs.js";
 
-// Контроллер "Получение данных акции"
+// Контроллер "Получение данных раздачи"
 export async function getPromotion(id) {
 	try {
 		// Проверка входных данных
 		if (!id) { throw new Error('Ошибка данных, id не заполнен.') }
 		// Подключаемся к базе
 		await connectToDatabase();
-		// Получаем акцию
+		// Получаем раздачу
 		const promotion = await Promotion.findById(id);
 		// Проверяем данные
 		if (!promotion) { return null };
 		// Отправляем данные
 		return promotion;
 	} catch (e) {
-		logger.error('Ошибка получения акции:', e);
+		logger.error('Ошибка получения раздачи:', e);
 	}
 };
 
-// Контроллер "Получение данных всех акций"
+// Контроллер "Получение данных всех раздач"
 export async function getPromotions() {
 	try {
 		// Подключаемся к базе
 		await connectToDatabase();
-		// Получаем акцию
+		// Получаем раздачу
 		const promotions = await Promotion.find();
 		// Проверяем данные
 		if (!promotions) { return null };
 		// Отправляем данные
 		return promotions;
 	} catch (e) {
-		logger.error('Ошибка получения акций:', e);
+		logger.error('Ошибка получения раздачи:', e);
 	}
 };
 
-// Контроллер "Создание акции"
+// Контроллер "Создание раздачи"
 export async function setPromotion(body) {
 	try {
 		// Проверка входных данных
 		if (!body) { throw new Error('Ошибка данных: body не заполнен.') }
 		// Подключаемся к базе
 		await connectToDatabase();
-		// Создаём новую акцию
+		// Создаём новую раздачу
 		const promotion = new Promotion(body);
 		// Сохраняем в базе
 		await promotion.save();
@@ -56,11 +56,11 @@ export async function setPromotion(body) {
 		logger.info(`Новая раздача: ${promotion._id}.`);
 		return promotion;
 	} catch (e) {
-		logger.error('Ошибка создания акции:', e);
+		logger.error('Ошибка создания раздачи:', e);
 	}
 };
 
-// Контроллер "Обновление акции"
+// Контроллер "Обновление раздачи"
 export async function updatePromotion(id, body) {
 	try {
 		// Проверка входных данных
@@ -79,6 +79,6 @@ export async function updatePromotion(id, body) {
 		logger.info(`Раздача обновлена: ID:${promotion._id}`);
 		return promotion;
 	} catch (e) {
-		logger.error('Ошибка обновления акции:', e);
+		logger.error('Ошибка обновления раздачи:', e);
 	}
 };

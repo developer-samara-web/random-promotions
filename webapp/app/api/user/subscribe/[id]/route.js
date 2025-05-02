@@ -18,7 +18,7 @@ export async function GET(request, ctx) {
         // Отправляем данные
         return NextResponse.json({ access: subscribe.access }, { status: 200 });
     } catch (e) {
-        console.error('Ошибка при получении акции:', e);
+        console.error('Ошибка при получении раздачи:', e);
         return NextResponse.json({ error: 'Что-то пошло не так. Попробуйте повторить попытку позже или обратитесь в поддержку.' }, { status: 500 });
     }
 }

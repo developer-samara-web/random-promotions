@@ -8,10 +8,10 @@ export async function GET(request) {
     try {
         // Подключаемся к базе данных
         await connectToDatabase();
-        // Получаем акции
+        // Получаем раздачи
         const promotions = await Promotion.find();
         // Если таблица акций пуста
-        if (!promotions) { return NextResponse.json({ error: 'Акции не найдены.' }, { status: 404 }) };
+        if (!promotions) { return NextResponse.json({ error: 'Раздачи не найдены.' }, { status: 404 }) };
         // Отправляем данные
         return NextResponse.json({ response: promotions }, { status: 200 });
     } catch (e) {
@@ -20,21 +20,21 @@ export async function GET(request) {
     }
 }
 
-// Маршрут "Создание акции"
+// Маршрут "Создание раздачи"
 export async function POST(request) {
     try {
         // Получение данных
         const query = await request.json();
         // Подключаемся к базе данных
         await connectToDatabase();
-        // Получаем номер последней акции
+        // Получаем номер последней раздачи
         const lastPromotion = await Promotion.findOne().sort({ _id: -1 });
         const title_id = lastPromotion ? lastPromotion.title_id + 1 : 1;
-        // Создаём новую акцию
+        // Создаём новую раздачу
         const promotion = new Promotion({ title_id, ...query });
         // Если раздача не создалась
-        if (!promotion) { return NextResponse.json({ error: 'Не удалось создать акцию.' }, { status: 404 }) };
-        // Сохраняем акцию
+        if (!promotion) { return NextResponse.json({ error: 'Не удалось создать раздачу.' }, { status: 404 }) };
+        // Сохраняем раздачу
         await promotion.save();
         // Создаём задачу в боте
         await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/schedule/promotions/create`, {
@@ -45,7 +45,7 @@ export async function POST(request) {
         // Отправляем данные
         return NextResponse.json({ response: promotion }, { status: 200 });
     } catch (e) {
-        console.error('Ошибка при создании акции:', e);
+        console.error('Ошибка при создании раздачи:', e);
         return NextResponse.json({ error: 'Что-то пошло не так. Попробуйте позже или обратитесь в поддержку.' }, { status: 500 });
     }
 }

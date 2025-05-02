@@ -26,7 +26,7 @@ export async function setParticipant(promotion_id, user_id) {
 
         return response.json();
     } catch (e) {
-        console.error('Ошибка при регистрации пользователя в акции:', e); ц
+        console.error('Ошибка при регистрации пользователя в раздачи:', e); ц
     }
 }
 

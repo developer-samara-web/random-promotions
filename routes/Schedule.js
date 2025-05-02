@@ -8,12 +8,12 @@ import logger from "#utils/logs.js";
 
 // Маршруты расписания
 export default async function (app, telegram) {
-    // Создание расписания акции
+    // Создание расписания раздачи
     app.post('/schedule/promotions/create', async (req, res) => {
         try {
-            // Получаем id акции
+            // Получаем id раздачи
             const { promotion_id } = req.body;
-            // Получаем время акции
+            // Получаем время раздачи
             const { start_date, end_date } = await getPromotion(promotion_id);
             // Создаём новую задачу в базе
             const schedule = await setSchedule({ type: 'promotion', promotion_id, start_date, end_date });

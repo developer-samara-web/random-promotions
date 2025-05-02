@@ -1,4 +1,4 @@
-// Получение акции
+// Получение раздачи
 export async function getPromotion(id) {
     try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/promotions/${id}`, {
@@ -8,7 +8,7 @@ export async function getPromotion(id) {
 
         return response.json();
     } catch (e) {
-        console.error('Ошибка получения данных акции:', e);
+        console.error('Ошибка получения данных раздачи:', e);
     }
 }
 
@@ -22,11 +22,11 @@ export async function getPromotions() {
 
         return response.json();
     } catch (e) {
-        console.error('Ошибка получения данных акции:', e);
+        console.error('Ошибка получения данных раздачи:', e);
     }
 }
 
-// Создание акции
+// Создание раздачи
 export async function setPromotion(data) {
     try {
         return await fetch(`${process.env.NEXT_PUBLIC_API_URL}/promotions`, {
@@ -35,11 +35,11 @@ export async function setPromotion(data) {
             body: JSON.stringify(data),
         });
     } catch (e) {
-        console.error('Ошибка при создании акции:', e)
+        console.error('Ошибка при создании раздачи:', e)
     }
 }
 
-// Обновление акции
+// Обновление раздачи
 export async function updatePromotion(data) {
     try {
         return await fetch(`${process.env.NEXT_PUBLIC_API_URL}/promotions/${data._id}`, {
@@ -48,6 +48,6 @@ export async function updatePromotion(data) {
             body: JSON.stringify(data),
         });
     } catch (e) {
-        console.error('Ошибка обновления данных акции:', e)
+        console.error('Ошибка обновления данных раздачи:', e)
     }
 }

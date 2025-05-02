@@ -9,7 +9,7 @@ export default async function (app, telegram) {
     // Проверка подписки на канал
     app.post('/user/subscribe', async (req, res) => {
         try {
-            // Получаем id акции
+            // Получаем id раздачи
             const { telegram_id } = req.body;
             // Получаем подписку на канал
             const subscribe = await telegram.telegram.getChatMember(process.env.TELEGRAM_GROUP_ID, telegram_id);

@@ -33,14 +33,14 @@ export default function Home() {
         const fetchData = async () => {
             try {
                 if (window.Telegram && Telegram.WebApp) {
-                    // Получаем данные акции и пользователя
+                    // Получаем данные раздачи и пользователя
                     const { user, start_param: promotion_id } = Telegram.WebApp.initDataUnsafe;
 
                     // Проверка подписки
                     await getSubscribe(user.id);
 
-                    if (promotion_id) { // Показываем меню участия акции
-                        // Получаем данные акции и пользователя
+                    if (promotion_id) { // Показываем меню участия раздачи
+                        // Получаем данные раздачи и пользователя
                         const { error: userError, response: userData } = await getUser(user.id);
                         const { error: promotionError, response: promotionData } = await getPromotion(promotion_id);
                         const { error: participantsError, response: participantsData } = await getParticipants(userData._id);
@@ -52,7 +52,7 @@ export default function Home() {
                             setUser(userData);
                         }
 
-                        // Проверка окончания акции
+                        // Проверка окончания раздачи
                         if (promotionData.status === 'completed') {
                             setScreen('end');
                             return;
@@ -97,7 +97,7 @@ export default function Home() {
                         }
 
                     } else { // Показываем профиль пользователя
-                        // Получаем данные акции и пользователя
+                        // Получаем данные раздачи и пользователя
                         const { error: userError, response: userData } = await getUser(user.id);
                         const { error: participantsError, response: participantsData } = await getParticipants(userData._id);
 
@@ -162,7 +162,7 @@ export default function Home() {
             <Page>
                 <Join
                     title="Вы уже участвуете"
-                    description="Вы уже зарегистрированы для участия в этой акции. Повторное участие невозможно, но мы благодарим вас за интерес и желаем удачи в розыгрыше!"
+                    description="Вы уже зарегистрированы для участия в этой раздачи. Повторное участие невозможно, но мы благодарим вас за интерес и желаем удачи в розыгрыше!"
                     date={formatDate(promotion.end_date)}
                     promotion={promotion}
                     image="/pleased.png"
@@ -177,7 +177,7 @@ export default function Home() {
             <Page>
                 <Join
                     title="Успешно!"
-                    description="Поздравляем! Вы успешно зарегистрированы для участия в акции. Желаем удачи и надеемся, что вы станете одним из победителей!"
+                    description="Поздравляем! Вы успешно зарегистрированы для участия в раздачи. Желаем удачи и надеемся, что вы станете одним из победителей!"
                     date={formatDate(promotion.end_date)}
                     promotion={promotion}
                     image="/cheerful.png"
