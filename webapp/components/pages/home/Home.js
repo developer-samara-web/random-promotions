@@ -162,7 +162,7 @@ export default function Home() {
             <Page>
                 <Join
                     title="Вы уже участвуете"
-                    description="Вы уже зарегистрированы для участия в этой раздачи. Повторное участие невозможно, но мы благодарим вас за интерес и желаем удачи в розыгрыше!"
+                    description="Вы уже зарегистрированы для участия в этой раздаче. Повторное участие невозможно, но мы благодарим вас за интерес и желаем удачи!"
                     date={formatDate(promotion.end_date)}
                     promotion={promotion}
                     image="/pleased.png"
@@ -177,7 +177,7 @@ export default function Home() {
             <Page>
                 <Join
                     title="Успешно!"
-                    description="Поздравляем! Вы успешно зарегистрированы для участия в раздачи. Желаем удачи и надеемся, что вы станете одним из победителей!"
+                    description="Поздравляем! Вы успешно зарегистрированы для участия в раздаче. Желаем удачи и надеемся, что вы станете одним из победителей!"
                     date={formatDate(promotion.end_date)}
                     promotion={promotion}
                     image="/cheerful.png"
