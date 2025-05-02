@@ -1,24 +1,33 @@
 // Импорты
-import { startAction, rulesAction } from "#actions/mainActions.js";
-import { profileAction, supportAction } from "#actions/userActions.js";
-import { subscribeAction, subscribeShowAction, subscribeShowRulesAction } from "#actions/subscribeActions.js";
-import { adminAction } from "#actions/adminActions.js";
+import { startAction, rulesAction } from "#actions/Main.js";
+import { profileAction } from "#actions/User.js";
+import { supportAction } from "#actions/Support.js";
+import { subscribeAction, subscribeShowAction, subscribeShowRulesAction } from "#actions/Subscribe.js";
+import { adminAction } from "#actions/Admin.js";
+
+// Логирование
+import logger from "#utils/logs.js";
 
 // Список экшенов
-export default (telegram) => {
-  // mainActions
-  startAction(telegram);
-  rulesAction(telegram);
-
-  //userActions
-  profileAction(telegram);
-  supportAction(telegram);
-
-  //subscribeActions
-  subscribeAction(telegram);
-  subscribeShowAction(telegram);
-  subscribeShowRulesAction(telegram);
-
-  //adminActions
-  adminAction(telegram);
+export default (Telegram) => {
+  try {
+    // Главное меню
+    startAction(Telegram);
+    // Меню правил
+    rulesAction(Telegram);
+    // Меню профиля
+    profileAction(Telegram);
+    // Меню техподдержки
+    supportAction(Telegram);
+    // Меню подписки
+    subscribeAction(Telegram);
+    // Меню правил подписки
+    subscribeShowRulesAction(Telegram);
+    // Меню оплаты подписки
+    subscribeShowAction(Telegram);
+    // Меню администратора
+    adminAction(Telegram);
+  } catch (e) {
+    logger.error("Ошибка инициализации экшенов:", e)
+  }
 };

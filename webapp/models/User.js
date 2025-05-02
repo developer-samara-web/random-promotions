@@ -13,7 +13,6 @@ const UserSchema = new mongoose.Schema({
         start_date: { type: Date, default: null }, // Дата начала подписки
         end_date: { type: Date, default: null }, // Дата окончания подписки
         renewal_count: { type: Number, default: 0 }, // Кол-во обновлений подписки
-        card_id: { type: String } // ID карты
     },
     stats: { // Статистика
         last_win_date: { type: Date, default: null }, // Последняя дата победы

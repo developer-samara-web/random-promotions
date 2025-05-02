@@ -5,7 +5,6 @@ import "./globals.css";
 
 // Импорт компонентов
 import { useEffect, useState } from 'react';
-import { usePathname } from 'next/navigation';
 import { checkAuth } from "@/controllers/Auth";
 import Registration from "@/components/ui/Registration/Registration";
 import Preloader from "@/components/ui/Preloader/Preloader";
@@ -18,27 +17,9 @@ export default function RootLayout({ children }) {
   const [isTelegramScriptLoaded, setIsTelegramScriptLoaded] = useState(false);
   const [check, setCheck] = useState(null);
   const [error, setError] = useState(null);
-  const pathname = usePathname();
 
   useEffect(() => {
     if (!isTelegramScriptLoaded) return;
-
-    // Список исключенных маршрутов
-    const excludedRoutes = [
-      /^\/policy(\/|$)/,
-      /^\/oferta(\/|$)/,
-      /^\/payment(\/|$)/,
-      /^\/payment\/view\//
-    ];
-
-    // Проверка с использованием регулярных выражений
-    const shouldExclude = excludedRoutes.some(route => route.test(pathname));
-
-    // Если путь не входит в список исключенных маршрутов
-    if (shouldExclude) {
-      setCheck(true);
-      return;
-    }
 
     const fetchAuth = async () => {
       try {
@@ -65,7 +46,7 @@ export default function RootLayout({ children }) {
     };
 
     fetchAuth();
-  }, [isTelegramScriptLoaded, pathname]);
+  }, [isTelegramScriptLoaded]);
 
   // Если проверка еще не завершена
   if (check === null) {

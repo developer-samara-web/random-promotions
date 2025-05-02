@@ -29,7 +29,7 @@ export async function POST(request) {
         await connectToDatabase();
         // Создаём новый тариф
         const tariff = new Tariff(query);
-        // Если акция не создалась
+        // Если раздача не создалась
         if (!tariff) { return NextResponse.json({ error: 'Не удалось создать тариф.' }, { status: 404 }) };
         // Сохраняем акцию
         await tariff.save();

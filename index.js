@@ -1,10 +1,11 @@
 // Импорты
 import "dotenv/config";
-import { initSchedule } from "#services/schedule.js";
-import { initServer } from "#services/express.js";
-import Auth from "#controllers/authController.js"
-import Telegram from "#services/telegram.js";
+import { initSchedule } from "#services/Schedule.js";
+import { initServer } from "#services/Express.js";
+import Auth from "#controllers/Auth.js"
+import Telegram from "#services/Telegram.js";
 import Actions from "#actions/_init.js";
+import Handlers from "#handlers/_init.js";
 
 // Запускаем api сервер
 initServer(Telegram)
@@ -12,6 +13,8 @@ initServer(Telegram)
 initSchedule(Telegram);
 // Инициализация экшенов
 Actions(Telegram);
+// Инициализация обработчиков
+Handlers(Telegram)
 // Авторизация
 Telegram.use(Auth);
 // Запуск бота

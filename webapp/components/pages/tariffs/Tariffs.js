@@ -56,9 +56,14 @@ export default function Tariffs() {
 
     return (
         <Page>
-            <Header title="Управление тарифами" />
-            <Button name="Добавить новый" icon="PlusCircleIcon" link="/tariffs/create" />
-            <List name="Список тарифов:" items={tariffs} search={false} />
+            <Header title="Управление тарифами" description="Список тарифов" />
+            <List items={tariffs} search={false} button="test" />
+            <div className="sticky bottom-0 left-0 w-full flex bg-gradient-to-b from-transparent to-slate-900 items-center justify-center">
+                <div className="flex flex-col mb-5 max-w-[450px] w-full gap-3">
+                    <Button name="Добавить новый" icon="PlusCircleIcon" link="/tariffs/create" />
+                    <Button name="Закрыть приложение" icon="XCircleIcon" className="text-yellow-900 !bg-yellow-400" event={() => Telegram.WebApp.close()} />
+                </div>
+            </div>
         </Page>
     );
 }

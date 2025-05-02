@@ -1,7 +1,7 @@
 // Импорты
 import mongoose from 'mongoose';
 
-// Участия в акциях
+// Участие в раздаче
 const ParticipantSchema = new mongoose.Schema({
     promotion_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Promotion', required: true }, // ID Акции
     user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, // ID Пользователя

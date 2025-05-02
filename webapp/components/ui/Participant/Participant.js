@@ -12,7 +12,7 @@ export default function Participant({ promotion, status }) {
             <div className='participant-content'>
                 <Image className='participant-image' src={promotion.banner_image} width={200} height={200} alt={promotion.title} />
                 <div className='participant-text'>
-                    <div className='participant-title'>Акция #{promotion.title_id}</div>
+                    <div className='participant-title'>Раздача #{promotion.title_id}</div>
                     <div className='participant-description'>{formatDate(promotion.start_date)} - {formatDate(promotion.end_date)}</div>
                 </div>
             </div>

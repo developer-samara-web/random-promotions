@@ -1,10 +1,10 @@
 // Импорты
 import nodeSchedule from 'node-schedule';
-import { sendPromotionPost, sendResultPost, updatePost, sendWinnerPost } from "#controllers/telegramController.js";
-import { updateSchedule } from "#controllers/scheduleController.js";
-import { getPromotion, updatePromotion } from "#controllers/promotionController.js";
-import { getParticipantsWinners } from "#controllers/participantsController.js";
-import { updateWinners } from "#controllers/userController.js";
+import { sendPromotionPost, sendResultPost, updatePost, sendWinnerPost } from "#controllers/Telegram.js";
+import { updateSchedule } from "#controllers/Schedule.js";
+import { getPromotion, updatePromotion } from "#controllers/Promotion.js";
+import { getParticipantsWinners } from "#controllers/Participants.js";
+import { updateWinners } from "#controllers/User.js";
 import cancelSchedule from '#utils/cancelSchedule.js';
 import randomUsers from "#utils/randomUser.js";
 import checkWinners from "#utils/checkWinners.js";
@@ -100,7 +100,7 @@ export function addPromotionSchedule(schedule, telegram, scheduledJobs) {
                     }
                 });
                 await updateSchedule(_id, { status: 'completed' });
-                logger.info(`Акция завершена: ID:${promotion_id}`);
+                logger.info(`Раздача завершена: ID:${promotion_id}`);
             } catch (e) {
                 logger.error(`Ошибка завершения акции ${promotion_id}:`, e);
             } finally {

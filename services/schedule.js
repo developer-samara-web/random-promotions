@@ -1,7 +1,7 @@
 // Импорты
-import { getSchedules } from "#controllers/scheduleController.js";
+import { getSchedules } from "#controllers/Schedule.js";
 import { addPromotionSchedule } from "#schedules/Promotions.js";
-import { addSubscriptionSchedule } from "#schedules/Subscription.js";
+import { addSubscriptionSchedule } from "#schedules/Subscribe.js";
 
 // Логирование
 import logger from "#utils/logs.js";

@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    allowedDevOrigins: [process.env.NEXT_PUBLIC_URL_NAME, process.env.TBANK_API_NAME],
+    allowedDevOrigins: [process.env.NEXT_PUBLIC_URL_NAME],
     images: {
         remotePatterns: [
             {

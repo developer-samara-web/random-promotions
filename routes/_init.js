@@ -1,8 +1,7 @@
 // Импорты
-import ScheduleRoutes from "#routes/ScheduleRoutes.js";
-import ParticipantsRoutes from "#routes/ParticipantsRoutes.js";
-import SubscribeRoutes from "#routes/SubscribeRoutes.js";
-import NotificationRoutes from "#routes/NotificationRoutes.js";
+import ScheduleRoutes from "#routes/Schedule.js";
+import ParticipantsRoutes from "#routes/Participants.js";
+import SubscribeRoutes from "#routes/Subscribe.js";
 
 // Логирование
 import logger from "#utils/logs.js";
@@ -16,8 +15,6 @@ export default async function (app, telegram) {
         await ParticipantsRoutes(app, telegram);
         // Маршруты подписок
         await SubscribeRoutes(app, telegram);
-        // Маршруты уведомлений
-        await NotificationRoutes(app, telegram)
     } catch (e) {
         logger.error('Ошибка инициализации маршрутов:', e)
     }

@@ -1,5 +1,0 @@
-@reference "tailwindcss";
-
-.image{
-    @apply w-full rounded-xl cursor-pointer
-}

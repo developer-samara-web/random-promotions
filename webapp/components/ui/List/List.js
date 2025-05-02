@@ -2,17 +2,13 @@
 import "@/components/ui/List/List.modules.css";
 
 // Импорт компонентов
-import { useState, useEffect } from "react";
-import { getPromotions } from "@/controllers/Promotions";
+import { useState } from "react";
 import TarifFields from "@/data/fields/Tariff.json";
 import PromotionFields from "@/data/fields/Promotion.json";
-import Button from "@/components/ui/Button/Button";
-import Preloader from "@/components/ui/Preloader/Preloader";
 import Error from "@/components/ui/Error/Error";
-import Image from "@/components/ui/Image/Image";
 
 // Компонент
-export default function List({ name, search, items }) {
+export default function List({ name, search, items, button }) {
     const [searchQuery, setSearchQuery] = useState('');
 
     // Фильтрация акций

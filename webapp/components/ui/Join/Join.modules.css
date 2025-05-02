@@ -8,10 +8,6 @@
     @apply flex flex-col items-center
 }
 
-.join-image{
-    @apply mb-10
-}
-
 .join-title{
     @apply text-2xl uppercase font-bold text-center mb-2
 }

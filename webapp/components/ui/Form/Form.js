@@ -93,7 +93,7 @@ export default function Form({ onSubmit, fields, buttonName, buttonIcon, formDat
         <form className="form" onSubmit={handleSubmit}>
             {success && (
                 <div className="sticky top-5 left-0 z-50">
-                    <Success title="Акция создалась" description="Акция отправлена в очередь и будет опубликована согласно расписанию." />
+                    <Success title="Раздача создалась" description="Раздача отправлена в очередь и будет опубликована согласно расписанию." />
                 </div>
             )}
             {error.length > 0 && (

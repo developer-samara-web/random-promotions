@@ -32,7 +32,7 @@ export async function POST(request) {
         const title_id = lastPromotion ? lastPromotion.title_id + 1 : 1;
         // Создаём новую акцию
         const promotion = new Promotion({ title_id, ...query });
-        // Если акция не создалась
+        // Если раздача не создалась
         if (!promotion) { return NextResponse.json({ error: 'Не удалось создать акцию.' }, { status: 404 }) };
         // Сохраняем акцию
         await promotion.save();

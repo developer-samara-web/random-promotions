@@ -150,6 +150,7 @@ export default function Home() {
                     title="Раздача завершена"
                     description="Спасибо всем, кто принял участие! Следите за нашими раздачами — впереди вас ждут новые крутые сюрпризы! 🚀"
                     promotion={promotion}
+                    image="/sad.png"
                 />
             </Page>
         );
@@ -164,6 +165,7 @@ export default function Home() {
                     description="Вы уже зарегистрированы для участия в этой акции. Повторное участие невозможно, но мы благодарим вас за интерес и желаем удачи в розыгрыше!"
                     date={formatDate(promotion.end_date)}
                     promotion={promotion}
+                    image="/pleased.png"
                 />
             </Page>
         );
@@ -178,6 +180,7 @@ export default function Home() {
                     description="Поздравляем! Вы успешно зарегистрированы для участия в акции. Желаем удачи и надеемся, что вы станете одним из победителей!"
                     date={formatDate(promotion.end_date)}
                     promotion={promotion}
+                    image="/cheerful.png"
                 />
             </Page>
         );
@@ -188,7 +191,7 @@ export default function Home() {
         return (
             <Page>
                 <Header title={`${promotion.title}`} description={promotion._id} />
-                <Image src="/message.png" width={100} height={100} alt="message" />
+                <Image src="/evil.png" width={150} height={150} alt="message" />
                 <div className='text-xl font-medium text-center'>Вы не выполнили условия розыгрыша</div>
                 <Button name="О розыгрыше" icon="InformationCircleIcon" className="!bg-[#3b82f630]" event={() => setPopap(true)} />
                 <div className='text-sm uppercase text-slate-400 font-medium text-center'>Выполните условия:</div>

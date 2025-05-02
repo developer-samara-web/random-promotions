@@ -60,7 +60,7 @@ export default function Tariffs() {
         <Page>
             <Header title="Создание тарифа" />
             <Form onSubmit={setTariff} fields={fields} formData={formData} setFormData={setFormData} Telegram={window.Telegram} buttonName="Создать акцию" buttonIcon="CheckCircleIcon" />
-            <Button name="Закрыть приложение" icon="XCircleIcon" className="text-yellow-900 !bg-yellow-400" event={() => Telegram.WebApp.close()} />
+            <Button name="Назад" icon="XCircleIcon" className="text-yellow-900 !bg-yellow-400" link="/tariffs" />
         </Page>
     );
 }
