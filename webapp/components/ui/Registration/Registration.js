@@ -26,7 +26,7 @@ export default function Registration() {
                 <div className="font-medium">⚠️ Для входа в розыгрыш нужно:</div>
                 <div className="flex flex-col gap-1 list-none font-light mt-2">
                     <li>1. Быть подписанным на наш канал.</li>
-                    <li>2. Нажать кнопку "Участвовать" под постом с розыгрышем.</li>
+                    <li>2. Нажать кнопку «Участвовать» под постом с розыгрышем.</li>
                     <li>3. Выполнить дополнительные условия (если есть): репост, отметка друга и т.д.</li>
                 </div>
             </Block>
