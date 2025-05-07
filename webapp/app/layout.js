@@ -5,6 +5,7 @@ import "./globals.css";
 
 // Импорт компонентов
 import { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { checkAuth } from "@/controllers/Auth";
 import Registration from "@/components/ui/Registration/Registration";
 import Preloader from "@/components/ui/Preloader/Preloader";
@@ -15,15 +16,33 @@ import Script from 'next/script';
 // Компонент
 export default function RootLayout({ children }) {
   const [isTelegramScriptLoaded, setIsTelegramScriptLoaded] = useState(false);
+  const [isPaymentScriptLoaded, setIsPaymentScriptLoaded] = useState(false);
   const [check, setCheck] = useState(null);
   const [error, setError] = useState(null);
+  const pathname = usePathname();
+
+  // Список исключенных маршрутов
+  const excludedRoutes = [
+    /^\/policy(\/|$)/,
+    /^\/oferta(\/|$)/,
+    /^\/payment(\/|$)/,
+    /^\/payment\/view\//
+  ];
+
+  // Проверка с использованием регулярных выражений
+  const shouldExclude = excludedRoutes.some(route => route.test(pathname));
 
   useEffect(() => {
     if (!isTelegramScriptLoaded) return;
+    if (!isPaymentScriptLoaded) return;
 
     const fetchAuth = async () => {
       try {
         if (window.Telegram && Telegram.WebApp) {
+          if (shouldExclude) {
+            setCheck(true);
+            return;
+          }
           // Инициализация WebApp
           Telegram.WebApp.ready();
           // Запрос разрешения на отправку сообщений
@@ -46,7 +65,7 @@ export default function RootLayout({ children }) {
     };
 
     fetchAuth();
-  }, [isTelegramScriptLoaded]);
+  }, [isTelegramScriptLoaded, isPaymentScriptLoaded, pathname]);
 
   // Если проверка еще не завершена
   if (check === null) {
@@ -54,6 +73,7 @@ export default function RootLayout({ children }) {
       <html lang="ru">
         <head>
           <Script src="https://telegram.org/js/telegram-web-app.js" onLoad={() => setIsTelegramScriptLoaded(true)} />
+          <Script src="https://widget.cloudpayments.ru/bundles/cloudpayments.js" onLoad={() => setIsPaymentScriptLoaded(true)} />
         </head>
         <body className="root">
           <Page>
@@ -70,6 +90,7 @@ export default function RootLayout({ children }) {
       <html lang="ru">
         <head>
           <Script src="https://telegram.org/js/telegram-web-app.js" onLoad={() => setIsTelegramScriptLoaded(true)} />
+          <Script src="https://widget.cloudpayments.ru/bundles/cloudpayments.js" onLoad={() => setIsPaymentScriptLoaded(true)} />
         </head>
         <body className="root">
           <Page>
@@ -86,6 +107,7 @@ export default function RootLayout({ children }) {
       <html lang="ru">
         <head>
           <Script src="https://telegram.org/js/telegram-web-app.js" onLoad={() => setIsTelegramScriptLoaded(true)} />
+          <Script src="https://widget.cloudpayments.ru/bundles/cloudpayments.js" onLoad={() => setIsPaymentScriptLoaded(true)} />
         </head>
         <body className="root">
           <Registration />
@@ -99,6 +121,7 @@ export default function RootLayout({ children }) {
     <html lang="ru">
       <head>
         <Script src="https://telegram.org/js/telegram-web-app.js" onLoad={() => setIsTelegramScriptLoaded(true)} />
+        <Script src="https://widget.cloudpayments.ru/bundles/cloudpayments.js" onLoad={() => setIsPaymentScriptLoaded(true)} />
       </head>
       <body className="root">{children}</body>
     </html>

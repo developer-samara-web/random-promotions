@@ -20,10 +20,10 @@ export function subscribeKeyboard(tariffs) {
 }
 
 // Клавиатура "Меню оплаты выбранной подписки"
-export function subscribeShowKeyboard(tariff, user, invoice) {
+export function subscribeShowKeyboard(tariff) {
     try {
         return Markup.inlineKeyboard([
-            [Markup.button.url(`💳 Оплатить | 🌟${tariff.recurring_amount}`, invoice)],
+            [Markup.button.webApp(`💳 Оплатить | ${tariff.initial_amount || tariff.recurring_amount} руб`, `${process.env.TELEGRAM_WEBAPP}/payment/${tariff._id}`)],
             [Markup.button.callback("⬅️ Назад", `user_premium`)],
         ]);
     } catch (e) {

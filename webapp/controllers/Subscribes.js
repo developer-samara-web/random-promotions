@@ -1,7 +1,7 @@
 // Контроллер "Получение данных о подписке"
 export async function getSubscribe(id) {
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/subscribes/${id}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/payment/${id}`, {
             headers: { 'Content-Type': 'application/json' },
             method: 'GET'
         });

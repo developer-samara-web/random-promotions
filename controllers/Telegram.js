@@ -98,12 +98,10 @@ export async function sendWinnerPost(telegram, promotion, user) {
 };
 
 // Контроллер "Уведомление об успешной оплате"
-export async function sendPaymentSuccesPost(telegram, chat_id, message_id, end_date) {
+export async function sendPaymentSuccesPost(telegram, user, end_date) {
     try {
-        return await telegram.telegram.editMessageText(
-            chat_id,
-            message_id,
-            null,
+        return await telegram.telegram.sendMessage(
+            user.telegram_id,
             PaymentSuccessMessage(end_date),
             {
                 parse_mode: 'HTML',
@@ -117,13 +115,11 @@ export async function sendPaymentSuccesPost(telegram, chat_id, message_id, end_d
 };
 
 // Контроллер "Уведомление об неуспешной оплате"
-export async function sendPaymentFailedPost(telegram, chat_id, message_id, user) {
+export async function sendPaymentFailedPost(telegram, user) {
     try {
-        return await telegram.telegram.editMessageText(
-            chat_id,
-            message_id,
-            null,
-            PaymentErrorMessage(user.subscription.end_date),
+        return await telegram.telegram.sendMessage(
+            user.telegram_id,
+            PaymentErrorMessage(),
             {
                 parse_mode: 'HTML',
                 disable_web_page_preview: false,

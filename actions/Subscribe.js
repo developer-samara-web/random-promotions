@@ -1,11 +1,10 @@
 // Импорты
-import { getUser } from "#controllers/User.js";
+import { getUser, updateUser } from "#controllers/User.js";
 import { rulesMessage } from "#messages/Main.js";
 import { getTariff, getTariffs } from "#controllers/Tariff.js";
 import { subscribeMessage, subscribeShowMessage, subscribeShowRulesMessage, subscribeActiveSubscribeMessage } from "#messages/Subscribe.js";
 import { subscribeKeyboard, subscribeShowKeyboard, subscribeShowRulesKeyboard } from "#keyboards/Subscribe.js";
 import { MainMenuKeyboard, rulesKeyboard } from "#keyboards/Main.js";
-import { setTransaction } from "#controllers/Transaction.js";
 
 // Логирование
 import logger from "#utils/logs.js";
@@ -66,27 +65,9 @@ export async function subscribeShowAction(telegram) {
 			}
 			// Получаем данные тарифа
 			const tariff = await getTariff(ctx.match[0].split("_")[2]);
-			// Создаём транзраздачу
-			const transaction = await setTransaction({
-				user_id: user._id,
-				tariff_id: tariff._id,
-				message_id: ctx.update.callback_query.message.message_id
-			});
-			// Создаём платёжную ссылку
-			const invoice = await telegram.telegram.createInvoiceLink({
-				title: tariff.name,
-				description: "Оплата премиум подписки",
-				currency: "XTR",
-				prices: [{ label: tariff.name, amount: tariff.recurring_amount }],
-				payload: JSON.stringify({
-					userId: user._id,
-					transactionId: transaction._id,
-					tariffId: tariff._id
-				})
-			});
 			// Отправляем сообщение
 			return await ctx.editMessageText(subscribeShowMessage(), {
-				reply_markup: subscribeShowKeyboard(tariff, user, invoice).reply_markup,
+				reply_markup: subscribeShowKeyboard(tariff).reply_markup,
 				parse_mode: "HTML",
 				disable_web_page_preview: true,
 			});
