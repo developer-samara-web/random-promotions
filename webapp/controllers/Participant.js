@@ -44,6 +44,19 @@ export async function getParticipants(user_id) {
     }
 }
 
+export async function getWinnersParticipants(promotion_id) {
+    try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/participant/winners/${promotion_id}`, {
+            headers: { 'Content-Type': 'application/json' },
+            method: 'GET'
+        });
+
+        return response.json();
+    } catch (e) {
+        console.error('Ошибка получения данных участий:', e);
+    }
+}
+
 // Получение лимита участий
 export async function getParticipantLimit(user_id) {
     try {

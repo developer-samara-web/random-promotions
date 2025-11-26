@@ -18,7 +18,7 @@ export default createLogger({
         new TelegramLogger({
             token: process.env.TELEGRAM_TOKEN,
             chatId: process.env.TELEGRAM_LOG_GROUP_ID,
-            level: process.env.TELEGRAM_LOG_LAVEL, // теперь будет отправлять всё от info и выше
+            level: process.env.TELEGRAM_LOG_LAVEL,
             unique: false,
             handleExceptions: true,
             format: format.combine(

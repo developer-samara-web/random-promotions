@@ -17,7 +17,7 @@ export async function adminAction(telegram) {
 			// Получаем пользователя
 			const user = await getUser(ctx.from.id);
 			// Если пользователь не зарегистрирован
-			if (user.role !== 'admin') {
+			if (!user.is_admin) {
 				return await ctx.editMessageText(errorMessage(), {
 					reply_markup: MainMenuKeyboard().reply_markup,
 					parse_mode: "HTML",

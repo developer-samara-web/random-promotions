@@ -20,7 +20,7 @@ export default function Form({ onSubmit, fields, buttonName, buttonIcon, formDat
     const handleSwitchChange = (newValue) => {
         setFormData(prev => ({
             ...prev,
-            requires_subscription: newValue,
+            is_private: newValue,
         }));
     };
 
@@ -108,7 +108,7 @@ export default function Form({ onSubmit, fields, buttonName, buttonIcon, formDat
                     <div key={id}>
                         {type === 'toogle' ? (
                             <Switch
-                                value={formData.requires_subscription || false}
+                                value={formData.is_private || false}
                                 placeholder={placeholder}
                                 onChange={handleSwitchChange}
                             />

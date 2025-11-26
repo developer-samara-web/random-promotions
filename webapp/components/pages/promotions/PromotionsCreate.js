@@ -14,50 +14,38 @@ import Button from '@/components/ui/Button/Button';
 
 // Компонент
 export default function Create() {
-    const [formData, setFormData] = useState({ subscribe: false });
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState(null);
+	const [formData, setFormData] = useState({ subscribe: false });
+	const [isLoading, setIsLoading] = useState(false);
+	const [error, setError] = useState(null);
 
-    // Проверка прав на просмотр
-    useEffect(() => {
-        const isAdmin = async () => {
-            const { isAdmin } = await checkAdmin();
-            // Проверка на права на просмотр
-            if (!isAdmin) {
-                setError("У вас не достаточно прав для работы с этой страницей. Попробуйте повторить попытку позже или обратитесь в службу поддержки.");
-                setIsLoading(true)
-                return;
-            }
-            // Установка состояния загрузки
-            setIsLoading(true)
-        }
-        // Запуск функции
-        isAdmin();
-    }, []);
+	// Проверка прав на просмотр
+	useEffect(() => {
+		const isAdmin = async () => {
+			const { isAdmin } = await checkAdmin();
+			// Проверка на права на просмотр
+			if (!isAdmin) {
+				setError("У вас не достаточно прав для работы с этой страницей. Попробуйте повторить попытку позже или обратитесь в службу поддержки.");
+				setIsLoading(true)
+				return;
+			}
+			// Установка состояния загрузки
+			setIsLoading(true)
+		}
+		// Запуск функции
+		isAdmin();
+	}, []);
 
-    // Загрузка данных
-    if (!isLoading) {
-        return (
-            <Page>
-                <Preloader />
-            </Page>
-        )
-    }
+	// Загрузка данных
+	if (!isLoading) return <Preloader />
 
-    // Если нет прав на просмотр
-    if (error) {
-        return (
-            <Page>
-                <Error title="Произошла ошибка" description={error} />
-            </Page>
-        )
-    }
+	// Если нет прав на просмотр
+	if (error) return <Error title="Произошла ошибка" description={error} />;
 
-    return (
-        <Page>
-            <Header title="Создание раздачи" />
-            <Form onSubmit={setPromotion} fields={fields} formData={formData} setFormData={setFormData} Telegram={window.Telegram} buttonName="Создать раздачу" buttonIcon="CheckCircleIcon" />
-            <Button name="Закрыть приложение" icon="XCircleIcon" className="text-yellow-900 !bg-yellow-400" event={() => Telegram.WebApp.close()} />
-        </Page>
-    );
+	return (
+		<Page>
+			<Header title="Создание раздачи" />
+			<Form onSubmit={setPromotion} fields={fields} formData={formData} setFormData={setFormData} Telegram={window.Telegram} buttonName="Создать раздачу" buttonIcon="CheckCircleIcon" />
+			<Button name="Закрыть приложение" icon="XCircleIcon" className="text-yellow-900 !bg-yellow-400" event={() => Telegram.WebApp.close()} />
+		</Page>
+	);
 }

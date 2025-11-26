@@ -29,9 +29,9 @@ export async function POST(request) {
         await connectToDatabase();
         // Получаем номер последней раздачи
         const lastPromotion = await Promotion.findOne().sort({ _id: -1 });
-        const title_id = lastPromotion ? lastPromotion.title_id + 1 : 1;
+        const index = lastPromotion ? lastPromotion.index + 1 : 1;
         // Создаём новую раздачу
-        const promotion = new Promotion({ title_id, ...query });
+        const promotion = new Promotion({ index, ...query });
         // Если раздача не создалась
         if (!promotion) { return NextResponse.json({ error: 'Не удалось создать раздачу.' }, { status: 404 }) };
         // Сохраняем раздачу

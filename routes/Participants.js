@@ -17,6 +17,7 @@ export default async function (app, telegram) {
             const promotion = await getPromotion(promotion_id);
             // Получаем участников
             const participants = await getParticipants(promotion_id);
+			console.log(participants)
             // Обновляем пост телеграмм
             if (promotion.status === 'completed') {
                 await updatePost(telegram, promotion)
@@ -24,7 +25,7 @@ export default async function (app, telegram) {
                 await updatePost(telegram, promotion, participants);
             };
             // Обновляем пост телеграмм
-            logger.info(`Пост обновлён: ${process.env.TELEGRAM_CHANEL_URL}/${promotion.message_id}`);
+            logger.info(`Пост обновлён: ${process.env.TELEGRAM_CHANEL_URL}/${promotion._id}`);
             return res.status(200).json({ status: 'success' });
         } catch (e) {
             return res.status(403).send(`Ошибка доступа.`);

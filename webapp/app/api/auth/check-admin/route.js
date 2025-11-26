@@ -21,7 +21,7 @@ export async function GET(request) {
         // Находим пользователя по ID
         const user = await User.findOne({ telegram_id: id });
         // Проверяем наличие пользователя и роль
-        if (!user || user.role !== "admin") { return NextResponse.json({ isAdmin: false }, { status: 403 }) };
+        if (!user || !user.is_admin) { return NextResponse.json({ isAdmin: false }, { status: 403 }) };
         // Возвращаем ответ
         return NextResponse.json({ isAdmin: true });
     } catch (e) {

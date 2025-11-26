@@ -38,12 +38,16 @@ export async function rulesAction(telegram) {
 			// Получаем данные пользователя
 			const { id, username = null, first_name = null } = ctx.from;
 			// Проверка подписки на канал
-			const channel_subscription = await checkUser(ctx);
+			const check = await checkUser(ctx);
 			// Создаём нового юзера
 			const user = await setUser({
 				telegram_id: id,
 				username, first_name,
-				channel_subscription
+				subscriptions: {
+					public: {
+						is_subscribe: check
+					}
+				}
 			});
 			// Если пользователь не создался
 			if (!user) {
@@ -58,6 +62,17 @@ export async function rulesAction(telegram) {
 			});
 		} catch (e) {
 			logger.error("Ошибка экшена [rules_accept]:", e);
+		}
+	});
+}
+
+// Экшен "Понятно"
+export async function deleteAction(telegram) {
+	telegram.action("delete_menu", async (ctx) => {
+		try {
+			await ctx.deleteMessage();
+		} catch (error) {
+			logger.error("Ошибка экшена [delete_menu]:", error);
 		}
 	});
 }

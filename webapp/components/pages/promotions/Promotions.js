@@ -12,51 +12,45 @@ import List from "@/components/ui/List/List";
 
 // Компонент
 export default function Promotions() {
-    const [promotions, setPromotions] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState(null);
+	const [promotions, setPromotions] = useState(null);
+	const [isLoading, setIsLoading] = useState(false);
+	const [error, setError] = useState(null);
 
-    // Получаем раздачу
-    useEffect(() => {
-        const isAdmin = async () => {
-            const { isAdmin } = await checkAdmin();
-            // Проверка на права на просмотр
-            if (!isAdmin) {
-                setError("У вас не достаточно прав для работы с этой страницей. Попробуйте повторить попытку позже или обратитесь в службу поддержки.");
-                setIsLoading(true)
-                return;
-            }
-            const { response: promotions } = await getPromotions();
-            setPromotions(promotions)
-            // Установка состояния загрузки
-            setIsLoading(true)
-        }
-        // Запуск функции
-        isAdmin();
-    }, [])
+	// Получаем раздачу
+	useEffect(() => {
+		const isAdmin = async () => {
+			const { isAdmin } = await checkAdmin();
+			// Проверка на права на просмотр
+			if (!isAdmin) {
+				setError("У вас не достаточно прав для работы с этой страницей. Попробуйте повторить попытку позже или обратитесь в службу поддержки.");
+				setIsLoading(true)
+				return;
+			}
+			const { response: promotions } = await getPromotions();
+			setPromotions(promotions)
+			// Установка состояния загрузки
+			setIsLoading(true)
+		}
+		// Запуск функции
+		isAdmin();
+	}, [])
 
-    // Загрузка данных
-    if (!isLoading) {
-        return (
-            <Page>
-                <Preloader />
-            </Page>
-        )
-    }
+	// Загрузка данных
+	if (!isLoading) return <Preloader />;
 
-    // Если нет прав на просмотр
-    if (error) {
-        return (
-            <Page>
-                <Error title="Произошла ошибка" description={error} />
-            </Page>
-        )
-    }
+	// Если нет прав на просмотр
+	if (error) {
+		return (
+			<Page>
+				<Error title="Произошла ошибка" description={error} />
+			</Page>
+		)
+	}
 
-    return (
-        <Page>
-            <Header title="Список акций" />
-            <List name="Список тарифов:" items={promotions} search={true}/>
-        </Page>
-    );
+	return (
+		<Page>
+			<Header title="Список акций" />
+			<List name="Список тарифов:" items={promotions} search={true} />
+		</Page>
+	);
 }

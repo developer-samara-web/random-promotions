@@ -1,0 +1,21 @@
+@reference "tailwindcss";
+
+.participant{
+    @apply flex flex-col justify-between h-[calc(100vh-50px)] w-full
+}
+
+.participant-content{
+    @apply flex flex-col items-center
+}
+
+.participant-title{
+    @apply text-2xl uppercase font-bold text-center mb-2
+}
+
+.participant-badge{
+    @apply text-xs text-center bg-[#2b7fff] uppercase font-medium py-1 px-3 rounded-lg mb-3 cursor-pointer
+}
+
+.participant-description{
+    @apply text-sm text-center text-slate-300
+}

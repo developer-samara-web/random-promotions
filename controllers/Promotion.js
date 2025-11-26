@@ -24,12 +24,12 @@ export async function getPromotion(id) {
 };
 
 // Контроллер "Получение данных всех раздач"
-export async function getPromotions() {
+export async function getPromotions(body = {}) {
 	try {
 		// Подключаемся к базе
 		await connectToDatabase();
 		// Получаем раздачу
-		const promotions = await Promotion.find();
+		const promotions = await Promotion.find(body);
 		// Проверяем данные
 		if (!promotions) { return null };
 		// Отправляем данные
@@ -38,6 +38,7 @@ export async function getPromotions() {
 		logger.error('Ошибка получения раздачи:', e);
 	}
 };
+
 
 // Контроллер "Создание раздачи"
 export async function setPromotion(body) {

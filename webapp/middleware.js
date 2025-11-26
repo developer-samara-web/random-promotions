@@ -21,6 +21,6 @@ export async function middleware(request) {
 
 export const config = {
     matcher: [
-        '/api/promotions/:path*', // Все маршруты под /promotions
+        '/api/promotions/:path*',
     ],
 };

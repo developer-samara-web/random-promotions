@@ -2,7 +2,7 @@
 import { getUser } from "#controllers/User.js";
 import { rulesMessage } from "#messages/Main.js";
 import { rulesKeyboard } from "#keyboards/Main.js";
-import { profileMessage, supportUserMessage } from "#messages/User.js";
+import { profileMessage } from "#messages/User.js";
 import { profileKeyboard } from "#keyboards/User.js";
 
 // Логирование

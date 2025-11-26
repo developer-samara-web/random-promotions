@@ -9,7 +9,7 @@ export default function Rule({ name, description, image, icon, button, count, st
         <div className='flex flex-row justify-between items-center border-[1px] border-[#3b82f64f] bg-[#3b82f630] rounded-xl w-full p-3 cursor-pointer'>
             <div className='flex flex-row items-center gap-3'>
                 {image && <Image className='w-10 h-10 rounded-xl' src={image} width={200} height={200} alt={description} />}
-                {icon && <Icon name={icon} className="size-10 text-yellow-400 border-[1px] border-[#3b82f64f] bg-[#3b82f630] p-2 rounded-xl" />}
+                {/* {icon && <Image className='w-10 h-10 rounded-xl' src={image} width={200} height={200} alt={description} />} */}
                 <div className='flex flex-col'>
                     <div className='font-medium uppercase text-sm'>{name}</div>
                     <div className='text-xs text-slate-400'>{description}</div>

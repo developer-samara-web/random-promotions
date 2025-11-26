@@ -5,9 +5,9 @@ import { Markup } from "telegraf";
 export function startKeyboard(user) {
     return Markup.inlineKeyboard([
         [Markup.button.callback("👤 Мой Профиль", "user_profile")],
-        ...(!user.subscription?.is_active ? [[Markup.button.callback("⭐️ Оформить подписку", "user_premium")]] : []),
-        ...(user.role === 'admin' ? [[Markup.button.callback("🛠️ Панель администратора", "admin_menu")]] : []),
-        [Markup.button.callback("🚨 Тех. Поддержка", "user_support")]
+        ...(!user.subscription?.is_active ? [[Markup.button.url("⭐️ Оформить подписку", "https://t.me/tribute/app?startapp=sGch")]] : []),
+        ...(user.is_admin ? [[Markup.button.callback("🛠️ Панель администратора", "admin_menu")]] : []),
+        [Markup.button.url("🚨 Тех. Поддержка", "https://t.me/gar_sem")]
     ]);
 }
 
@@ -22,6 +22,13 @@ export function rulesKeyboard() {
 export function rulesAcceptKeyboard() {
     return Markup.inlineKeyboard([
         [Markup.button.callback("🚀 Начать", "start_menu")]
+    ]);
+}
+
+// Клавиатура "Главное меню"
+export function DeleteKeyboard() {
+    return Markup.inlineKeyboard([
+        [Markup.button.callback("✅ Закрыть", "delete_menu")]
     ]);
 }
 

@@ -17,7 +17,7 @@
     },
     {
         "id": 3,
-        "name": "winners_count",
+        "name": "count",
         "placeholder": "Кол-во победителей",
         "type": "number",
         "visible": true,
@@ -25,7 +25,7 @@
     },
     {
         "id": 4,
-        "name": "banner_image",
+        "name": "image",
         "placeholder": "Фото поста раздачи",
         "type": "image",
         "visible": true,
@@ -49,7 +49,7 @@
     },
     {
         "id": 7,
-        "name": "requires_subscription",
+        "name": "is_private",
         "placeholder": "Только для подписчиков:",
         "type": "toogle",
         "visible": true,

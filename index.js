@@ -1,5 +1,6 @@
 // Импорты
 import "dotenv/config";
+import { session } from "telegraf";
 import { initSchedule } from "#services/Schedule.js";
 import { initServer } from "#services/Express.js";
 import Auth from "#controllers/Auth.js"
@@ -11,10 +12,12 @@ import Handlers from "#handlers/_init.js";
 initServer(Telegram)
 // Инициализация планировщика
 initSchedule(Telegram);
+// Сессии
+Telegram.use(session());
 // Инициализация экшенов
 Actions(Telegram);
 // Инициализация обработчиков
-Handlers(Telegram)
+Handlers(Telegram);
 // Авторизация
 Telegram.use(Auth);
 // Запуск бота
