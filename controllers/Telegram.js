@@ -142,7 +142,7 @@ export async function sendSubscribeSuccesPost(telegram, user) {
 			{
 				parse_mode: 'HTML',
 				disable_web_page_preview: false,
-				reply_markup: DeleteKeyboard().reply_markup
+				reply_markup: PrivateKeyboard().reply_markup
 			}
 		);
 	} catch (e) {

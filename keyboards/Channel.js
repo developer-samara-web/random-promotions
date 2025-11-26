@@ -4,7 +4,7 @@ import { Markup } from "telegraf";
 // Клавиатура "Участие в раздачи"
 export function chanelKeyboard() {
     return Markup.inlineKeyboard([
-        [Markup.button.url(`🚀 Получить доступ`, `${process.env.TELEGRAM_BOT_URL}`)]
+        [Markup.button.url(`🚀 Получить доступ`, `${process.env.TELEGRAM_BOT_URL}?start=premium`)]
     ]);
 }
 
