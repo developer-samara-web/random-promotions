@@ -21,13 +21,18 @@ export default async (ctx) => {
 			// Отправляем первое сообщение с правилами
 			await ctx.replyWithHTML(rulesMessage(), { disable_web_page_preview: true, ...rulesKeyboard() });
 		} else {
-			if (ctx.message.text.includes('premium')) {
+			if (ctx.message?.text?.includes('premium')) {
 				return await ctx.replyWithHTML(premiumMessage(), { disable_web_page_preview: true, ...premiumKeyboard() });
 			}
 			// Если пользователь
 			return await ctx.replyWithHTML(startMessage(ctx), { disable_web_page_preview: true, ...startKeyboard(user) });
 		}
 	} catch (e) {
+		if (e.response?.description?.includes('bot was blocked')) {
+			logger.info(`Пользователь заблокировал бота ID:${ctx.from?.id}`, e);
+			return;
+		}
+
 		logger.error('Ошибка регистрации пользователя:', e);
 	}
 };

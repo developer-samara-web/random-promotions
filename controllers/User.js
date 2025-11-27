@@ -49,6 +49,13 @@ export async function setUser(body) {
 		if (!body) { throw new Error('Ошибка данных, body не заполнен.') };
 		// Подключаемся к базе
 		await connectToDatabase();
+		// Проверка на существование пользователя
+		const findUser = await User.findOne({ telegram_id: body.telegram_id });
+		// Если существует, то отдаём его
+		if (findUser) {
+			logger.info(`Пользователь уже существует: ID:${findUser._id}`);
+			return findUser;
+		}
 		// Создаём нового пользователя
 		const user = new User(body);
 		// Сохраняем в базе
