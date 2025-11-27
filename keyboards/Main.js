@@ -50,6 +50,6 @@ export function MainMenuKeyboard() {
 // Клавиатура "Приватка"
 export function PrivateKeyboard() {
     return Markup.inlineKeyboard([
-        [Markup.button.Url("🚀 Приватный канал", "https://t.me/+ZMJUwbuXPss5NzZi")]
+        [Markup.button.url("🚀 Приватный канал", "https://t.me/+ZMJUwbuXPss5NzZi")]
     ]);
 }
