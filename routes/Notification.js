@@ -10,7 +10,7 @@ import logger from "#utils/logs.js";
 // Маршруты "Уведомления о подписке"
 export default async function (app, telegram) {
 	// Проверка подписки на канал
-	app.post('/notification', async (req, res) => {
+	app.post('/express/notification', async (req, res) => {
 		try {
 			const data = req.body;
 			const { name, payload } = data;
