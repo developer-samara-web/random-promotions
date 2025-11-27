@@ -17,7 +17,6 @@ export default async function (app, telegram) {
             const promotion = await getPromotion(promotion_id);
             // Получаем участников
             const participants = await getParticipants(promotion_id);
-			console.log(participants)
             // Обновляем пост телеграмм
             if (promotion.status === 'completed') {
                 await updatePost(telegram, promotion)
