@@ -29,7 +29,7 @@ export default async (ctx) => {
 		}
 	} catch (e) {
 		if (e.response?.description?.includes('bot was blocked')) {
-			logger.info(`Пользователь заблокировал бота ID:${ctx.from?.id}`, e);
+			logger.info(`Пользователь заблокировал бота ID:${ctx.from?.id}`);
 			return;
 		}
 
