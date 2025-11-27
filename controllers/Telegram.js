@@ -2,7 +2,7 @@
 import { ResultMessage, WinnerMessage } from "#messages/Promotion.js";
 import { PaymentSuccessMessage, PaymentErrorMessage } from "#messages/Payment.js";
 import { chanelKeyboard, chanelPrivateKeyboard, resultKeyboard } from "#keyboards/Channel.js";
-import { MainMenuKeyboard, DeleteKeyboard } from "#keyboards/Main.js";
+import { MainMenuKeyboard, PrivateKeyboard } from "#keyboards/Main.js";
 
 // Логирование
 import logger from "#utils/logs.js";
