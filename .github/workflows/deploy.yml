@@ -1,0 +1,72 @@
+name: CI/CD
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service: [telegram-bot, webapp]
+
+    env:
+      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+
+    steps:
+      # 1. Клонируем репозиторий
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # 2. Настраиваем Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      # 3. Настраиваем Docker
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v2
+
+      # 4. Устанавливаем зависимости и проверяем сборку
+      - name: Install dependencies and build
+        run: |
+          cd ${{ matrix.service }}
+          npm ci
+          if [ "${{ matrix.service }}" = "webapp" ]; then
+            npm run build
+          fi
+
+      # 5. Копируем файлы на сервер через SCP
+      - name: Copy files to server
+        uses: appleboy/scp-action@v0.1.5
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          port: ${{ secrets.SERVER_PORT }}
+          source: "."
+          target: "~/project"
+
+      # 6. Перезапуск контейнера на сервере через SSH
+      - name: Deploy service on server
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          port: ${{ secrets.SERVER_PORT }}
+          script: |
+            cd ~/project
+            docker compose up -d --build ${{ matrix.service }}
+
+      # 7. Уведомление в Telegram
+      - name: Notify Telegram
+        if: success()
+        run: |
+          curl -s -X POST https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage \
+            -d chat_id=$TELEGRAM_CHAT_ID \
+            -d text="✅ Деплой сервиса ${{ matrix.service }} успешно завершен!"
