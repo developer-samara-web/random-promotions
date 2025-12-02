@@ -34,9 +34,10 @@ jobs:
       # 4. Устанавливаем зависимости и проверяем сборку
       - name: Install dependencies and build
         run: |
-          cd ${{ matrix.service }}
           npm ci
           if [ "${{ matrix.service }}" = "webapp" ]; then
+            cd webapp
+            npm ci
             npm run build
           fi
 
@@ -49,7 +50,7 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: ${{ secrets.SERVER_PORT }}
           source: "."
-          target: "~/project"
+          target: "/home/garsem-telegram-bot"
 
       # 6. Перезапуск контейнера на сервере через SSH
       - name: Deploy service on server
@@ -60,7 +61,7 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: ${{ secrets.SERVER_PORT }}
           script: |
-            cd ~/project
+            cd /home/garsem-telegram-bot
             docker compose up -d --build ${{ matrix.service }}
 
       # 7. Уведомление в Telegram
@@ -69,4 +70,4 @@ jobs:
         run: |
           curl -s -X POST https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage \
             -d chat_id=$TELEGRAM_CHAT_ID \
-            -d text="✅ Деплой сервиса ${{ matrix.service }} успешно завершен!"
+            -d text="✅ [ ${{ matrix.service }} ] обновление успешно развернуто на сервере."
