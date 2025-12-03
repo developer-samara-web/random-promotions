@@ -61,7 +61,7 @@ export async function OPTIONS() {
     return NextResponse.json(null, {
         status: 204,
         headers: {
-            'Access-Control-Allow-Origin': process.env.NEXT_PUBLIC_URL || '*',
+            'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Methods': 'POST',
             'Access-Control-Allow-Headers': 'Content-Type, Authorization',
             'Access-Control-Max-Age': '3600',
