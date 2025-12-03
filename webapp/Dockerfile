@@ -13,11 +13,8 @@ RUN npm install
 # Копируем код проекта
 COPY . .
 
-# Сборка webapp
-RUN npm run build
-
 # Открываем порт
 EXPOSE 3000
 
 # Запуск приложения
-CMD ["npm", "run", "start"]
+CMD ["sh", "-c", "npm run build && npm run start"]
