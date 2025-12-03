@@ -61,64 +61,83 @@ export function addPromotionSchedule(schedule, telegram, scheduledJobs) {
 				let winners = [];
 				if (participants) {
 					// Получаем всех премиум пользователей
-					const premiumUsers = participants
+					let premiumUsers = participants
 						.filter(p => p.user_id?.subscriptions?.private?.is_subscribe && p.user_id?.subscriptions?.public.is_subscribe)
 						.map(p => p.user_id);
+
 					// Получаем обычных пользователей
-					const freeUsers = participants
+					let freeUsers = participants
 						.filter(p => !p.user_id?.subscriptions?.private?.is_subscribe && p.user_id?.subscriptions?.public.is_subscribe)
 						.map(p => p.user_id);
-					// Выбираем победителей
+
 					if (!promotion.is_private) {
-						const premiumNotWinners = checkWinners(premiumUsers) || [];
-						const premiumWinnersThisMonth = premiumUsers.filter(u => !premiumNotWinners.some(n => n._id === u._id));
-						const freeNotWinners = checkWinners(freeUsers) || [];
-						const freeWinnersThisMonth = freeUsers.filter(u => !freeNotWinners.some(n => n._id === u._id));
-						const allWinnersThisMonth = [...premiumWinnersThisMonth, ...freeWinnersThisMonth];
+						// Проверяем, кто ещё не выигрывал
+						let premiumNotWinners = checkWinners(premiumUsers) || [];
+						let premiumWinnersThisMonth = premiumUsers.filter(u => !premiumNotWinners.some(n => n._id === u._id));
+						let freeNotWinners = checkWinners(freeUsers) || [];
+						let freeWinnersThisMonth = freeUsers.filter(u => !freeNotWinners.some(n => n._id === u._id));
+						let allWinnersThisMonth = [...premiumWinnersThisMonth, ...freeWinnersThisMonth];
+
 						let remainingWinnersCount = promotion.count;
 
+						// Выбираем премиум, кто ещё не выигрывал
 						if (premiumNotWinners.length > 0 && remainingWinnersCount > 0) {
-							const premiumCount = Math.min(remainingWinnersCount, premiumNotWinners.length);
-							winners = [...randomUsers(premiumNotWinners, premiumCount)];
-							remainingWinnersCount -= premiumCount;
+							const count = Math.min(remainingWinnersCount, premiumNotWinners.length);
+							const selected = randomUsers(premiumNotWinners, count);
+							winners.push(...selected);
+							remainingWinnersCount -= count;
+
+							// Исключаем выбранных из следующих массивов
+							const selectedIds = selected.map(u => u._id);
+							freeNotWinners = freeNotWinners.filter(u => !selectedIds.includes(u._id));
+							allWinnersThisMonth = allWinnersThisMonth.filter(u => !selectedIds.includes(u._id));
 						}
+
+						// Выбираем обычных, кто ещё не выигрывал
 						if (freeNotWinners.length > 0 && remainingWinnersCount > 0) {
-							const freeCount = Math.min(remainingWinnersCount, freeNotWinners.length);
-							winners = [...winners, ...randomUsers(freeNotWinners, freeCount)];
-							remainingWinnersCount -= freeCount;
+							const count = Math.min(remainingWinnersCount, freeNotWinners.length);
+							const selected = randomUsers(freeNotWinners, count);
+							winners.push(...selected);
+							remainingWinnersCount -= count;
+
+							const selectedIds = selected.map(u => u._id);
+							allWinnersThisMonth = allWinnersThisMonth.filter(u => !selectedIds.includes(u._id));
 						}
+
+						// Выбираем всех остальных
 						if (allWinnersThisMonth.length > 0 && remainingWinnersCount > 0) {
-							const winnersCount = Math.min(remainingWinnersCount, allWinnersThisMonth.length);
-							winners = [...winners, ...randomUsers(allWinnersThisMonth, winnersCount)];
+							const count = Math.min(remainingWinnersCount, allWinnersThisMonth.length);
+							const selected = randomUsers(allWinnersThisMonth, count);
+							winners.push(...selected);
+							remainingWinnersCount -= count;
 						}
 					} else {
-						const premiumNotWinners = checkWinners(premiumUsers) || [];
-						const premiumWinnersThisMonth = premiumUsers.filter(u => !premiumNotWinners.some(n => n._id === u._id));
+						// Приватная раздача — только премиум
+						let premiumNotWinners = checkWinners(premiumUsers) || [];
+						let premiumWinnersThisMonth = premiumUsers.filter(u => !premiumNotWinners.some(n => n._id === u._id));
 						let remainingWinnersCount = promotion.count;
 
 						if (premiumNotWinners.length > 0 && remainingWinnersCount > 0) {
-							const premiumCount = Math.min(remainingWinnersCount, premiumNotWinners.length);
-							winners = [...randomUsers(premiumNotWinners, premiumCount)];
-							remainingWinnersCount -= premiumCount;
+							const count = Math.min(remainingWinnersCount, premiumNotWinners.length);
+							const selected = randomUsers(premiumNotWinners, count);
+							winners.push(...selected);
+							remainingWinnersCount -= count;
+
+							premiumWinnersThisMonth = premiumWinnersThisMonth.filter(u => !selected.map(s => s._id).includes(u._id));
 						}
+
 						if (premiumWinnersThisMonth.length > 0 && remainingWinnersCount > 0) {
-							const winnersCount = Math.min(remainingWinnersCount, premiumWinnersThisMonth.length);
-							winners = [...winners, ...randomUsers(premiumWinnersThisMonth, winnersCount)];
+							const count = Math.min(remainingWinnersCount, premiumWinnersThisMonth.length);
+							const selected = randomUsers(premiumWinnersThisMonth, count);
+							winners.push(...selected);
+							remainingWinnersCount -= count;
 						}
 					}
 				}
 				// Обновляем участников
 				const update = await updateWinners(participants, winners);
 				// Отправляем пост с результатами
-				const { public_result_id, private_result_id } = await sendResultPost(telegram, promotion, update);
-				// // Обновляем раздачу с ID сообщений результатов
-				// await updatePromotion(promotion_id, {
-				// 	messages: {
-				// 		...promotion.messages,
-				// 		public_result_id,
-				// 		private_result_id
-				// 	}
-				// });
+				await sendResultPost(telegram, promotion, update);
 				// Отправляем сообщения победителям
 				winners.forEach(async winner => {
 					try {
