@@ -7,6 +7,8 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: ${DB_PASSWORD}
     ports:
       - "27017:27017"
+    networks:
+      - proxy
     volumes:
       - mongo_data:/data/db
 
@@ -21,6 +23,13 @@ services:
       - .:/app
     ports:
       - "8000:8000"
+    environment:
+      - VIRTUAL_HOST=server.samara.fun
+      - VIRTUAL_PORT=8000
+      - LETSENCRYPT_HOST=server.samara.fun
+      - LETSENCRYPT_EMAIL=developer.samara.web@gmail.com
+    networks:
+      - proxy
     depends_on:
       - database
     command: ["node", "index.js"]
@@ -34,8 +43,57 @@ services:
     restart: unless-stopped
     ports:
       - "3000:3000"
+    environment:
+      - VIRTUAL_HOST=webapp.samara.fun
+      - VIRTUAL_PORT=3000
+      - LETSENCRYPT_HOST=webapp.samara.fun
+      - LETSENCRYPT_EMAIL=developer.samara.web@gmail.com
+    networks:
+      - proxy
     depends_on:
       - database
 
+  nginx-proxy:
+    image: nginxproxy/nginx-proxy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - conf:/etc/nginx/conf.d
+      - vhost:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - certs:/etc/nginx/certs:ro
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    networks:
+      - proxy
+
+  acme-companion:
+    image: nginxproxy/acme-companion
+    restart: unless-stopped
+    environment:
+      - DEFAULT_EMAIL=developer.samara.web@gmail.com
+    volumes:
+      - certs:/etc/nginx/certs
+      - acme:/etc/acme.sh
+      - vhost:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - /var/run/docker.sock:/var/run/docker.sock
+    volumes_from:
+      - nginx-proxy
+    depends_on:
+      - nginx-proxy
+    networks:
+      - proxy
+
 volumes:
   mongo_data:
+  conf:
+  vhost:
+  html:
+  certs:
+  acme:
+
+networks:
+  proxy:
+    name: proxy-network
