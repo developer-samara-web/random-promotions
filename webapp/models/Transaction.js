@@ -1,13 +1,12 @@
 // Импорты
 import mongoose from 'mongoose';
 
-// Задачи планировщика
+// Транзакция
 const TransactionSchema = new mongoose.Schema({
-    user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, // ID пользователя
-    tariff_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Tariff', required: true }, // ID тарифа
-    status: { type: String, enum: ['in_progress', 'accepted', 'completed', 'expired', 'failed'], default: 'in_progress' }, // Статус транзраздачи
-    created_at: { type: Date, default: Date.now }, // Дата создания транзраздачи
-    updated_at: { type: Date, default: Date.now } // Дата обновления транзраздачи
+	telegram_id: { type: Number, required: true }, // ID пользователя
+	subscription_id: { type: Number, required: true }, // ID подписки
+	price: { type: Number, required: true }, // Цена
+	period: { type: String, enum: ['monthly', 'weekly'], required: true } // Период
 });
 
 export default mongoose.models.Transaction || mongoose.model('Transaction', TransactionSchema);

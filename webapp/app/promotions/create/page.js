@@ -3,8 +3,8 @@ import Create from "@/components/pages/promotions/PromotionsCreate";
 
 //SEO
 export const metadata = {
-  title: "Mr.Раздачкин | Создание раздачи",
-  description: "https://t.me/mr_razdachkin",
+  title: "Гарсем рулетка | Создание раздачи",
+  description: "https://t.me/Majestic_Ryletka",
 };
 
 // Component

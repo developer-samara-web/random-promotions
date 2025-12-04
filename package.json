@@ -1,7 +1,7 @@
 {
-  "name": "4rth-action-bot",
+  "name": "garsem-telegram-bot",
   "version": "1.0.0",
-  "description": "",
+  "description": "t.me/Majestic_Ryletka",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",

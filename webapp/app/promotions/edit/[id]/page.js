@@ -4,8 +4,8 @@ import Edit from "@/components/pages/promotions/PromotionsEdit";
 
 // SEO
 export const metadata = {
-  title: "Mr.Раздачкин | Редактирование",
-  description: "https://t.me/mr_razdachkin",
+  title: "Гарсем рулетка | Редактирование",
+  description: "https://t.me/Majestic_Ryletka",
 };
 
 // Компонент

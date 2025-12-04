@@ -3,8 +3,8 @@ import Home from "@/components/pages/home/Home";
 
 // SEO
 export const metadata = {
-  title: "Mr.Раздачкин | Регистрация в раздачи",
-  description: "https://t.me/mr_razdachkin",
+  title: "Гарсем рулетка | Регистрация в раздачи",
+  description: "https://t.me/Majestic_Ryletka",
 };
 
 // Компонент
