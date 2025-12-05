@@ -17,11 +17,11 @@
 }
 
 .completed-badge{
-    @apply text-xs text-center bg-[#2b7fff] uppercase font-medium py-1 px-3 rounded-lg mb-3 cursor-pointer
+    @apply text-xs text-center bg-[#2b7fff] uppercase font-medium py-1 px-3 rounded-lg cursor-pointer
 }
 
 .completed-badges{
-    @apply flex flex-wrap gap-2
+    @apply flex flex-wrap gap-2 mb-3 justify-center
 }
 
 .completed-description{

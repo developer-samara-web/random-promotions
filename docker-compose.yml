@@ -28,6 +28,11 @@ services:
       - VIRTUAL_PORT=8000
       - LETSENCRYPT_HOST=server.samara.fun
       - LETSENCRYPT_EMAIL=developer.samara.web@gmail.com
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000"]
+      interval: 5s
+      timeout: 2s
+      retries: 10
     networks:
       - proxy
     depends_on:
@@ -48,6 +53,11 @@ services:
       - VIRTUAL_PORT=3000
       - LETSENCRYPT_HOST=webapp.samara.fun
       - LETSENCRYPT_EMAIL=developer.samara.web@gmail.com
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 5s
+      timeout: 2s
+      retries: 10
     networks:
       - proxy
     depends_on:
