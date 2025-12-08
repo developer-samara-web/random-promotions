@@ -50,7 +50,7 @@ export default function Promotions() {
 	return (
 		<Page>
 			<Header title="Список акций" />
-			<List name="Список тарифов:" items={promotions} search={true} />
+			<List name="Список акций:" items={promotions} search={true} />
 		</Page>
 	);
 }
