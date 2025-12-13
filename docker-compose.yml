@@ -84,14 +84,13 @@ services:
     restart: unless-stopped
     environment:
       - DEFAULT_EMAIL=developer.samara.web@gmail.com
+      - NGINX_PROXY_CONTAINER=nginx-proxy
     volumes:
       - certs:/etc/nginx/certs
       - acme:/etc/acme.sh
       - vhost:/etc/nginx/vhost.d
       - html:/usr/share/nginx/html
       - /var/run/docker.sock:/var/run/docker.sock
-    volumes_from:
-      - nginx-proxy
     depends_on:
       - nginx-proxy
     networks:
