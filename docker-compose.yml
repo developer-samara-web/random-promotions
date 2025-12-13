@@ -21,8 +21,8 @@ services:
     restart: unless-stopped
     volumes:
       - .:/app
-    ports:
-      - "8000:8000"
+    expose:
+      - "8000"
     environment:
       - VIRTUAL_HOST=server.samara.fun
       - VIRTUAL_PORT=8000
@@ -46,8 +46,8 @@ services:
     env_file:
       - .env
     restart: unless-stopped
-    ports:
-      - "3000:3000"
+    expose:
+      - "3000"
     environment:
       - VIRTUAL_HOST=webapp.samara.fun
       - VIRTUAL_PORT=3000
@@ -64,6 +64,7 @@ services:
       - database
 
   nginx-proxy:
+    container_name: nginx-proxy
     image: nginxproxy/nginx-proxy
     restart: unless-stopped
     ports:
